@@ -10,9 +10,8 @@ $this->title = $model->idjurusan;
 $this->params['breadcrumbs'][] = ['label' => 'Jurusans', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="jurusan-view">
+<div class="card card-block">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->idjurusan], ['class' => 'btn btn-primary']) ?>
@@ -28,9 +27,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idjurusan',
-            'nama_jurusan',
-            'status',
+			[
+				'label'=>'Code of Majors',
+				'attribute' => 'idjurusan'
+			],     
+			[
+				'label'=>'Name of Majors',
+				'attribute' => 'nama_jurusan'
+			],                   
+			[
+				'attribute'=>'status', 
+				'label'=>'Status',
+				'format'=>'raw',
+				'value'=>$model->status == 1 ? 
+					'<span class="tag tag-success">Enable</span>' : 
+					'<span class="tag tag-danger">Disable</span>',			
+			],
         ],
     ]) ?>
 

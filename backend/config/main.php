@@ -30,6 +30,22 @@ return [
 				'kelas'=>'kelas/index',
 				'jurusan'=>'jurusan/index',
 				
+				//---------------------------------- CREATE -----------------------------//
+				'jurusan-create'=>'jurusan/create',
+				'kelas-create'=>'kelas/create',
+				
+				//---------------------------------- VIEW -----------------------------//				
+				'kelas-view-<id>' => 'kelas/view',
+				'jurusan-view-<id>' => 'jurusan/view',
+				
+				//---------------------------------- UPDATE -----------------------------//				
+				'kelas-update-<id>' => 'kelas/update',
+				'jurusan-update-<id>' => 'jurusan/update',
+				
+				//---------------------------------- DELETE -----------------------------//				
+				'kelas-delete-<id>' => 'kelas/delete',
+				'jurusan-delete-<id>' => 'jurusan/delete',
+				
 				//---------------------------------- Login -----------------------------//
 				'login'=>'site/login',
 		

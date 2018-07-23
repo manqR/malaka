@@ -20,9 +20,12 @@
 					var linkPage = this.href.substring(this.href.lastIndexOf("/") + 1);
 					
 					var $this = $(this);
-					if (activePage == linkPage) {																										
+					var activePageSplit = activePage.split("-");
+					
+					if (activePage == linkPage || activePageSplit[0] == linkPage) {																										
 						$(this).parents("li").addClass("open");												
 					}
+					
 				});
 			})
 			

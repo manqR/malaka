@@ -67,7 +67,7 @@ class SiswaController extends Controller
         $model = new Siswa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idsiswa]);
+            return $this->redirect(['view-' => $model->idsiswa]);
         }
 
         return $this->render('create', [
