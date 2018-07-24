@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 use yii\web\View;
 
 /* @var $model backend\models\Jurusan */
@@ -12,6 +11,9 @@ use yii\web\View;
 /* @ROOT */
 $root = '@web';
 /* @JS */
+$this->registerJsFile($root."/vendors/select2/select2.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
 $this->registerJsFile($root."/vendors/bootstrap-maxlength/src/bootstrap-maxlength.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);

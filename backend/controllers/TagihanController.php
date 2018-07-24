@@ -8,6 +8,7 @@ use backend\models\TagihanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Spp;
 
 /**
  * TagihanController implements the CRUD actions for Tagihan model.
@@ -67,13 +68,87 @@ class TagihanController extends Controller
     public function actionCreate()
     {
         $model = new Tagihan();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		$spp = new Spp();
+        if ($model->load(Yii::$app->request->post()) && 
+			$spp->load(Yii::$app->request->post())){
+			
+			function SaveRupiah($val){
+				return str_replace('.','',$val);
+			}
+			
+			
+			for($i = 1 ; $i <= 12 ; $i++){
+				$saveSPP = new Spp();
+				$bulan = '';
+				switch($i){
+					case 1:
+						$bulan = 'Juli';
+					break;
+					case 2 :
+						$bulan = 'Agustus';
+					break;
+					case 3:
+						$bulan = 'September';
+					break;
+					case 4:
+						$bulan = 'Oktober';
+					break;
+					case 5:
+						$bulan = 'November';
+					break;
+					case 6:
+						$bulan = 'Desember';
+					break;
+					case 7:
+						$bulan = 'Januari';
+					break;
+					case 8:
+						$bulan = 'Februari';
+					break;
+					case 9:
+						$bulan = 'Maret';
+					break;
+					case 10:
+						$bulan = 'April';
+					break;
+					case 11:
+						$bulan = 'Mei';
+					break;
+					case 12:
+						$bulan = 'Juni';
+					break;
+				}
+				
+				$saveSPP->idtagihan = $model->idtagihan;
+				$saveSPP->bulan = $bulan;
+				$saveSPP->user_create = Yii::$app->user->identity->username;
+				$saveSPP->date_create = date('Y-m-d H:i:s');
+				$saveSPP->besaran =SaveRupiah($spp->besaran);				
+				$saveSPP->save();				
+				
+			}
+			// var_dump(Yii::$app->request->post());
+			
+			$model->administrasi = SaveRupiah($model->administrasi);
+			$model->pengembangan = SaveRupiah($model->pengembangan);
+			$model->praktik = SaveRupiah($model->praktik);
+			$model->semester_a = SaveRupiah($model->semester_a);
+			$model->semester_b = SaveRupiah($model->semester_b);
+			$model->lab_inggris = SaveRupiah($model->lab_inggris);
+			$model->lks = SaveRupiah($model->lks);
+			$model->perpustakaan = SaveRupiah($model->perpustakaan);
+			$model->osis = SaveRupiah($model->osis);
+			$model->mpls = SaveRupiah($model->mpls);
+			$model->asuransi = SaveRupiah($model->asuransi);
+			$model->date_create = date('Y-m-d H:i:s');
+			$model->user_create = Yii::$app->user->identity->username;
+			$model->save();
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);
         }
 
         return $this->render('create', [
             'model' => $model,
+			'spp' => $spp
         ]);
     }
 
@@ -89,13 +164,96 @@ class TagihanController extends Controller
     public function actionUpdate($idtagihan, $idjurusan, $idkelas)
     {
         $model = $this->findModel($idtagihan, $idjurusan, $idkelas);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		$spp = Spp::find()
+			   ->where(['idtagihan'=>$idtagihan])
+			   ->One();
+		
+        if ($model->load(Yii::$app->request->post()) && 			 
+			$spp->load(Yii::$app->request->post())){
+			function SaveRupiah($val){
+				return str_replace('.','',$val);
+			}
+			
+			
+			$delSpp = Spp::find()->where(['idtagihan'=>$idtagihan])->All();
+			foreach($delSpp as $delSpps):
+				$delSpps->delete();
+			endforeach;
+			
+			for($i = 1 ; $i <= 12 ; $i++){
+				$saveSPP = new Spp();
+				$bulan = '';
+				switch($i){
+					case 1:
+						$bulan = 'Juli';
+					break;
+					case 2 :
+						$bulan = 'Agustus';
+					break;
+					case 3:
+						$bulan = 'September';
+					break;
+					case 4:
+						$bulan = 'Oktober';
+					break;
+					case 5:
+						$bulan = 'November';
+					break;
+					case 6:
+						$bulan = 'Desember';
+					break;
+					case 7:
+						$bulan = 'Januari';
+					break;
+					case 8:
+						$bulan = 'Februari';
+					break;
+					case 9:
+						$bulan = 'Maret';
+					break;
+					case 10:
+						$bulan = 'April';
+					break;
+					case 11:
+						$bulan = 'Mei';
+					break;
+					case 12:
+						$bulan = 'Juni';
+					break;
+				}
+				
+				$saveSPP->idtagihan = $model->idtagihan;
+				$saveSPP->bulan = $bulan;
+				$saveSPP->user_create = $spp->user_create;
+				$saveSPP->date_create = $spp->date_create;
+				$saveSPP->besaran =SaveRupiah($spp->besaran);	
+				$saveSPP->date_update = date('Y-m-d H:i:s');
+				$saveSPP->user_update = Yii::$app->user->identity->username;
+				$saveSPP->save();				
+				
+			}
+			
+			$model->administrasi = SaveRupiah($model->administrasi);
+			$model->pengembangan = SaveRupiah($model->pengembangan);
+			$model->praktik = SaveRupiah($model->praktik);
+			$model->semester_a = SaveRupiah($model->semester_a);
+			$model->semester_b = SaveRupiah($model->semester_b);
+			$model->lab_inggris = SaveRupiah($model->lab_inggris);
+			$model->lks = SaveRupiah($model->lks);
+			$model->perpustakaan = SaveRupiah($model->perpustakaan);
+			$model->osis = SaveRupiah($model->osis);
+			$model->mpls = SaveRupiah($model->mpls);
+			$model->asuransi = SaveRupiah($model->asuransi);
+			$model->date_update = date('Y-m-d H:i:s');
+			$model->user_update = Yii::$app->user->identity->username;
+			$model->save();
+			
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);
         }
 
         return $this->render('update', [
             'model' => $model,
+			'spp' => $spp
         ]);
     }
 

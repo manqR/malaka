@@ -6,16 +6,14 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tagihan */
 
-$this->title = 'Create Tagihan';
+$this->title = 'Setup Billing';
 $this->params['breadcrumbs'][] = ['label' => 'Tagihans', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tagihan-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+	<?= $this->render('_form', [
+		'model' => $model,
+		'spp' => $spp
+	]) ?>
 
-</div>

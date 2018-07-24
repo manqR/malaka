@@ -33,18 +33,22 @@ return [
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',
 				'kelas-create'=>'kelas/create',
+				'tagihan-create'=>'tagihan/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<id>' => 'kelas/view',
 				'jurusan-view-<id>' => 'jurusan/view',
+				'tagihan-view-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
 				'kelas-update-<id>' => 'kelas/update',
 				'jurusan-update-<id>' => 'jurusan/update',
+				'tagihan-update-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
 				'kelas-delete-<id>' => 'kelas/delete',
 				'jurusan-delete-<id>' => 'jurusan/delete',
+				'tagihan-delete-<id>' => 'tagihan/delete',
 				
 				//---------------------------------- Login -----------------------------//
 				'login'=>'site/login',

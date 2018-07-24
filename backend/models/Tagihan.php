@@ -43,7 +43,7 @@ class Tagihan extends \yii\db\ActiveRecord
     {
         return [
             [['idtagihan', 'idjurusan', 'idkelas'], 'required'],
-            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
+            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'required'],
             [['date_create', 'date_update'], 'safe'],
             [['idtagihan', 'idjurusan', 'idkelas'], 'string', 'max' => 10],
             [['user_create', 'user_update'], 'string', 'max' => 50],

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\TagihanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tambah Tagihan';
+$this->title = ' Setup Billing';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tagihan-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(' Tambah Tagihan', ['create'], ['class' => 'btn btn-success fa fa-plus']) ?>
+        <?= Html::a($this->title, ['create'], ['class' => 'btn btn-success fa fa-plus']) ?>
     </p>
 
     <?= GridView::widget([
