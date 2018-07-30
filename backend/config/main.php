@@ -29,11 +29,15 @@ return [
 				'tagihan'=>'tagihan/index',				
 				'kelas'=>'kelas/index',
 				'jurusan'=>'jurusan/index',
+				'billing'=>'tagihan-siswa/index',
+				'registration'=>'siswa/index',
 				
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',
 				'kelas-create'=>'kelas/create',
 				'tagihan-create'=>'tagihan/create',
+				'registration-add'=>'siswa/create',
+				'tagihan-siswa-create'=>'tagihan_siswa/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<id>' => 'kelas/view',

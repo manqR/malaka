@@ -86,7 +86,7 @@
 	var Datepicker = function(element, options){
 		$(element).data('datepicker', this);
 		this._process_options(options);
-
+		
 		this.dates = new DateArray();
 		this.viewDate = this.o.defaultViewDate;
 		this.focusDate = null;

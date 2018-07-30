@@ -11,6 +11,9 @@
   $('#maxlength').maxlength({
     threshold: 10
   });
+  $('#nis').maxlength({
+    threshold: 8
+  });
   $('#maxlengthConf').maxlength({
     alwaysShow: true,
     threshold: 50,
@@ -22,5 +25,13 @@
     postText: ' chars.'
   });
 	
+	/******** Labelauty plugin ********/
+  $('.to-labelauty').labelauty({
+    minimum_width: '155px',
+    class: 'labelauty btn-block'
+  });
+  $('.to-labelauty-icon').labelauty({
+    label: false
+  });
 	
 })(jQuery);

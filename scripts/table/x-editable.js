@@ -14,10 +14,10 @@
   //Custom defaults
   $.fn.editable.defaults.url = '/post';
   $.fn.editableform.buttons =
-    '<button type="submit" class="btn btn-primary editable-submit">' +
+    '<button type="submit" class="btn btn-primary">' +
     '<i class="material-icons">check</i>' +
     '</button>' +
-    '<button type="button" class="btn btn-default editable-cancel">' +
+    '<button type="button" class="btn btn-default">' +
     '<i class="material-icons">close</i>' +
     '</button>';
   $.fn.editabletypes.address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {

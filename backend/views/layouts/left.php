@@ -99,12 +99,12 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a href="siswa">
+                        <a href="registration">
                         <span>Registration</span>
                         </a>
                     </li>
                     <li>
-                        <a href="tagihan_siswa">
+                        <a href="billing">
                         <span>Billing</span>
                         </a>
                     </li>                   

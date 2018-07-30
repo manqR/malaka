@@ -4639,7 +4639,7 @@ Editableform based on Twitter Bootstrap 3
     $.extend($.fn.editableform.Constructor.prototype, {
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
-            this.$form.find('.control-group').addClass('form-group');
+            this.$form.find('.control-group').addClass('form-group input-group');
             this.$form.find('.editable-error-block').addClass('help-block');
         },
         initInput: function() {  
