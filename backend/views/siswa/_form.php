@@ -4,8 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\View;
 use yii\helpers\ArrayHelper;
-use backend\models\Jurusan;
-use backend\models\Kelas;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Siswa */
@@ -82,13 +81,12 @@ $this->registerJs("
 	<div class="col-lg-6">
 		<div class="card">
 			<div class="card-block">		
-				<?= $form->field($model, 'idjurusan' ,['options' => ['tag' => 'false']])-> dropDownList(
-						ArrayHelper::map(Jurusan::find()->all(),'idjurusan','nama_jurusan'),
-						['prompt'=>'Choose Majors...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Majors');  ?>
-			
-				<?= $form->field($model, 'idkelas', ['options' => ['tag' => 'false']])-> dropDownList(
-						ArrayHelper::map(Kelas::find()->all(),'idkelas','nama_kelas'),
-						['prompt'=>'Choose Class...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Class');  ?>
+				
+				<?= $form->field($model, 'nisn',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('NISN') ?>							
+				<?= $form->field($model, 'no_seri_ijazah_smp')->textInput(['id'=>'ijazah'])->label('SN of Junior High School') ?>				
+				<?= $form->field($model, 'no_seri_skhun_smp')->textInput(['id'=>'skhun'])->label('SN of SKHUN') ?>				
+				<?= $form->field($model, 'no_ujian_nasional')->textInput(['id'=>'uan'])->label('SN of UAN') ?>		
+				
 			</div>
 		</div>
 	</div>
@@ -97,9 +95,9 @@ $this->registerJs("
 		<div class="card">
 			<div class="card-block">		
 				<?= $form->field($model, 'tempat_lahir')->textInput(['maxlength' => true])->label('Place of Birth') ?>
-				<?= $form->field($model, 'tanggal_lahir')->textInput(['maxlength' => true,'data-provide'=>'datepicker'])->label('Date of Birth') ?>
-				
-				
+				<?= $form->field($model, 'tanggal_lahir')->textInput(['maxlength' => true,'data-provide'=>'datepicker'])->label('Date of Birth') ?>				
+				<?= $form->field($model, 'tinggi_badan')->textInput()->label('Height') ?>
+				<?= $form->field($model, 'berat_badan')->textInput()->label('Weight') ?>
 				
 			</div>
 		</div>
@@ -116,17 +114,13 @@ $this->registerJs("
 				
 
 
-				<?= $form->field($model, 'tinggi_badan')->textInput()->label('Height') ?>
-				<?= $form->field($model, 'berat_badan')->textInput()->label('Weight') ?>
+			
 				<?= $form->field($model, 'jarak_tempat_tinggal')->textInput()->label('Distance') ?>
 				<?= $form->field($model, 'waktu_tempuh')->textInput()->label('Time') ?>
 				<?= $form->field($model, 'jml_saudara')->textInput()->label('Brother/Sister') ?>
 
 	
-				<?= $form->field($model, 'nisn',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('NISN') ?>							
-				<?= $form->field($model, 'no_seri_ijazah_smp')->textInput(['id'=>'ijazah'])->label('SN of Junior High School') ?>				
-				<?= $form->field($model, 'no_seri_skhun_smp')->textInput(['id'=>'skhun'])->label('SN of SKHUN') ?>				
-				<?= $form->field($model, 'no_ujian_nasional')->textInput(['id'=>'uan'])->label('SN of UAN') ?>				
+						
 				
 				<?= $form->field($model, 'agama')->textInput(['maxlength' => true])->label('Religion') ?>
 				<?= $form->field($model, 'alamat')->textarea(['rows' => 6])->label('Address') ?>
@@ -140,7 +134,6 @@ $this->registerJs("
 				<?= $form->field($model, 'tlp_rumah')->textInput(['maxlength' => true])->label('HomePhone') ?>
 				<?= $form->field($model, 'hp')->textInput(['maxlength' => true])->label('HandPhone') ?>
 				<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-				<?= $form->field($model, 'status_kps')->textInput(['maxlength' => true]) ?>
 				
 				<?= $form->field($model, 'status_kps')->radioList(['1'=>'Yes','0'=>'No'],['onclick'=>'js:statusKPS()']); ?>				
 				<?= $form->field($model, 'no_kps')->textInput(['maxlength' => true]) ?>	

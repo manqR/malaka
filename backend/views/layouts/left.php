@@ -103,11 +103,16 @@
                         <span>Registration</span>
                         </a>
                     </li>
+					<li>
+                        <a href="class">
+                        <span>Kelas</span>
+                        </a>
+                    </li>      
                     <li>
                         <a href="billing">
                         <span>Billing</span>
                         </a>
-                    </li>                   
+                    </li> 					            
                 </ul>
             </li>
             <!-- /student -->

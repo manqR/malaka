@@ -8,8 +8,6 @@ use Yii;
  * This is the model class for table "siswa".
  *
  * @property string $idsiswa
- * @property string $idkelas
- * @property string $idjurusan
  * @property string $nama_lengkap
  * @property string $jenis_kelamin
  * @property string $nisn
@@ -57,12 +55,12 @@ class Siswa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idsiswa', 'idkelas', 'idjurusan', 'nama_lengkap', 'jenis_kelamin', 'nisn', 'no_seri_ijazah_smp', 'no_seri_skhun_smp', 'no_ujian_nasional', 'nik', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'kelurahan', 'kecamatan', 'kota', 'provinsi', 'transportasi', 'hp', 'email', 'status_kps', 'no_kps', 'tinggi_badan', 'berat_badan', 'jarak_tempat_tinggal', 'waktu_tempuh', 'jml_saudara'], 'required'],
+            [['idsiswa', 'nama_lengkap', 'jenis_kelamin', 'nisn', 'no_seri_ijazah_smp', 'no_seri_skhun_smp', 'no_ujian_nasional', 'nik', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat', 'kelurahan', 'kecamatan', 'kota', 'provinsi', 'transportasi', 'hp', 'email', 'status_kps', 'no_kps', 'tinggi_badan', 'berat_badan', 'jarak_tempat_tinggal', 'waktu_tempuh', 'jml_saudara'], 'required'],
             [['tanggal_lahir', 'date_create', 'date_update'], 'safe'],
             [['alamat'], 'string'],
             [['tinggi_badan', 'jarak_tempat_tinggal', 'waktu_tempuh', 'jml_saudara'], 'integer'],
             [['berat_badan'], 'number'],
-            [['idsiswa', 'idkelas', 'idjurusan', 'jenis_kelamin', 'tlp_rumah'], 'string', 'max' => 10],
+            [['idsiswa', 'jenis_kelamin', 'tlp_rumah'], 'string', 'max' => 10],
             [['nama_lengkap', 'tempat_lahir', 'agama', 'kelurahan', 'kecamatan', 'kota', 'provinsi', 'transportasi', 'email', 'user_create', 'user_update'], 'string', 'max' => 50],
             [['nisn', 'no_seri_ijazah_smp', 'no_seri_skhun_smp', 'no_ujian_nasional', 'nik', 'no_kps'], 'string', 'max' => 20],
             [['hp'], 'string', 'max' => 14],
@@ -78,8 +76,6 @@ class Siswa extends \yii\db\ActiveRecord
     {
         return [
             'idsiswa' => 'Idsiswa',
-            'idkelas' => 'Idkelas',
-            'idjurusan' => 'Idjurusan',
             'nama_lengkap' => 'Nama Lengkap',
             'jenis_kelamin' => 'Jenis Kelamin',
             'nisn' => 'Nisn',

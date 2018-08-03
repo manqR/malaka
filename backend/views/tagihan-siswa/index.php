@@ -852,7 +852,7 @@ $this->registerJsFile($root."/scripts/table/x-editable.js",
 					</div>
 				</div>
 			</div>
-			<!-- FIX -->
+			<!-- /OPTIONAL -->
 			
 			<!-- /MODAL -->
 			

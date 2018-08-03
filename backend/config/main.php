@@ -21,15 +21,15 @@ return [
 			'rules'=>[
 				
 				//---------------------------------- STUDENT -----------------------------//
-				'siswa'=>'siswa/index',				
-				'tagihan_siswa'=>'tagihan_siswa/index',
+				'siswa'=>'siswa/index',								
+				'class'=>'kelas-group/index',								
+				'billing'=>'tagihan-siswa/index',
 				//---------------------------------- </STUDENT -----------------------------//
 				
 				//---------------------------------- SETUP -----------------------------//
 				'tagihan'=>'tagihan/index',				
 				'kelas'=>'kelas/index',
-				'jurusan'=>'jurusan/index',
-				'billing'=>'tagihan-siswa/index',
+				'jurusan'=>'jurusan/index',				
 				'registration'=>'siswa/index',
 				
 				//---------------------------------- CREATE -----------------------------//
@@ -38,21 +38,29 @@ return [
 				'tagihan-create'=>'tagihan/create',
 				'registration-add'=>'siswa/create',
 				'tagihan-siswa-create'=>'tagihan_siswa/create',
+				'class-create'=>'kelas-group/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<id>' => 'kelas/view',
 				'jurusan-view-<id>' => 'jurusan/view',
 				'tagihan-view-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/view',
+				'class-view-<id>' => 'kelas-group/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
 				'kelas-update-<id>' => 'kelas/update',
 				'jurusan-update-<id>' => 'jurusan/update',
 				'tagihan-update-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/update',
+				'class-update-<id>' => 'kelas-group/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
 				'kelas-delete-<id>' => 'kelas/delete',
 				'jurusan-delete-<id>' => 'jurusan/delete',
 				'tagihan-delete-<id>' => 'tagihan/delete',
+				'class-delete-<id>' => 'kelas-group/delete',
+				
+				//---------------------------------- API -----------------------------//
+				// 'class-apigroup-<id>' => 'kelas-group/apigroup',
+				// 'class-data-<id>' => 'kelas-group/arraydata',
 				
 				//---------------------------------- Login -----------------------------//
 				'login'=>'site/login',

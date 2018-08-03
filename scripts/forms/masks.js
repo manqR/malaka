@@ -13,6 +13,7 @@
   $('#ijazah').mask('99- 99 999999');
   $('#skhun').mask('99-999 999999');
   $('#uan').mask('99-99-99-999-999-9');
+  $('#thnajaran').mask('9999/9999');
   $('#product').mask('a*-999-a999', {
     placeholder: ' '
   });
