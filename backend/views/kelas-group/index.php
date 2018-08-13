@@ -1,5 +1,6 @@
 <?php
 
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\models\Kelas;
@@ -25,13 +26,28 @@ $this->registerJsFile($root."/vendors/datatables/media/js/jquery.dataTables.js",
 $this->registerJsFile($root."/vendors/datatables/media/js/dataTables.bootstrap4.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
+$this->registerJsFile($root."/vendors/jquery.maskedinput/dist/jquery.maskedinput.min.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
+$this->registerJsFile($root."/vendors/sweetalert/dist/sweetalert.min.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
 
 $this->registerJsFile($root."/scripts/forms/plugins.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
+$this->registerJsFile($root."/scripts/forms/masks.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
+$this->registerJsFile($root."/scripts/ui/alert.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
+
+;
 
 /* @CSS */
 $this->registerCssFile($root."/vendors/select2/select2.css");
+$this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
 $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap4.css");
 
 $this->registerJs("function myFunction() {
@@ -51,14 +67,27 @@ $this->registerJs("function myFunction() {
 					}",View::POS_HEAD
 				  );
 
-$this->registerJs("  $('.datatable').DataTable({
-						 'ajax': 'http://localhost:8080/malaka/kelas-group/arraydata?id=2'
-					 });
+$this->registerJs("   
+					 
+						$(document).on(\"click\", \".open-AddBookDialog\", function () {								
+								var group = $(this).data('id');
+								console.log(group);
+								
+								var table = $('.datatable').DataTable({
+										'destroy': true,										
+										'ajax': 'http://localhost:8080/malaka/kelas-group/arraydata?id='+group
+									});									
+								
+								
+						})
+						
+					
 				 ");				  
 ?>
 <div class="kelas-group-index">
     <p>
         <?= Html::a(' Add Group Class', ['create'], ['class' => 'btn btn-success fa fa-plus']) ?>
+        <?= Html::a(' Add Tahun Ajaran', ['create'], ['class' => 'btn btn-success fa fa-plus','data-toggle'=>'modal','data-target'=>'.ajaran']) ?>
     </p>
 	
 	<div class="center-table">
@@ -69,7 +98,7 @@ $this->registerJs("  $('.datatable').DataTable({
 					<option value="default" selected="selected">-- Tahun Ajaran --</option>
 					<?php
 						foreach($findTahun as $finds):							
-							echo "<option value=\"$finds->tahun_ajaran\">$finds->tahun_ajaran</option>";
+							 echo "<option value=\"$finds->idajaran\">$finds->tahun_ajaran</option>";
 						endforeach;
 					?>
 				</select>
@@ -90,7 +119,7 @@ $this->registerJs("  $('.datatable').DataTable({
 			foreach($model as $models):
 				 $count = DetailGroup::find()
 						->JoinWith('kelasGroup')
-						->where(['tahun_ajaran'=>$models->tahun_ajaran])
+						->where(['idajaran'=>$models->idajaran])
 						->count();
 						
 				 echo '<div class="col-md-6 col-lg-3">
@@ -107,7 +136,7 @@ $this->registerJs("  $('.datatable').DataTable({
 									<li class="plan-feature-inactive text-muted">Full search access</li>
 									<li class="plan-feature-inactive text-muted">Automatic backups</li>
 								</ul>
-								<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".siswa">Lihat Data Siswa</button>
+								<button class="btn btn-primary btn-lg open-AddBookDialog" data-toggle="modal" data-id='.$models->idgroup.' data-target=".siswa">Lihat Data Siswa</button>
 							</div>
 						</div>';
 			endforeach;					
@@ -130,19 +159,22 @@ $this->registerJs("  $('.datatable').DataTable({
 							<thead>
 								<tr>
 									<th>
-										Name
+										NIS
 									</th>
 									<th>
-										Position
+										Nama
 									</th>
 									<th>
-										Office
+										Janis Kelamin
 									</th>
 									<th>
-										Age
+										Kelas
 									</th>
 									<th>
-										Start Date
+										Jurusan
+									</th>
+									<th>
+										Tahun Ajaran
 									</th>
 								</tr>
 							</thead>
@@ -158,4 +190,63 @@ $this->registerJs("  $('.datatable').DataTable({
 	</div>
 	<!-- ------------ /MODAL ------------------>
 	
+	
+	<!-- ------------ MODAL TAHUN AJARAN ------------------>
+	<div class="modal fade ajaran" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 800px" >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Data Siswa</h4>
+				</div>
+				<?php $form = ActiveForm::begin(); ?>
+				<div class="modal-body">
+					
+					<?= $form->field($newModel, 'idajaran')->textInput(['maxlength' => true,'id'=>'thnajaran'])->label('Tahun Ajaran') ?>
+					<?= $form->field($newModel, 'status')-> dropDownList(['1'=>'Aktif','0'=>'Tidak Aktif'],
+						['prompt'=>'Choose Class...','style' => 'font-size: 12px','id'=>'status'])->label('Status');  ?>
+									
+					
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary submitAjaran" data-dismiss="modal">Submit</button>						
+				</div>
+				<?php ActiveForm::end(); ?>
+			</div>
+		</div>
+	</div>
+	<!-- ------------ /MODAL TAHUN AJARAN ------------------>
+	
 </div>
+
+<?php
+	$this->registerJs('$(".submitAjaran").click(function(){
+							swal({
+							  title: "Are you sure?",
+							  text: "You will not be able to recover this imaginary file!",
+							  type: "warning",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "Yes, save it!",
+							  closeOnConfirm: false
+							}, function() {
+								var ajaran = $("#thnajaran").val();
+								var status = $("#status").val();
+									console.log(ajaran);
+									$.post("kelas-group/postdata",{
+										ajaran: ajaran,	
+										status: status
+									},
+									function(data, status){		
+										swal("Saving!", "Data Tahun Ajaran Berhasil disimpan", "success");
+									});
+							});
+	
+											
+							});'
+						);
+
+?>

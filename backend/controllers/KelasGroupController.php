@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Response;
 use backend\models\KelasGroup;
 use backend\models\DetailGroup;
+use backend\models\TahunAjaran;
 use backend\models\KelasGroupSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -56,9 +57,8 @@ class KelasGroupController extends Controller
      */
     public function actionIndex()
     {
-		$findTahun = KelasGroup::find()
-				->select(['tahun_ajaran'])
-				->distinct()
+		$findTahun = TahunAjaran::find()				
+				->where(['status'=>1])
 				->All();
 		
 		$Ajaran = KelasGroup::find()				
@@ -67,9 +67,10 @@ class KelasGroupController extends Controller
 				
 		$model = KelasGroup::find()
 				->where(['status'=>'A'])
-				->AndWhere(['tahun_ajaran'=>$Ajaran])				
+				->AndWhere(['idajaran'=>$Ajaran])				
 				->All();
 		
+		$newModel = new TahunAjaran();
         $searchModel = new KelasGroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		
@@ -77,7 +78,8 @@ class KelasGroupController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
 			'findTahun' => $findTahun,
-			'model'=>$model
+			'model'=>$model,
+			'newModel' => $newModel
         ]);
     }
 	
@@ -85,25 +87,49 @@ class KelasGroupController extends Controller
 		
 
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT * FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup WHERE a.idgroup = '".$id."'");
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.nama_lengkap, a.jenis_kelamin, c.idkelas, c.idjurusan, d.tahun_ajaran FROM siswa a JOIN detail_group b ON a.idsiswa = b.idsiswa JOIN kelas_group c ON b.idgroup = c.idgroup JOIN tahun_ajaran d ON c.idajaran = d.idajaran WHERE b.idgroup = '".$id."'");
 		$models = $sql->queryAll();
-				
-
+		$output = array();
+			
+		foreach($models as $model):
+			$output[] = $model['idsiswa'];
+			$output[] = $model['nama_lengkap'];
+			$output[] = $model['jenis_kelamin'];
+			$output[] = $model['idkelas'];
+			$output[] = $model['idjurusan'];
+			$output[] = $model['tahun_ajaran'];		
+		endforeach;
+		
+		$data = json_encode($output);
+		$data = [
+			'data'=>[$output]
+		];
+		
 		Yii::$app->response->format = Response::FORMAT_JSON;
-		return $models;
+		return $data;
+	}
+	
+	public function actionPostdata(){
+		
+		$model = new TahunAjaran();
+		
+		$model->tahun_ajaran = $_POST['ajaran'];
+		$model->status = $_POST['status'];
+		$model->save();
 	}
 	
 	public function actionApigroup($id){
 		
 		 $idSub1 = substr($id,0,4);
 		 $idSub2 = substr($id,4,5);
+		 
 		 $model = KelasGroup::find()
-				->where(['tahun_ajaran'=>$idSub1.'/'.$idSub2])
+				->where(['idajaran'=>$id])
 				->all();
 		
 		$count = DetailGroup::find()
 				->JoinWith('kelasGroup')
-				->where(['tahun_ajaran'=>$idSub1.'/'.$idSub2])
+				->where(['idajaran'=>$id])
 				->count();
 			
 		foreach($model as $models):
@@ -121,7 +147,7 @@ class KelasGroupController extends Controller
 								<li class="plan-feature-inactive text-muted">Full search access</li>
 								<li class="plan-feature-inactive text-muted">Automatic backups</li>
 							</ul>
-							<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".siswa">Choose plan</button>
+							<button class="btn btn-primary btn-lg open-AddBookDialog" data-toggle="modal" data-id='.$models->idgroup.' data-target=".siswa">Lihat Data Siswa</button>
 						</div>
 					</div>';
 		endforeach;

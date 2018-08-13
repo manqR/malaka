@@ -30,10 +30,10 @@ class KelasGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idkelas', 'idjurusan', 'wali_kelas', 'tahun_ajaran', 'status'], 'required'],
+            [['idkelas', 'idjurusan', 'wali_kelas', 'idajaran', 'status'], 'required'],
             [['status'], 'string'],
             [['idkelas', 'idjurusan'], 'string', 'max' => 10],
-            [['wali_kelas', 'tahun_ajaran'], 'string', 'max' => 50],
+            [['wali_kelas', 'idajaran'], 'string', 'max' => 50],
         ];
     }
 
@@ -47,7 +47,7 @@ class KelasGroup extends \yii\db\ActiveRecord
             'idkelas' => 'Idkelas',
             'idjurusan' => 'Idjurusan',
             'wali_kelas' => 'Wali Kelas',
-            'tahun_ajaran' => 'Tahun Ajaran',
+            'idajaran' => 'Idajaran',
             'status' => 'Status',
         ];
     }
