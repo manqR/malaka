@@ -69,7 +69,9 @@ class KelasGroupController extends Controller
 				->where(['status'=>'A'])
 				->AndWhere(['idajaran'=>$Ajaran])				
 				->All();
+				
 		
+				
 		$newModel = new TahunAjaran();
         $searchModel = new KelasGroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -91,22 +93,74 @@ class KelasGroupController extends Controller
 		$models = $sql->queryAll();
 		$output = array();
 			
-		foreach($models as $model):
-			$output[] = $model['idsiswa'];
-			$output[] = $model['nama_lengkap'];
-			$output[] = $model['jenis_kelamin'];
-			$output[] = $model['idkelas'];
-			$output[] = $model['idjurusan'];
-			$output[] = $model['tahun_ajaran'];		
+
+		foreach($models as $key => $model):
+			$output[$key] = array($model['idsiswa']
+								 ,$model['nama_lengkap']
+								 ,$model['jenis_kelamin']
+								 ,$model['idkelas']
+								 ,$model['idjurusan']
+								 ,$model['tahun_ajaran']);
 		endforeach;
 		
 		$data = json_encode($output);
 		$data = [
-			'data'=>[$output]
+			'data'=>$output
 		];
 		
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return $data;
+	}
+	public function actionListsiswa($id){
+				
+		$id = explode(";",$id);				
+		
+		$connection = \Yii::$app->db;
+		$sql = $connection->createcommand("SELECT idkelas FROM  kelas_group WHERE idgroup = ".$id[0]." AND idajaran = ".$id[1]." LIMIT 1");
+		$kelas = $sql->queryall();
+			
+		if($kelas){
+			
+			$connection = \yii::$app->db;
+			$sql = $connection->createcommand("SELECT idsiswa, nama_lengkap, jenis_kelamin, tempat_lahir, tanggal_lahir 
+											   FROM siswa 
+											   WHERE idsiswa NOT IN 
+													(SELECT a.idsiswa 
+													 FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+													 WHERE b.idkelas = '".$kelas[0]['idkelas']."')");
+			
+			$models = $sql->queryall();
+			
+			$output = array();
+				
+			foreach($models as $key => $model):
+				$output[$key] = array($model['idsiswa']
+									 ,$model['nama_lengkap']
+									 ,$model['jenis_kelamin']
+									 ,$model['tempat_lahir']
+									 ,$model['tanggal_lahir']
+									 ,'<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$model['idsiswa'].'>add_box</i>');
+			endforeach;
+			
+			
+			    $data = json_encode($output);
+				$data = [
+					'data'=>$output
+				];
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return $data;
+			
+			
+			
+			
+		}else{
+			$data = [
+				'data'=>[]
+			];
+			
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
 	}
 	
 	public function actionPostdata(){
@@ -118,6 +172,34 @@ class KelasGroupController extends Controller
 		$model->save();
 	}
 	
+	public function actionPostkelas(){
+		
+		if(Yii::$app->user->identity->auth_key){
+			$model = new DetailGroup();
+			
+			$data = $_POST['data'];
+			$data = explode(';',$data);
+			
+			$model->idgroup = $data[0];
+			$model->idsiswa = $data[2];
+			$model->tgl_add = date('Y-m-d');
+			$model->save();
+			$data = ['err'=>'sukses'];
+			
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['err'=>'failed']
+			];
+			
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
+		
+		
+	}
+	
 	public function actionApigroup($id){
 		
 		 $idSub1 = substr($id,0,4);
@@ -127,25 +209,33 @@ class KelasGroupController extends Controller
 				->where(['idajaran'=>$id])
 				->all();
 		
-		$count = DetailGroup::find()
-				->JoinWith('kelasGroup')
-				->where(['idajaran'=>$id])
-				->count();
+		
 			
 		foreach($model as $models):
+			 
+			 $connection = \Yii::$app->db;
+			 $sql = $connection->createCommand("SELECT COUNT(*) JUMLAH FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup WHERE b.idajaran = ".$id." AND a.idgroup = ".$models->idgroup."");
+			 $count = $sql->queryAll();
+			 				
+			 $connection = \Yii::$app->db;
+			 $sql = $connection->createCommand("SELECT c.nama_lengkap  FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN siswa c ON a.idsiswa = c.idsiswa WHERE b.idajaran = ".$models->idajaran." AND a.idgroup = ".$models->idgroup." ORDER BY a.tgl_add DESC LIMIT 5");
+			 $siswa = $sql->queryAll();
+			 $ls_siswa='';
+			 
+			 foreach($siswa as $siswas):
+			 	$ls_siswa .= '<li>'.$siswas['nama_lengkap'].'</li>';
+			 endforeach;
+				
 			 echo '<div class="col-md-6 col-lg-3">
 						<div class="pricing-plan">
 							<h5>'.$models->idkelas.' - '.$models->idjurusan.'</h5>
+							<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->idajaran.' data-target=".add-siswa">add_circle_outline</i>
 							<p class="plan-title text-primary">'.$models->wali_kelas.'</p>
 							<div class="plan-price text-primary">
-								<span>'.$count.'</span>
+								<span>'.$count[0]['JUMLAH'].'</span>
 							</div>
 							<ul class="plan-features">
-								<li>Secure storage</li>
-								<li>Limited to 1 user</li>
-								<li>Data analytics</li>
-								<li class="plan-feature-inactive text-muted">Full search access</li>
-								<li class="plan-feature-inactive text-muted">Automatic backups</li>
+								'.$ls_siswa.'								
 							</ul>
 							<button class="btn btn-primary btn-lg open-AddBookDialog" data-toggle="modal" data-id='.$models->idgroup.' data-target=".siswa">Lihat Data Siswa</button>
 						</div>

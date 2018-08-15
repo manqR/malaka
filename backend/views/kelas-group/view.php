@@ -36,8 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label'=>'Kode Jurusan',
 				'attribute' => 'idjurusan'
 			],      
-			'wali_kelas',
-            'tahun_ajaran',
+			'wali_kelas',            
 			[
 				'attribute'=>'status', 
 				'label'=>'Status',

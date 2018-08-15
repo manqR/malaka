@@ -67,22 +67,60 @@ $this->registerJs("function myFunction() {
 					}",View::POS_HEAD
 				  );
 
-$this->registerJs("   
-					 
-						$(document).on(\"click\", \".open-AddBookDialog\", function () {								
-								var group = $(this).data('id');
-								console.log(group);
-								
-								var table = $('.datatable').DataTable({
-										'destroy': true,										
-										'ajax': 'http://localhost:8080/malaka/kelas-group/arraydata?id='+group
-									});									
-								
-								
-						})
+$this->registerJs("   					 
+					$(document).on(\"click\", \".open-AddBookDialog\", function () {								
+						var group = $(this).data('id');
+						console.log(group);
 						
-					
-				 ");				  
+						var table = $('.datatable').DataTable({
+								'destroy': true,										
+								'ajax': 'http://localhost:8080/malaka/kelas-group/arraydata?id='+group
+						});																								
+					})
+					$(document).on(\"click\", \".addSiswa\", function () {								
+						var group = $(this).data('id');
+						console.log(group);
+						
+						var table = $('.datatable').DataTable({
+								'destroy': true,										
+								'ajax': 'http://localhost:8080/malaka/kelas-group/listsiswa?id='+group
+						});																								
+					})
+					$(document).on(\"click\", \".tambah\", function () {		
+						  var datas = $(this).data('id');
+						  swal({
+							  title: 'Are you sure?',
+							  text: 'Data siswa akan ditambahkan di kelasi ini',
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#DD6B55',
+							  confirmButtonText: 'Yes, save it!',
+							  closeOnConfirm: false
+							}, function() {							
+								console.log(datas);
+								$.post('kelas-group/postkelas',{
+									data: datas
+								},
+								function(data, status){	
+									if(data.err == 'sukses'){										
+										var rld = datas.split(';');										
+										$('.datatable').DataTable({
+											'destroy': true,										
+											'ajax': 'http://localhost:8080/malaka/kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+										
+										});		
+										swal('Saving!', 'Data Siswa Berhasil ditambahkan', 'success');
+									}else{										
+										swal('Saving!', 'Data Tidak Berhasil ditambahkan', 'error');
+									}
+																			
+								});
+							});
+																					
+						})
+				 ");	
+ 
+ $this->registerCss(".addSiswa{cursor: pointer;} .tambah{cursor: pointer;}");
 ?>
 <div class="kelas-group-index">
     <p>
@@ -117,24 +155,30 @@ $this->registerJs("
 		<?php
 			
 			foreach($model as $models):
-				 $count = DetailGroup::find()
-						->JoinWith('kelasGroup')
-						->where(['idajaran'=>$models->idajaran])
-						->count();
-						
+				
+				$connection = \Yii::$app->db;
+				$sql = $connection->createCommand("SELECT COUNT(*) JUMLAH FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup WHERE b.idajaran = ".$models->idajaran." AND a.idgroup = ".$models->idgroup."");
+				$count = $sql->queryAll();
+			 	
+				$connection = \Yii::$app->db;
+				$sql = $connection->createCommand("SELECT c.nama_lengkap  FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN siswa c ON a.idsiswa = c.idsiswa WHERE b.idajaran = ".$models->idajaran." AND a.idgroup = ".$models->idgroup." ORDER BY a.tgl_add DESC LIMIT 5");
+				$siswa = $sql->queryAll();
+				$ls_siswa='';
+				
+				foreach($siswa as $siswas):
+					$ls_siswa .= '<li>'.$siswas['nama_lengkap'].'</li>';
+				endforeach;
+				
 				 echo '<div class="col-md-6 col-lg-3">
 							<div class="pricing-plan">
 								<h5>'.$models->idkelas.' - '.$models->idjurusan.'</h5>
+								<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->idajaran.' data-target=".add-siswa">add_circle_outline</i>
 								<p class="plan-title text-primary">'.$models->wali_kelas.'</p>
 								<div class="plan-price text-primary">
-									<span>'.$count.'</span>
+									<span>'.$count[0]['JUMLAH'].'</span>
 								</div>
-								<ul class="plan-features">
-									<li>Secure storage</li>
-									<li>Limited to 1 user</li>
-									<li>Data analytics</li>
-									<li class="plan-feature-inactive text-muted">Full search access</li>
-									<li class="plan-feature-inactive text-muted">Automatic backups</li>
+								<ul class="plan-features">									
+									'.$ls_siswa.'
 								</ul>
 								<button class="btn btn-primary btn-lg open-AddBookDialog" data-toggle="modal" data-id='.$models->idgroup.' data-target=".siswa">Lihat Data Siswa</button>
 							</div>
@@ -189,6 +233,55 @@ $this->registerJs("
 		</div>
 	</div>
 	<!-- ------------ /MODAL ------------------>
+	
+	<!-- ------------ MODAL ADD SISWA------------------>
+	<div class="modal fade add-siswa" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 800px" >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Tambah Siswa</h4>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+						 <table class="table table-bordered datatable" style="width:100%">
+							<thead>
+								<tr>
+									<th>
+										NIS
+									</th>
+									<th>
+										Nama
+									</th>
+									<th>
+										Janis Kelamin
+									</th>
+									<th>
+										Tempat Lahir
+									</th>
+									<th>
+										Tanggal Lahir
+									</th>
+									<th>
+										Aksi
+									</th>
+
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>						
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ------------ /MODAL ADD SISWA ------------------>
+	
 	
 	
 	<!-- ------------ MODAL TAHUN AJARAN ------------------>

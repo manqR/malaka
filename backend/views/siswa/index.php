@@ -28,15 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
 				'header' => 'NIS',
 				'attribute' => 'idsiswa'
 			],        
-			[
-				'header' => 'Kode Kelas',
-				'attribute' => 'idkelas'
-			],        
-			[
-				'header' => 'Kode Jurusan',
-				'attribute' => 'idjurusan'
-			],                    
+			
+			             
             'nama_lengkap',
+			[
+				'header' => 'Tempat Lahir',
+				'attribute' => 'tempat_lahir'
+			],   
+			[
+				'header' => 'Tanggal Lahir',
+				'attribute' => 'tanggal_lahir'
+			],    
+			[
+				'header' => 'Agama',
+				'attribute' => 'agama'
+			],     
             //'nisn',
             //'no_seri_ijazah_smp',
             //'no_seri_skhun_smp',
