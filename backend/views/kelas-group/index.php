@@ -69,12 +69,11 @@ $this->registerJs("function myFunction() {
 
 $this->registerJs("   					 
 					$(document).on(\"click\", \".open-AddBookDialog\", function () {								
-						var group = $(this).data('id');
-						console.log(group);
+						var group = $(this).data('id');						
 						
 						var table = $('.datatable').DataTable({
 								'destroy': true,										
-								'ajax': 'http://localhost:8080/malaka/kelas-group/arraydata?id='+group
+								'ajax': './kelas-group/arraydata?id='+group
 						});																								
 					})
 					$(document).on(\"click\", \".addSiswa\", function () {								
@@ -83,7 +82,7 @@ $this->registerJs("
 						
 						var table = $('.datatable').DataTable({
 								'destroy': true,										
-								'ajax': 'http://localhost:8080/malaka/kelas-group/listsiswa?id='+group
+								'ajax': './kelas-group/listsiswa?id='+group
 						});																								
 					})
 					$(document).on(\"click\", \".tambah\", function () {		
@@ -106,7 +105,7 @@ $this->registerJs("
 										var rld = datas.split(';');										
 										$('.datatable').DataTable({
 											'destroy': true,										
-											'ajax': 'http://localhost:8080/malaka/kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+											'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
 										
 										});		
 										swal('Saving!', 'Data Siswa Berhasil ditambahkan', 'success');

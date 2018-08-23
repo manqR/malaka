@@ -50,7 +50,6 @@ class TagihanSiswa extends \yii\db\ActiveRecord
     {
         return [
             'idtagihan_siswa' => 'Idtagihan Siswa',
-            'idtagihan' => 'Idtagihan',
             'idsiswa' => 'Idsiswa',
             'tahun_ajaran' => 'Tahun Ajaran',
             'nama_tagihan' => 'Nama Tagihan',

@@ -65,9 +65,8 @@ class TagihanSiswaSearch extends TagihanSiswa
             'date_create' => $this->date_create,
         ]);
 
-        $query->andFilterWhere(['like', 'idtagihan', $this->idtagihan])
-            ->andFilterWhere(['like', 'idsiswa', $this->idsiswa])
-            ->andFilterWhere(['like', 'tahun_ajaran', $this->tahun_ajaran])
+        $query->andFilterWhere(['like', 'idsiswa', $this->idsiswa])
+            ->andFilterWhere(['like', 'idgroup', $this->idgroup])
             ->andFilterWhere(['like', 'nama_tagihan', $this->nama_tagihan])
             ->andFilterWhere(['like', 'keterangan', $this->keterangan])
             ->andFilterWhere(['like', 'user_create', $this->user_create]);
