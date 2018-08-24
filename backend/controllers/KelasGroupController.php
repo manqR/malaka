@@ -174,14 +174,20 @@ class KelasGroupController extends Controller
 	}
 	public function actionDeletekelas(){
 		
+	
 		if(Yii::$app->user->identity->auth_key){
-			$data = $_POST['datax'];
+			$data = $_POST['data'];
 			$data = explode(';',$data);
-
-			$this->findModel($data[3])->delete();				
-			// $data = ['err'=>'sukses'];
+				
+			$model = DetailGroup::find()
+					->where(['id'=>$data[3]])
+					->AndWhere(['idsiswa'=>$data[2]])
+					->One();
+			$model->delete();
+	
+			$data = ['err'=>'sukses'];
 			
-			// Yii::$app->response->format = Response::FORMAT_JSON;
+			Yii::$app->response->format = Response::FORMAT_JSON;
 			return $data;
 		}else{
 			$data = [

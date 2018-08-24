@@ -130,14 +130,14 @@ $this->registerJs("
 							}, function() {							
 								console.log(datas);
 								$.post('kelas-group/deletekelas',{
-									datax: datas
+									data: datas
 								},
 								function(data, status){	
 									if(data.err == 'sukses'){										
 										var rld = datas.split(';');										
 										$('.datatable').DataTable({
 											'destroy': true,										
-											'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+											'ajax': './kelas-group/arraydata?id='+rld[0]
 										
 										});		
 										swal('Saving!', 'Data Siswa Berhasil dihapus', 'success');
