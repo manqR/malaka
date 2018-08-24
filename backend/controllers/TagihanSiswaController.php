@@ -105,72 +105,85 @@ class TagihanSiswaController extends Controller
 		$class_SPP = 'success';
 		$class_FIX = 'success';
 		$class_OPT = 'success';
-		if($models[0]['SPP'] - $models[0]['TAGIHAN_SPP'] != 0){
-			$status_SPP = 'incomplete';
-			$class_SPP = 'danger';
-		}
-		if($models[0]['FixCharge'] - $models[0]['TAGIHAN_FIX_CHARGE'] != 0){
-			$status_FIX = 'incomplete';
-			$class_FIX = 'danger';
-		}
-		if($models[0]['BillingOption'] - $models[0]['TAGIHAN_BIL_OPTION'] != 0){
-			$status_OPT = 'incomplete';
-			$class_OPT = 'danger';
-		}
 		
-		echo'<div class="row">
-				<div class="col-sm-6 col-md-4 col-lg-4">
-					<div class="card card-block">
-						<h5 class="m-b-0 v-align-middle text-overflow">					
-							<span class="small pull-xs-right tag bg-'.$class_SPP.' p-y-0 p-x-xs"  id="show1" data-toggle="modal" data-target=".bd-example-modal"  style="line-height: 24px;">
-								<span >'.$status_SPP.'</span>
-							</span>
-							<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['SPP']).'</span>/
-							<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_SPP']).'</span>							
-						</h5>
-						<div class="small text-overflow text-muted">
-							SPP
-						</div>
-						<div class="small text-overflow">
-							Updated:&nbsp;<span>05:35 AM</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-4">
-					<div class="card card-block">
-						<h5 class="m-b-0 v-align-middle text-overflow">
-							<span class="small pull-xs-right tag bg-'.$class_FIX.' p-y-0 p-x-xs" id="show2" data-toggle="modal" data-target=".fix" style="line-height: 24px;">
-								<span >'.$status_FIX.'</span>
-							</span>
-							<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['FixCharge']).'</span>/
-							<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_FIX_CHARGE']).'</span>							
-						</h5>
-						<div class="small text-overflow text-muted">
-							FIX CHARGE
-						</div>
-						<div class="small text-overflow">
-							Updated:&nbsp;<span>12:42 PM</span>
+		if(isset($models[0]['SPP'])){
+			if($models[0]['SPP'] - $models[0]['TAGIHAN_SPP'] != 0){
+				$status_SPP = 'incomplete';
+				$class_SPP = 'danger';
+			}
+			if($models[0]['FixCharge'] - $models[0]['TAGIHAN_FIX_CHARGE'] != 0){
+				$status_FIX = 'incomplete';
+				$class_FIX = 'danger';
+			}
+			if($models[0]['BillingOption'] - $models[0]['TAGIHAN_BIL_OPTION'] != 0){
+				$status_OPT = 'incomplete';
+				$class_OPT = 'danger';
+			}
+			
+			echo'<div class="row">
+					<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card card-block">
+							<h5 class="m-b-0 v-align-middle text-overflow">					
+								<span class="small pull-xs-right tag bg-'.$class_SPP.' p-y-0 p-x-xs"  id="show1" data-toggle="modal" data-target=".bd-example-modal"  style="line-height: 24px;">
+									<span >'.$status_SPP.'</span>
+								</span>
+								<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['SPP']).'</span>/
+								<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_SPP']).'</span>							
+							</h5>
+							<div class="small text-overflow text-muted">
+								SPP
+							</div>
+							<div class="small text-overflow">
+								Updated:&nbsp;<span>05:35 AM</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-4">
-					<div class="card card-block">
-						<h5 class="m-b-0 v-align-middle text-overflow">
-							<span class="small pull-xs-right tag bg-'.$class_OPT.' p-y-0 p-x-xs" id="show3" data-toggle="modal" data-target=".optional" style="line-height: 24px;">
-							<span >'.$status_OPT.'</span>
-							</span>
-							<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['BillingOption']).'</span>/
-							<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_BIL_OPTION']).'</span>							
-						</h5>
-						<div class="small text-overflow text-muted">
-							Optional Billing
-						</div>
-						<div class="small text-overflow">
-							Updated:&nbsp;<span>09:26 AM</span>
+					<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card card-block">
+							<h5 class="m-b-0 v-align-middle text-overflow">
+								<span class="small pull-xs-right tag bg-'.$class_FIX.' p-y-0 p-x-xs" id="show2" data-toggle="modal" data-target=".fix" style="line-height: 24px;">
+									<span >'.$status_FIX.'</span>
+								</span>
+								<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['FixCharge']).'</span>/
+								<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_FIX_CHARGE']).'</span>							
+							</h5>
+							<div class="small text-overflow text-muted">
+								FIX CHARGE
+							</div>
+							<div class="small text-overflow">
+								Updated:&nbsp;<span>12:42 PM</span>
+							</div>
 						</div>
 					</div>
-				</div>										
-			</div>';
+					<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card card-block">
+							<h5 class="m-b-0 v-align-middle text-overflow">
+								<span class="small pull-xs-right tag bg-'.$class_OPT.' p-y-0 p-x-xs" id="show3" data-toggle="modal" data-target=".optional" style="line-height: 24px;">
+								<span >'.$status_OPT.'</span>
+								</span>
+								<span style="font-size: 9px;font-weight: bold;">'.rupiah($models[0]['BillingOption']).'</span>/
+								<span style="font-size: 11px;font-weight: bold;">'.rupiah($models[0]['TAGIHAN_BIL_OPTION']).'</span>							
+							</h5>
+							<div class="small text-overflow text-muted">
+								Optional Billing
+							</div>
+							<div class="small text-overflow">
+								Updated:&nbsp;<span>09:26 AM</span>
+							</div>
+						</div>
+					</div>										
+				</div>';
+		}else{
+				
+			echo ' <div class="column-equal m-b-2">
+					
+					<div class="col v-align-middle p-l-2">
+						<h3>
+							<b>Data Belum Tersedia ..</b>                        
+						</h3>						
+					</div>
+				</div>';
+		}
 	}
 	
 	public function actionSpplist($id){
@@ -215,18 +228,19 @@ class TagihanSiswaController extends Controller
 		$models = $sql->queryAll();
 		
 		
+		if($models){
 		
 		echo ' <div class="column-equal m-b-2">
-                <div class="col" style="width:128px;">
-                    <img src="images/face1.jpg" class="avatar avatar-lg img-circle" alt="">
-                </div>
-                <div class="col v-align-middle p-l-2">
-                    <h1>
-                        <b>'.$models[0]['nama_lengkap'].'</b>                        
-                    </h1>
-                    <h3>'.$models[0]['wali_kelas'].'</h3>
-                </div>
-            </div>
+					<div class="col" style="width:128px;">
+						<img src="images/face1.jpg" class="avatar avatar-lg img-circle" alt="">
+					</div>
+					<div class="col v-align-middle p-l-2">
+						<h1>
+							<b>'.$models[0]['nama_lengkap'].'</b>                        
+						</h1>
+						<h3>'.$models[0]['wali_kelas'].'</h3>
+					</div>
+				</div>
             <div class="column-equal m-b-2">
                 <div class="col p-l-2 text-xs-right" style="width:128px;">
                     <span class="text-muted">Kelas</span>
@@ -272,6 +286,9 @@ class TagihanSiswaController extends Controller
                     </span>
                 </div>
             </div>';
+		}else{
+			echo ' ';
+		}
 			
 	}
     public function actionView($id)

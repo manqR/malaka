@@ -129,17 +129,22 @@
                 <ul class="sub-menu">
                     <li>
                         <a href="tagihan">
-                        <span>Billing</span>
+                        <span>Setup Tagihan</span>
                         </a>
                     </li>
                     <li>
                         <a href="kelas">
-                        <span>Student Class</span>
+                        <span>Tambah Kelas</span>
                         </a>
                     </li>
                     <li>
                         <a href="jurusan">
-                        <span>Student Majors</span>
+                        <span>Tambah Jurusan</span>
+                        </a>
+                    </li>      
+					<li>
+                        <a href="ajaran">
+                        <span>Tahun Ajaran</span>
                         </a>
                     </li>                   
                 </ul>

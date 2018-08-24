@@ -117,9 +117,41 @@ $this->registerJs("
 							});
 																					
 						})
+						$(document).on(\"click\", \".kurang\", function () {		
+						  var datas = $(this).data('id');
+						  swal({
+							  title: 'Are you sure?',
+							  text: 'Siswa akan dihapus dari kelasi ini',
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#DD6B55',
+							  confirmButtonText: 'Ya, Lanjutkan!',
+							  closeOnConfirm: false
+							}, function() {							
+								console.log(datas);
+								$.post('kelas-group/deletekelas',{
+									datax: datas
+								},
+								function(data, status){	
+									if(data.err == 'sukses'){										
+										var rld = datas.split(';');										
+										$('.datatable').DataTable({
+											'destroy': true,										
+											'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+										
+										});		
+										swal('Saving!', 'Data Siswa Berhasil dihapus', 'success');
+									}else{										
+										swal('Saving!', 'Data Tidak Berhasil dihapus', 'error');
+									}
+																			
+								});
+							});
+																					
+						})
 				 ");	
  
- $this->registerCss(".addSiswa{cursor: pointer;} .tambah{cursor: pointer;}");
+ $this->registerCss(".addSiswa{cursor: pointer;} .tambah{cursor: pointer;} .kurang{cursor: pointer;}");
 ?>
 <div class="kelas-group-index">
     <p>
@@ -218,6 +250,9 @@ $this->registerJs("
 									</th>
 									<th>
 										Tahun Ajaran
+									</th>
+									<th>
+										Aksi
 									</th>
 								</tr>
 							</thead>

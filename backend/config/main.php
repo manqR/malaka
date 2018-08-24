@@ -31,6 +31,7 @@ return [
 				'kelas'=>'kelas/index',
 				'jurusan'=>'jurusan/index',				
 				'registration'=>'siswa/index',
+				'ajaran'=>'tahun-ajaran/index',
 				
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',
@@ -39,24 +40,28 @@ return [
 				'registration-add'=>'siswa/create',
 				'tagihan-siswa-create'=>'tagihan_siswa/create',
 				'class-create'=>'kelas-group/create',
+				'ajaran-create'=>'tahun-ajaran/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<id>' => 'kelas/view',
 				'jurusan-view-<id>' => 'jurusan/view',
 				'tagihan-view-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/view',
 				'class-view-<id>' => 'kelas-group/view',
+				'ajaran-view-<id>'=>'tahun-ajaran/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
 				'kelas-update-<id>' => 'kelas/update',
 				'jurusan-update-<id>' => 'jurusan/update',
 				'tagihan-update-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/update',
 				'class-update-<id>' => 'kelas-group/update',
+				'ajaran-update-<id>' => 'tahun-ajaran/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
 				'kelas-delete-<id>' => 'kelas/delete',
 				'jurusan-delete-<id>' => 'jurusan/delete',
 				'tagihan-delete-<id>' => 'tagihan/delete',
 				'class-delete-<id>' => 'kelas-group/delete',
+				'ajaran-delete-<id>' => 'tahun-ajaran/delete',
 				
 				//---------------------------------- API -----------------------------//
 				// 'class-apigroup-<id>' => 'kelas-group/apigroup',

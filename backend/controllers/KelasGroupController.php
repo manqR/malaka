@@ -89,7 +89,7 @@ class KelasGroupController extends Controller
 		
 
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT a.idsiswa, a.nama_lengkap, a.jenis_kelamin, c.idkelas, c.idjurusan, d.tahun_ajaran FROM siswa a JOIN detail_group b ON a.idsiswa = b.idsiswa JOIN kelas_group c ON b.idgroup = c.idgroup JOIN tahun_ajaran d ON c.idajaran = d.idajaran WHERE b.idgroup = '".$id."'");
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.nama_lengkap, a.jenis_kelamin, c.idkelas, c.idjurusan, d.tahun_ajaran, c.idajaran, b.id FROM siswa a JOIN detail_group b ON a.idsiswa = b.idsiswa JOIN kelas_group c ON b.idgroup = c.idgroup JOIN tahun_ajaran d ON c.idajaran = d.idajaran WHERE b.idgroup = '".$id."'");
 		$models = $sql->queryAll();
 		$output = array();
 			
@@ -100,7 +100,8 @@ class KelasGroupController extends Controller
 								 ,$model['jenis_kelamin']
 								 ,$model['idkelas']
 								 ,$model['idjurusan']
-								 ,$model['tahun_ajaran']);
+								 ,$model['tahun_ajaran']
+								 ,'<i class="material-icons kurang" aria-hidden="true" data-id='.$id.';'.$model['idajaran'].';'.$model['idsiswa'].';'.$model['id'].'>delete</i>');
 		endforeach;
 		
 		$data = json_encode($output);
@@ -170,6 +171,26 @@ class KelasGroupController extends Controller
 		$model->tahun_ajaran = $_POST['ajaran'];
 		$model->status = $_POST['status'];
 		$model->save();
+	}
+	public function actionDeletekelas(){
+		
+		if(Yii::$app->user->identity->auth_key){
+			$data = $_POST['datax'];
+			$data = explode(';',$data);
+
+			$this->findModel($data[3])->delete();				
+			// $data = ['err'=>'sukses'];
+			
+			// Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['']
+			];
+			
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
 	}
 	
 	public function actionPostkelas(){

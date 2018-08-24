@@ -1,19 +1,14 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.1.6-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             9.1.0.4867
+-- Host:                         localhost
+-- Server version:               10.1.25-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win32
+-- HeidiSQL Version:             9.3.0.4984
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Dumping database structure for malaka
-CREATE DATABASE IF NOT EXISTS `malaka` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `malaka`;
-
 
 -- Dumping structure for table malaka.beasiswa
 CREATE TABLE IF NOT EXISTS `beasiswa` (
@@ -37,15 +32,12 @@ CREATE TABLE IF NOT EXISTS `detail_group` (
   `idgroup` int(11) NOT NULL,
   `tgl_add` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.detail_group: ~4 rows (approximately)
 /*!40000 ALTER TABLE `detail_group` DISABLE KEYS */;
 INSERT INTO `detail_group` (`id`, `idsiswa`, `idgroup`, `tgl_add`) VALUES
-	(9, '18010010', 12, '2018-08-18 00:00:00'),
-	(10, '18012382', 12, '2018-08-18 00:00:00'),
-	(12, '18010010', 14, '2018-08-18 00:00:00'),
-	(13, '18023020', 15, '2018-08-18 00:00:00');
+	(14, '176001', 12, '2018-08-24 00:00:00');
 /*!40000 ALTER TABLE `detail_group` ENABLE KEYS */;
 
 
@@ -57,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `jurusan` (
   PRIMARY KEY (`idjurusan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.jurusan: ~1 rows (approximately)
+-- Dumping data for table malaka.jurusan: ~2 rows (approximately)
 /*!40000 ALTER TABLE `jurusan` DISABLE KEYS */;
 INSERT INTO `jurusan` (`idjurusan`, `nama_jurusan`, `status`) VALUES
 	('AA', 'AA', 1),
@@ -73,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `kelas` (
   PRIMARY KEY (`idkelas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.kelas: ~1 rows (approximately)
+-- Dumping data for table malaka.kelas: ~2 rows (approximately)
 /*!40000 ALTER TABLE `kelas` DISABLE KEYS */;
 INSERT INTO `kelas` (`idkelas`, `nama_kelas`, `status`) VALUES
 	('XI', 'Kelas 11', 1),
@@ -97,7 +89,6 @@ CREATE TABLE IF NOT EXISTS `kelas_group` (
 INSERT INTO `kelas_group` (`idgroup`, `idajaran`, `idkelas`, `idjurusan`, `wali_kelas`, `status`) VALUES
 	(12, 5, 'XI', 'MM', 'Bagus', 'A'),
 	(13, 5, 'XI', 'MM', 'Faishal', 'A'),
-	(14, 5, 'XII', 'MM', 'Wahid', 'A'),
 	(15, 5, 'XI', 'AA', 'Bagusx', 'A');
 /*!40000 ALTER TABLE `kelas_group` ENABLE KEYS */;
 
@@ -166,15 +157,26 @@ CREATE TABLE IF NOT EXISTS `siswa` (
   `date_create` datetime DEFAULT NULL,
   `user_update` varchar(50) DEFAULT NULL,
   `date_update` datetime DEFAULT NULL,
-  PRIMARY KEY (`idsiswa`)
+  `urutan` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`urutan`,`idsiswa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.siswa: ~3 rows (approximately)
+-- Dumping data for table malaka.siswa: ~0 rows (approximately)
 /*!40000 ALTER TABLE `siswa` DISABLE KEYS */;
-INSERT INTO `siswa` (`idsiswa`, `nama_lengkap`, `jenis_kelamin`, `nisn`, `no_seri_ijazah_smp`, `no_seri_skhun_smp`, `no_ujian_nasional`, `nik`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `kelurahan`, `kecamatan`, `kota`, `provinsi`, `transportasi`, `tlp_rumah`, `hp`, `email`, `status_kps`, `no_kps`, `tinggi_badan`, `berat_badan`, `jarak_tempat_tinggal`, `waktu_tempuh`, `jml_saudara`, `user_create`, `date_create`, `user_update`, `date_update`) VALUES
-	('18010010', 'Wahid Prasetyo', 'Laki-Laki', NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '081210229293', 'wahid@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17 15:52:28', NULL, '2018-08-17 15:52:29'),
-	('18012382', 'Bagus Prasetyo', 'Laki-Laki', NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-18', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '081223878272', 'bagus@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	('18023020', 'Rico Nainggolan', 'Laki-Laki', NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0814242312', 'rico@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17 15:53:42', NULL, '2018-08-17 15:53:42');
+INSERT INTO `siswa` (`idsiswa`, `nama_lengkap`, `jenis_kelamin`, `nisn`, `no_seri_ijazah_smp`, `no_seri_skhun_smp`, `no_ujian_nasional`, `nik`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `kelurahan`, `kecamatan`, `kota`, `provinsi`, `transportasi`, `tlp_rumah`, `hp`, `email`, `status_kps`, `no_kps`, `tinggi_badan`, `berat_badan`, `jarak_tempat_tinggal`, `waktu_tempuh`, `jml_saudara`, `user_create`, `date_create`, `user_update`, `date_update`, `urutan`) VALUES
+	('176001', 'Abie Nugraha', 'L', '21770861', 'DN-01 DI/06 0081374', 'DN-01 D 0102083', '', '367109280320006', '', '0000-00-00', 'Islam', 'Kp. Sumur Rt.08/10 Klender Duren Sawit Jaktim', 'Klender', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '87885293983', 'email1@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 1),
+	('176002', 'Achmad Bagas Maulana', 'L', '25348468', 'DN-01 DI/06 0093467', 'DN-01 D 0119171', '', '3175012706020001', '', '0000-00-00', 'Islam', 'Jl. Pisangan Baru Timur VII No.9 Rt.11/10 Mataman Jaktim', 'Pisangan Baru', 'Matraman', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '89652581811', 'email2@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 2),
+	('176003', 'Adihtya Setia Budi', 'L', '23299571', 'DN-01 DI/06 0079734', 'DN-01 D 0100648', '', '', '', '0000-00-00', 'Islam', 'Kp. Sumur Rt.07/07 No. 152 Klender Jaktim', 'Klender', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Motor', '', '86777767673', 'email3@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 3),
+	('176004', 'Andriyanto', 'L', '9766816', 'DN-01 DI/06 0089595', 'DN-01 D 0110945', '', '3175061104001002', '', '0000-00-00', 'Islam', 'Jl. Pulo Lio Rt.09/11 Pulo Gadung Cakung Jaktim', 'Pulo Gadung', 'Cakung', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '83870858765', 'email4@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 4),
+	('176005', 'Angel', 'P', '33938706', 'DN-01 DI/13 0006445', 'DN-01 D 0110331', '', '3603140204020004', '', '0000-00-00', 'Kristen', 'Jl. Raya Komarudin Rt.05/06 No.88 B Ujung Krawang Cakung Jaktim', 'Ujung Krawang', 'Cakung', 'Jakarta Timur', 'DKI Jakarta', 'Motor', '', '81512864715', 'email5@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 5),
+	('176006', 'Auzan Abi Nubli', 'L', '26211299', 'DN-01 DI/06 0083781', 'DN-01 D 0103740', '', '3175011601020011', '', '0000-00-00', 'Islam', 'Moncokerto III/16 Rt.07/13 Utan Kayu Selatan Jaktim', 'Utan Kayu Selatan', 'Matraman', 'Jakarta Timur', 'DKI Jakarta', 'Motor', '', '8176819914', 'email6@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 6),
+	('176007', 'Bunga Anggraini Lestari', 'P', '14935196', 'DN-01 DI/06 0082800', 'DN-01 D 0102758', '', '3175076703010012', '', '0000-00-00', 'Islam', 'Jl. Madrasah Rt.01/10 Cilungup Duren Sawit Jaktim', 'Cilungup', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '87875114226', 'email7@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 7),
+	('176008', 'Charissa Kamila Azzahra', 'P', '13657490', 'DN-01 DI/06 0083418', 'DN-01 DI/06 0083418', '', '', '', '0000-00-00', 'Islam', 'Kp. Buaran Baru Jl. Cobra I E/17 Rt.07/15 Duren Sawit Jaktim ', 'Duren Sawit', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '82122672741', 'email8@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 8),
+	('176009', 'Dea Ardelia', 'P', '16257334', 'DN-01 DI/06 0082836', 'DN-01 D 0102723', '', '317507561101006', '', '0000-00-00', 'Islam', 'Rusun Prumnas Klender Blk.47/III/II Malaka Jaya Jaktim', 'Malaka jaya', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Motor', '', '87876262910', 'email9@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 9),
+	('176010', 'Dea Putri Amanda', 'P', '21617255', 'DN-01 DI/06 0083701', 'DN-01 D 0103657', '', '317507460602004', '', '0000-00-00', 'Islam', 'Bintara 17 Rt.10/03 Bintara Jaya Bekasi Barat', 'Bintara', 'Bekasi Barat', 'Bekasi', 'Jawa Barat', 'Umum', '', '87877488012', 'email10@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 10),
+	('176011', 'Difa Saif Abdillah', 'L', '11390863', 'DN-01 DI/06 0084822', 'DN-01 D 0105958', '', '3175080804010002', '', '0000-00-00', 'Islam', 'Pangkalan Jati V Rt.07/05 No.78 Cipinang Melayu Jaktim', 'Cipinang Melayu', 'Makasar', 'Jakarta Timur', 'DKI Jakarta', 'Motor', '', '87837981256', 'email11@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 11),
+	('176012', 'Dzaki Febriano', 'L', '20556468', 'DN-01 DI/13 0008913', 'DN-01 DI/13 0008913', '', '317507210202014', '', '0000-00-00', 'Islam', 'Jl. Nusa Indah V/4/26 Rt.04/04 Malaka Jaya Jaktim', 'Malaka jaya', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '', 'email12@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 12),
+	('176013', 'Fadel Fillah Akbar', 'L', '10087563', 'DN-01 DI/06 0091682', 'DN-01 D 0113137', '', '31750302120100011', '', '0000-00-00', 'Islam', 'Cipinang Lontar Rt.10/06 Cipinang Muara Jatinegara Jaktim', 'Cipinang Muara', 'Jatinegara', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '218573155', '', 'email13@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 13);
 /*!40000 ALTER TABLE `siswa` ENABLE KEYS */;
 
 
@@ -315,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `tahun_ajaran` (
 /*!40000 ALTER TABLE `tahun_ajaran` DISABLE KEYS */;
 INSERT INTO `tahun_ajaran` (`idajaran`, `tahun_ajaran`, `status`) VALUES
 	(5, '2018/2019', 1),
-	(6, '1020/3023', 0);
+	(6, '1020/3023', 1);
 /*!40000 ALTER TABLE `tahun_ajaran` ENABLE KEYS */;
 
 
