@@ -68,7 +68,7 @@ $this->registerJs("
 
 	function statusKPS(){
 
-			 var radioValue = $('input[name=\"Siswa[status_kps]\"]:checked').val();
+			 var radioValue = $('input[name=\"status_kps\"]:checked').val();
 			 if(radioValue == 0){				 
 				 $('#siswa-no_kps').attr('readonly','readonly');				 
 				 $('#siswa-no_kps').val('0');
@@ -190,6 +190,7 @@ $this->registerCssFile("styles/tsf-step-form-wizard.css");
                             <div class="row">
                                 <!-- BEGIN STEP CONTENT-->
                                 <div class="tsf-step-content">
+								
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="nis">
@@ -218,7 +219,7 @@ $this->registerCssFile("styles/tsf-step-form-wizard.css");
                                         </div>
 										
 										<div class="form-group">
-                                            <label for="nik">
+                                            <label for="gender">
                                             Jenis Kelamin
                                             </label>
 											<select class="form-control" name="gender" style="font-size:12px">
@@ -229,7 +230,7 @@ $this->registerCssFile("styles/tsf-step-form-wizard.css");
                                         </div>
 										
 										<div class="form-group">
-                                            <label for="nik">
+                                            <label for="agama">
                                             Agama
                                             </label>
 											<select class="form-control" name="agama" style="font-size:12px">
@@ -242,17 +243,89 @@ $this->registerCssFile("styles/tsf-step-form-wizard.css");
 											</select>                                         
                                         </div>
 										<div class="form-group">
-                                            <label for="nik">
+                                            <label for="tempat_lahir">
                                             Tempat Lahir
                                             </label>
 											<input class="form-control" id="tempat_lahir" name="tempat_lahir" type="text"/>                                            
                                         </div>
 										
 										<div class="form-group">
-                                            <label for="nik">
+                                            <label for="tinggi_badan">
                                             Tanggal Lahir
                                             </label>
 											<input class="form-control" id="tinggi_badan" name="tinggi_badan" data-provide="datepicker" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="tlp_rumah">
+                                            Tlp. Rumah
+                                            </label>
+											<input class="form-control" id="tlp_rumah" name="tlp_rumah" type="text"/>                                            
+                                        </div>
+										
+										
+										<div class="form-group">
+                                            <label for="hp">
+                                            HandPhone
+                                            </label>
+											<input class="form-control" id="hp" name="hp" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="kendaraan">
+                                            Kendaraan
+                                            </label>
+											<input class="form-control" id="kendaraan" name="kendaraan" type="text"/>                                            
+                                        </div>		
+											
+										<div class="form-group">
+                                            <label for="jarak">
+                                            Jarak Tempat Tinggal
+                                            </label>
+											<input class="form-control" id="jarak" name="jarak" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="nisn">
+                                            NISN
+                                            </label>
+											<input class="form-control m-b-1" maxlength="10" id="maxlength" name="nisn" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="skhun">
+                                            Nomor Ijazah SMP
+                                            </label>
+											<input class="form-control" id="skhun" name="skhun" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="jarak">
+                                            Nomor SKHUN
+                                            </label>
+											<input class="form-control" id="jarak" name="jarak" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="uan">
+                                            Nomor Ujian Nasional
+                                            </label>
+											<input class="form-control" id="uan" name="uan" type="text"/>                                            
+                                        </div>
+										
+										
+										<div class="form-group">
+                                            <label for="waktu_tempuh">
+                                            Waktu Tempuh
+                                            </label>
+											<input class="form-control" id="waktu_tempuh" name="waktu_tempuh" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="jml_saudara">
+                                            Jumlah Saudara
+                                            </label>
+											<input class="form-control" id="jml_saudara" name="jml_saudara" type="text"/>                                            
                                         </div>
 										
 										<div class="form-group">
@@ -268,6 +341,62 @@ $this->registerCssFile("styles/tsf-step-form-wizard.css");
                                             </label>
 											<input class="form-control" id="berat_badan" name="berat_badan" type="text"/>                                            
                                         </div>
+										
+										<div class="form-group">
+                                            <label for="alamat">
+                                            Alamat
+                                            </label>
+											<textarea class="form-control" rows="6" name="alamat"></textarea>
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="provinsi">
+                                            Provinsi
+                                            </label>
+											<input class="form-control" id="provinsi" name="provinsi" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="kelurahan">
+                                            Kelurahan
+                                            </label>
+											<input class="form-control" id="kelurahan" name="kelurahan" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="nik">
+                                            Kecamatan
+                                            </label>
+											<input class="form-control" id="kecamatan" name="kecamatan" type="text"/>                                            
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="nik">
+                                            Kota
+                                            </label>
+											<input class="form-control" id="kota" name="kota" type="text"/>                                            
+                                        </div>
+										
+										
+										<div class="form-group">
+                                            <label for="gender">
+                                            Status KPS
+                                            </label>
+											<select class="form-control" name="status_kps" style="font-size:12px" onclick="statusKPS();">
+												<option value="" disabled selected>- Pilih Status KPS -</option>
+												<option value="1">Yes</option>
+												<option value="0">No</option>
+											</select>
+                                        </div>
+										
+										<div class="form-group">
+                                            <label for="no_kps">
+                                            No KPS
+                                            </label>
+											<input class="form-control" id="siswa-no_kps" name="no_kps" type="text"/>                                            
+                                        </div>
+										
+										
 										
                                     </div>
                                    
