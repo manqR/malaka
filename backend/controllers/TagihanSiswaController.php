@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Siswa;
+use backend\models\SppSiswa;
+use yii\web\Response;
 
 /**
  * TagihanSiswaController implements the CRUD actions for TagihanSiswa model.
@@ -18,6 +20,12 @@ class TagihanSiswaController extends Controller
     /**
      * @inheritdoc
      */
+
+	public static function allowedDomains(){
+		return [
+			'*',				
+		];
+	}
     public function behaviors()
     {
         return [
@@ -27,7 +35,18 @@ class TagihanSiswaController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-        ];
+		];
+		return array_merge(parent::behaviors(), [
+			'corsFilter'  => [
+				'class' => \yii\filters\Cors::className(),
+				'cors'  => [					
+					'Origin'                           => static::allowedDomains(),					
+					'Access-Control-Allow-Credentials' => true,
+					'Access-Control-Max-Age'           => 3600,    
+				],
+			],
+
+		]);
     }
 
     /**
@@ -203,8 +222,11 @@ class TagihanSiswaController extends Controller
 			if(($model['sudah_dibayar'] - $model['besaran']) >= 0){
 				$class = '<span class="tag tag-success">Lunas</span>'; 								
 			}else{
-				$class='<input type="text" class="form-control" name="biaya" style="display: inline-block;width: 90%;">
-						<i class="material-icons" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
+				$class='<input type="text" class="form-control" id="biaya" style="display: inline-block;width: 90%;">
+						<input type="hidden" id="bulan" value='.$model['bulan'].' />
+						<input type="hidden" id="group" value='.$model['idgroup'].' />
+						<input type="hidden" id="idsiswa" value='.$model['idsiswa'].'>
+						<i class="material-icons add_bill" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 			}
 			echo '<tr>
 					<td>'.$model['bulan'].'</td>
@@ -216,6 +238,136 @@ class TagihanSiswaController extends Controller
 	
 	}
 	
+	public function actionFixlist($id){
+		
+		$connection = \Yii::$app->db;
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, b.idjurusan, b.idkelas 
+										   FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+										   WHERE a.idsiswa = '".$id."' ORDER BY id DESC LIMIT 1");
+		$model = $sql->queryAll();
+		
+		
+		
+		
+		
+
+		$query = $connection->createCommand("SELECT keterangan, nama_tagihan,
+													(CASE WHEN keterangan = 'Semester Ganjil' 	THEN semester_a 
+														WHEN keterangan = 'Semester Genap'  	THEN semester_b
+															WHEN keterangan = 'Perpustakaan' 	THEN perpustakaan 
+															WHEN keterangan = 'Osis'			THEN osis
+															WHEN keterangan = 'MPLS'			THEN mpls
+															WHEN keterangan = 'LKS'				THEN lks
+															WHEN keterangan = 'Lab Bhs Inggis'	THEN lab_inggris
+															WHEN keterangan = 'Asuransi'		THEN asuransi
+														ELSE 0 END) Biaya,
+														urutan 
+											FROM (
+												SELECT 'Semester Ganjil' keterangan ,'semester_a' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 1 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Semester Genap' keterangan, 'semester_b' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 2 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Lab Bhs Inggis' keterangan, 'lab_inggris' nama_tagihan , semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 3 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'LKS' keterangan, 'lks' nama_tagihan ,semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 4 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Perpustakaan' keterangan, 'perpustakaan' nama_tagihan , semester_a, semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 5 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Osis' keterangan,semester_a, 'osis' nama_tagihan, semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 6 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'MPLS' keterangan,semester_a, 'mpls' nama_tagihan  ,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi, 7 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Asuransi' keterangan, 'asuransi' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 8 urutan FROM tagihan	 WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+											)src
+											GROUP BY keterangan
+											ORDER BY urutan ");
+		$data = $query->queryAll();
+
+
+
+		foreach($data as $datas):
+
+			$pay = $connection->createCommand("SELECT IFNULL(besaran,0)besaran FROM tagihan_siswa x WHERE x.idsiswa = '".$model[0]['idsiswa']."' AND x.idgroup = '".$model[0]['idgroup']."' AND x.nama_tagihan = '".$datas['nama_tagihan']."'");
+			$modelPay = $pay->queryAll();
+			
+			$xx=0;
+			if($modelPay){
+				$xx = $modelPay[0]['besaran'];
+			}else{
+				$xx;
+			}
+			// var_dump($xx);
+			$sisa_pembayaran = $xx;
+			$class = '';
+			if($sisa_pembayaran - $datas['Biaya']  >= 0){
+				$class = '<span class="tag tag-success">Lunas</span>'; 								
+			}else{						
+
+				$class='<input type="text" class="form-control" id="bayar" style="display: inline-block;width: 90%;">
+					<input type="hidden" id="group" value='.$model[0]['idgroup'].' />
+					<input type="hidden" id="idsiswa" value='.$model[0]['idsiswa'].'>
+					<input type="hidden" id="keterangan" value="'.$datas['keterangan'].'">
+					<input type="hidden" id="nama_tagihan" value="'.$datas['nama_tagihan'].'">
+					<i class="material-icons add_fix" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
+			}
+			echo '<tr>
+					<td>'.$datas['keterangan'].'</td>
+					<td>'.$datas['Biaya'].'</td>
+					<td>0</td>
+					<td> '.$class.'</td>
+				</tr>';			
+		endforeach;
+
+
+	}
+	public function actionOptionlist($id){
+		
+		$connection = \Yii::$app->db;
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, b.idjurusan, b.idkelas 
+										   FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+										   WHERE a.idsiswa = '".$id."' ORDER BY id DESC LIMIT 1");
+		$model = $sql->queryAll();
+						
+		$query = $connection->createCommand("SELECT keterangan, 
+													(CASE WHEN keterangan = 'Administrasi' THEN administrasi 
+														WHEN keterangan = 'Pengembangan'  THEN pengembangan
+															WHEN keterangan = 'Praktek' 	THEN praktik 			
+														ELSE 0 END) Biaya,
+														urutan 
+											FROM (
+												SELECT 'Administrasi' keterangan , administrasi,pengembangan, praktik, 1 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Pengembangan' keterangan , administrasi,pengembangan, praktik, 2 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												UNION ALL
+												SELECT 'Praktek' keterangan, administrasi,pengembangan, praktik, 3 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+
+											)src
+											GROUP BY keterangan
+											ORDER BY urutan ");
+		$data = $query->queryAll();
+
+		$ls = '';
+		foreach($data as $datas):
+			$class='<input type="text" class="form-control" id="biaya" style="display: inline-block;width: 90%;">
+						<i class="material-icons add_bill" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
+
+			$ls .=  '<tr>
+					<td>'.$datas['keterangan'].'</td>
+					<td>'.$datas['Biaya'].'</td>
+					<td>0</td>
+					<td> '.$class.'</td>
+				</tr>';			
+		endforeach;
+
+		echo $ls .'
+			<tr>
+				<td><input type="text" class="form-control" placeholder="Keterangan Pembayaran .." id="keterangan"></td>
+				<td><input type="text" class="form-control" placeholder="Jumlah Pembayaran .." id="jumlah"></td>
+				<td>0</td>
+				<td> '.$class.'</td>
+			</tr>';
+
+	}
 	public function actionProfiledetail($id){
 		
 		$connection = \Yii::$app->db;
@@ -290,6 +442,83 @@ class TagihanSiswaController extends Controller
 			echo ' ';
 		}
 			
+	}
+
+	public function actionPostspp(){
+		if(Yii::$app->user->identity->auth_key){
+			$biaya = $_POST['biaya'];			
+			$group = $_POST['group'];			
+			$idsiswa = $_POST['idsiswa'];	
+			$bulan = $_POST['bulan'];	
+			$admin = Yii::$app->user->identity->username;		
+				
+			$model = new SppSiswa();
+			
+			$model->idsiswa = $idsiswa;
+			$model->idgroup = $group;
+			$model->bulan = $bulan;
+			$model->besaran = $biaya;
+			$model->user_create = $admin;
+			$model->date_create = date('Y-m-d H:i:s');
+			$model->save();	
+						
+			$data = ['err'=>'sukses'];
+
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['']
+			];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
+	}
+	public function actionPostfix(){
+		if(Yii::$app->user->identity->auth_key){
+			$biaya = $_POST['biaya'];			
+			$group = $_POST['group'];			
+			$keterangan = $_POST['keterangan'];			
+			$nama_tagihan = $_POST['nama_tagihan'];			
+			$idsiswa = $_POST['idsiswa'];				
+			$admin = Yii::$app->user->identity->username;		
+				
+			// $biaya =300000;			
+			// $group = 15;			
+			// $keterangan = 'Semester A';			
+			// $idsiswa = '17006';				
+			// $admin = Yii::$app->user->identity->username;	
+
+			$model = new TagihanSiswa();
+			
+			$model->idsiswa = $idsiswa;
+			$model->idgroup = $group;
+			$model->nama_tagihan = $nama_tagihan;
+			$model->keterangan = $keterangan;
+			$model->besaran = $biaya;
+			$model->user_create = $admin;
+			$model->date_create = date('Y-m-d H:i:s');
+			$model->save();	
+						
+			// $data = ['err'=>'sukses',
+			// 		 'biaya'=>$biaya,
+			// 		 'group' => $group,
+			// 		 'keterangan' => $keterangan,
+			// 		 'nama_tagihan' => $nama_tagihan,
+			// 		 'idsiswa' => $idsiswa,
+			// 		 'admin' => $admin
+			// 		];
+			
+			$data = ['err'=>'sukses'];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['']
+			];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
 	}
     public function actionView($id)
     {

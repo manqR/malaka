@@ -26,6 +26,10 @@ $this->registerJsFile($root."/vendors/x-editable/dist/inputs-ext/typeaheadjs/typ
 $this->registerJsFile($root."/vendors/x-editable/dist/inputs-ext/typeaheadjs/lib/typeahead.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
+$this->registerJsFile($root."/vendors/sweetalert/dist/sweetalert.min.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
+
 
 $this->registerJsFile($root."/scripts/table/x-editable.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
@@ -86,19 +90,122 @@ $this->registerJs("
 			success: function(html) {											
 				$('#listspp').html(html);     
 			}
-		});		
+		});
+		$.ajax({
+			type: 'GET',
+			url: 'tagihan-siswa/fixlist',
+			data: url,
+			cache: false,
+			success: function(html) {											
+				$('#listfix').html(html);     
+			}
+		});
+		$.ajax({
+			type: 'GET',
+			url: 'tagihan-siswa/optionlist',
+			data: url,
+			cache: false,
+			success: function(html) {											
+				$('#listoption').html(html);     
+			}
+		});
     }	
 ",View::POS_HEAD);								
 
 
 
 $this->registerJs("
-	$(document).on(\"click\", \".bd-example-modal\", function () {								
-		var nis = $(this).data('id');
-		console.log(nis);				
-						
+	$(document).on(\"click\", \".add_bill\", function () {		
+		var biaya = document.getElementById('biaya').value;
+		var group = document.getElementById('group').value;
+		var idsiswa = document.getElementById('idsiswa').value;
+		var bulan = document.getElementById('bulan').value;
+
+		swal({
+			title: 'Simpan Pembayaran SPP ?',
+			text: 'Data yang sudah disimpan tidak dapat diubah ! ',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#DD6B55',
+			confirmButtonText: 'Yes, save it!',
+			closeOnConfirm: false
+		}, function() {							
+			  	console.log(biaya);
+			  	$.post('tagihan-siswa/postspp',{
+					biaya: biaya,
+					group: group,
+					idsiswa: idsiswa,
+					bulan: bulan,				  
+
+			},
+			function(data, status){	
+				console.log(data)
+			  	if(data.err == 'sukses'){														  
+					  swal('Saving!', 'Pembayaran SPP Berhasil ditambahkan', 'success');
+					  $('.bd-example-modal').modal('hide');
+					  showDetail(idsiswa);
+			  	}else{										
+					  swal('Saving!', 'Pembayaran SPP Gagal ditambahkan', 'error');
+					  $('.bd-example-modal').modal('hide');
+			  	}
+													  
+			});
+		});
+																  
 	})
+	$(document).on(\"click\", \".add_fix\", function () {		
+		var biaya = document.getElementById('bayar').value;
+		var group = document.getElementById('group').value;
+		var idsiswa = document.getElementById('idsiswa').value;
+		var keterangan = document.getElementById('keterangan').value;
+		var nama_tagihan = document.getElementById('nama_tagihan').value;
+
+		swal({
+			title: 'Simpan Pembayaran ?',
+			text: 'Data yang sudah disimpan tidak dapat diubah ! ',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#DD6B55',
+			confirmButtonText: 'Yes, save it!',
+			closeOnConfirm: false
+		}, function() {							
+			  	console.log(nama_tagihan);
+			  	$.post('tagihan-siswa/postfix',{
+					biaya: biaya,
+					group: group,
+					idsiswa: idsiswa,
+					keterangan: keterangan,		
+					nama_tagihan: nama_tagihan,		  
+
+			},
+			function(data, status){	
+				console.log(data)
+			  	if(data.err == 'sukses'){														  
+					  swal('Saving!', 'Pembayaran Berhasil ditambahkan', 'success');
+					  $('.fix').modal('hide');
+					  showDetail(idsiswa);
+			  	}else{										
+					  swal('Saving!', 'Pembayaran Gagal ditambahkan', 'error');
+					  $('.fix').modal('hide');
+			  	}
+													  
+			});
+		});
+																  
+	})
+
+
 ");
+
+
+$this->registerCssFile($root."/vendors/select2/select2.css");
+$this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
+$this->registerCss(".add_bill{cursor: pointer;} .add_fix{cursor: pointer;}");
+$this->registerCss	("
+					::placeholder {
+						font-size: 10px;
+					  }"
+					);
 
 ?>
 
@@ -213,58 +320,18 @@ $this->registerJs("
 						</div>
 						<div class="modal-body">
 							<div class="table-responsive">
-								<table id="user" class="table table-bordered align-middle">
-									<tbody>
+								<table class="table table-bordered" style="width:100%">
+									<thead>
 										<tr>
-											<td width="25%">
-												Simple text field
-											</td>
-											<td width="25%">
-												0
-											</td>
-											<td width="50%">
-												<a href="#" id="username" data-type="text" data-pk="1" data-title="Enter username">
-												superuser
-												</a>
-											</td>
+											<th>Keterangan</th>
+											<th>Biaya</th>
+											<th>Telah Dibayarkan</th>
+											<th>aksi</th>
 										</tr>
-										<tr>
-											<td>
-												Empty text field, required
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="firstname" data-type="text" data-pk="1" data-placement="right" data-placeholder="Required" data-title="Enter your firstname">
-												</a>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												Select, local array, custom display
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="sex" data-type="select" data-pk="1" data-value="" data-title="Select sex">
-												</a>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												Select, remote array, no buttons
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="group" data-type="select" data-pk="1" data-value="5" data-source="/groups" data-title="Select group">
-												Admin
-												</a>
-											</td>
-										</tr>
+									</thead>
+									<tbody id="listfix">																			
+										
+										
 									</tbody>
 								</table>
 							</div>
@@ -290,58 +357,18 @@ $this->registerJs("
 						</div>
 						<div class="modal-body">
 							<div class="table-responsive">
-								<table id="user" class="table table-bordered align-middle">
-									<tbody>
+							<table class="table table-bordered" style="width:100%">
+									<thead>
 										<tr>
-											<td width="25%">
-												Simple text field
-											</td>
-											<td width="25%">
-												0
-											</td>
-											<td width="50%">
-												<a href="#" id="username" data-type="text" data-pk="1" data-title="Enter username">
-												superuser
-												</a>
-											</td>
+											<th>Bulan</th>
+											<th>Biaya</th>
+											<th>Telah Dibayarkan</th>
+											<th>aksi</th>
 										</tr>
-										<tr>
-											<td>
-												Empty text field, required
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="firstname" data-type="text" data-pk="1" data-placement="right" data-placeholder="Required" data-title="Enter your firstname">
-												</a>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												Select, local array, custom display
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="sex" data-type="select" data-pk="1" data-value="" data-title="Select sex">
-												</a>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												Select, remote array, no buttons
-											</td>
-											<td>
-												0
-											</td>
-											<td>
-												<a href="#" id="group" data-type="select" data-pk="1" data-value="5" data-source="/groups" data-title="Select group">
-												Admin
-												</a>
-											</td>
-										</tr>
+									</thead>
+									<tbody id="listoption">																			
+										
+										
 									</tbody>
 								</table>
 							</div>
