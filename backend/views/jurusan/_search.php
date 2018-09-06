@@ -17,6 +17,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'idjurusan') ?>
 
+    <?= $form->field($model, 'idajaran') ?>
+
     <?= $form->field($model, 'nama_jurusan') ?>
 
     <?= $form->field($model, 'status') ?>

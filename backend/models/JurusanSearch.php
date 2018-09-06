@@ -19,7 +19,7 @@ class JurusanSearch extends Jurusan
     {
         return [
             [['idjurusan', 'nama_jurusan'], 'safe'],
-            [['status'], 'integer'],
+            [['idajaran', 'status'], 'integer'],
         ];
     }
 
@@ -59,6 +59,7 @@ class JurusanSearch extends Jurusan
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'idajaran' => $this->idajaran,
             'status' => $this->status,
         ]);
 

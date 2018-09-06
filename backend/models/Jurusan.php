@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "jurusan".
  *
  * @property string $idjurusan
+ * @property int $idajaran
  * @property string $nama_jurusan
  * @property int $status
  */
@@ -27,8 +28,8 @@ class Jurusan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idjurusan'], 'required'],
-            [['status'], 'integer'],
+            [['idjurusan', 'idajaran'], 'required'],
+            [['idajaran', 'status'], 'integer'],
             [['idjurusan'], 'string', 'max' => 10],
             [['nama_jurusan'], 'string', 'max' => 50],
             [['idjurusan'], 'unique'],
@@ -42,6 +43,7 @@ class Jurusan extends \yii\db\ActiveRecord
     {
         return [
             'idjurusan' => 'Idjurusan',
+            'idajaran' => 'Idajaran',
             'nama_jurusan' => 'Nama Jurusan',
             'status' => 'Status',
         ];

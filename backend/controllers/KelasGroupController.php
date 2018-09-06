@@ -59,6 +59,7 @@ class KelasGroupController extends Controller
     {
 		$findTahun = TahunAjaran::find()				
 				->where(['status'=>1])
+				->groupBy(['tahun_ajaran'])
 				->All();
 		
 		$Ajaran = KelasGroup::find()				
@@ -123,24 +124,43 @@ class KelasGroupController extends Controller
 		if($kelas){
 			
 			$connection = \yii::$app->db;
-			$sql = $connection->createcommand("SELECT idsiswa, nama_lengkap, jenis_kelamin, tempat_lahir, tanggal_lahir 
-											   FROM siswa 
-											   WHERE idsiswa NOT IN 
-													(SELECT a.idsiswa 
-													 FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
-													 WHERE b.idkelas = '".$kelas[0]['idkelas']."')");
+			// $sql = $connection->createcommand("SELECT idsiswa, nama_lengkap, jenis_kelamin, tempat_lahir, tanggal_lahir 
+			// 								   FROM siswa 
+			// 								   WHERE idsiswa NOT IN 
+			// 										(SELECT a.idsiswa 
+			// 										 FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+			// 										 WHERE b.idkelas = '".$kelas[0]['idkelas']."')");
 			
+			$sql = $connection->createcommand("SELECT a.idsiswa
+													 ,a.nama_lengkap
+													 ,a.jenis_kelamin
+													 ,a.tempat_lahir
+													 ,a.tanggal_lahir
+													 ,IFNULL(c.idkelas,'-') kelas
+												FROM siswa a 
+												LEFT JOIN detail_group b ON a.idsiswa = b.idsiswa 
+												LEFT JOIN kelas_group c ON b.idgroup = c.idgroup AND c.idajaran = ".$id[1]."
+											");
+			
+
 			$models = $sql->queryall();
 			
 			$output = array();
 				
 			foreach($models as $key => $model):
+				$kelas = $model['kelas'];				
+				$aksi = '';
+				if($kelas == '-'){
+					$aksi = '<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$model['idsiswa'].'>add_box</i>';
+				}else{
+					$aksi = '<span class="tag tag-success">Terdaftar di kelas '.$model['kelas'].'</span>' ;
+				}
 				$output[$key] = array($model['idsiswa']
 									 ,$model['nama_lengkap']
 									 ,$model['jenis_kelamin']
 									 ,$model['tempat_lahir']
 									 ,$model['tanggal_lahir']
-									 ,'<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$model['idsiswa'].'>add_box</i>');
+									 ,$aksi);
 			endforeach;
 			
 			

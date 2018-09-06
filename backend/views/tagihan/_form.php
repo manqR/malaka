@@ -48,10 +48,21 @@ $this->registerCssFile('vendors/select2/select2.css');
 		
 			<?= $form->field($model, 'idtagihan',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('Billing Number') ?>				
 			
-	
-			<?= $form->field($model, 'idjurusan' ,['options' => ['tag' => 'false']])-> dropDownList(
-						ArrayHelper::map(Jurusan::find()->all(),'idjurusan','nama_jurusan'),
-						['prompt'=>'Choose Majors...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Majors');  ?>
+			<?php
+				$connection = \Yii::$app->db;
+				$sql = $connection->createCommand("SELECT idjurusan, nama_jurusan FROM jurusan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran WHERE b.`status` = 1 GROUP BY idjurusan ");
+				$modelx = $sql->queryAll();
+				
+				$data = array();
+
+				foreach ($modelx as $modelxs):
+					$data[$modelxs['idjurusan']] = ucfirst($modelxs['idjurusan']) . ' - '. ucfirst($modelxs['nama_jurusan']);
+				endforeach;
+				
+				
+			?>
+
+			<?= $form->field($model, 'idjurusan')->dropDownList($data ,array('prompt'=>'Pilih Jurusan...','class'=>'select2 m-b-1','style' => 'width: 100%'))->label('Jurusan');	?>
 			
 			<?= $form->field($model, 'idkelas', ['options' => ['tag' => 'false']])-> dropDownList(
 						ArrayHelper::map(Kelas::find()->all(),'idkelas','nama_kelas'),
