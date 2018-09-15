@@ -8,8 +8,8 @@ use Yii;
  * This is the model class for table "tagihan".
  *
  * @property string $idtagihan
- * @property string $idjurusan
  * @property string $idkelas
+ * @property int $idajaran
  * @property double $administrasi
  * @property double $pengembangan
  * @property double $praktik
@@ -42,12 +42,13 @@ class Tagihan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtagihan', 'idjurusan', 'idkelas'], 'required'],
-            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'required'],
+            [['idtagihan', 'idkelas', 'idajaran'], 'required'],
+            [['idajaran'], 'integer'],
+            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
             [['date_create', 'date_update'], 'safe'],
-            [['idtagihan', 'idjurusan', 'idkelas'], 'string', 'max' => 10],
+            [['idtagihan', 'idkelas'], 'string', 'max' => 10],
             [['user_create', 'user_update'], 'string', 'max' => 50],
-            [['idtagihan', 'idjurusan', 'idkelas'], 'unique', 'targetAttribute' => ['idtagihan', 'idjurusan', 'idkelas']],
+            [['idtagihan', 'idkelas'], 'unique', 'targetAttribute' => ['idtagihan', 'idkelas']],
         ];
     }
 
@@ -58,8 +59,8 @@ class Tagihan extends \yii\db\ActiveRecord
     {
         return [
             'idtagihan' => 'Idtagihan',
-            'idjurusan' => 'Idjurusan',
             'idkelas' => 'Idkelas',
+            'idajaran' => 'Idajaran',
             'administrasi' => 'Administrasi',
             'pengembangan' => 'Pengembangan',
             'praktik' => 'Praktik',

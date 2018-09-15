@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="card">
 
-    <h1 style="margin:10px"><?= Html::encode($this->title) ?></h1>
+    <!-- <h1 style="margin:10px"><?= Html::encode($this->title) ?></h1> -->
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -27,9 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
            
 			[
 				'header' => 'Kode Kelas',
-				'attribute' => 'idkelas'
+				'attribute' => 'kode'
 			],        
             'nama_kelas',            
+            'idajaran',            
+            'idjurusan',            
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

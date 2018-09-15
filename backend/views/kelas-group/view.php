@@ -32,10 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label'=>'Kode Kelas',
 				'attribute' => 'idkelas'
 			],     
-			[
-				'label'=>'Kode Jurusan',
-				'attribute' => 'idjurusan'
-			],      
+			
 			'wali_kelas',            
 			[
 				'attribute'=>'status', 

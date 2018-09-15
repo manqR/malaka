@@ -32,6 +32,18 @@ $this->registerJsFile($root."/scripts/forms/masks.js",
 $this->registerCssFile($root."/vendors/select2/select2.css");
 
 
+$this->registerJs("
+	function showTahunAjaran(data){				
+		$.post('tagihan/tagihan',{
+			jurusan: data
+		},
+		function(data, status){	
+			console.log(data);
+			$('#tagihan-idajaran').html(data);
+		})
+	}",View::POS_HEAD
+);
+
 ?>
 
 
@@ -39,18 +51,22 @@ $this->registerCssFile($root."/vendors/select2/select2.css");
 
 	<?php $form = ActiveForm::begin(); ?>
 
-		<?= $form->field($model, 'idjurusan' ,['options' => ['tag' => 'false']])-> dropDownList(
-				ArrayHelper::map(Jurusan::find()->all(),'idjurusan','nama_jurusan'),
-				['prompt'=>'Choose Majors...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Jurusan');  ?>
-				
-		<?= $form->field($model, 'idkelas', ['options' => ['tag' => 'false']])-> dropDownList(
-				ArrayHelper::map(Kelas::find()->all(),'idkelas','nama_kelas'),
-				['prompt'=>'Choose Class...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Kelas');  ?>
-		
-		<?= $form->field($model, 'idajaran', ['options' => ['tag' => 'false']])-> dropDownList(
-				ArrayHelper::map(TahunAjaran::find()->all(),'idajaran','tahun_ajaran'),
-				['prompt'=>'Choose Tahun Ajaran...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Tahun Ajaran');  ?>					
-				
+		<?php
+			$connection = \Yii::$app->db;
+			$sql = $connection->createCommand("SELECT a.idkelas,a.nama_kelas, c.tahun_ajaran, b.nama_jurusan FROM kelas a JOIN jurusan b oN a.idjurusan = b.idjurusan JOIN tahun_ajaran c ON a.idajaran = c.idajaran");
+			$modelx = $sql->queryAll();
+			
+			$data = array();
+			foreach ($modelx as $modelxs):
+				$data[$modelxs['idkelas']] = $modelxs['nama_kelas'].' - '.$modelxs['tahun_ajaran'] . ' - '. ucfirst($modelxs['nama_jurusan']);
+			endforeach;
+			
+			
+		?>
+	
+		<?= $form->field($model, 'idkelas')->dropDownList($data ,array('prompt'=>'Pilih Kelas...','class'=>'select2 m-b-1','style' => 'width: 100%'))->label('Kelas');	?>		
+	
+	
 		<?= $form->field($model, 'wali_kelas')->textInput(['maxlength' => true]) ?>
 
 		<?= $form->field($model, 'status')->dropDownList(['A' => 'Active', 'I' => 'InActive', ], ['prompt' => '-- Pilih --','style'=>'font-size:12px']) ?>

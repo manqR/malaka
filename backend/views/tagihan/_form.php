@@ -26,6 +26,17 @@ $this->registerJsFile($root."/scripts/forms/plugins.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
 
+$this->registerJs("
+	function showTahunAjaran(data){				
+		$.post('tagihan/tagihan',{
+			jurusan: data
+		},
+		function(data, status){	
+			console.log(data);
+			$('#tagihan-idajaran').html(data);
+		})
+	}",View::POS_HEAD
+);
 
 /* @CSS */
 $this->registerCssFile('vendors/select2/select2.css');
@@ -49,24 +60,34 @@ $this->registerCssFile('vendors/select2/select2.css');
 			<?= $form->field($model, 'idtagihan',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('Billing Number') ?>				
 			
 			<?php
-				$connection = \Yii::$app->db;
-				$sql = $connection->createCommand("SELECT idjurusan, nama_jurusan FROM jurusan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran WHERE b.`status` = 1 GROUP BY idjurusan ");
-				$modelx = $sql->queryAll();
+				// $connection = \Yii::$app->db;
+				// $sql = $connection->createCommand("SELECT idjurusan, nama_jurusan FROM jurusan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran WHERE b.`status` = 1 GROUP BY idjurusan ");
+				// $modelx = $sql->queryAll();
 				
-				$data = array();
+				// $data = array();
 
-				foreach ($modelx as $modelxs):
-					$data[$modelxs['idjurusan']] = ucfirst($modelxs['idjurusan']) . ' - '. ucfirst($modelxs['nama_jurusan']);
-				endforeach;
+				// foreach ($modelx as $modelxs):
+				// 	$data[$modelxs['idjurusan']] = ucfirst($modelxs['idjurusan']) . ' - '. ucfirst($modelxs['nama_jurusan']);
+				// endforeach;
 				
 				
 			?>
-
-			<?= $form->field($model, 'idjurusan')->dropDownList($data ,array('prompt'=>'Pilih Jurusan...','class'=>'select2 m-b-1','style' => 'width: 100%'))->label('Jurusan');	?>
+			
+			
+			
 			
 			<?= $form->field($model, 'idkelas', ['options' => ['tag' => 'false']])-> dropDownList(
 						ArrayHelper::map(Kelas::find()->all(),'idkelas','nama_kelas'),
-						['prompt'=>'Choose Class...','class'=>'select2 m-b-1','style' => 'width: 100%'])->label('Class');  ?>
+						['prompt'=>'- Pilih Kelas -','class'=>'select2 m-b-1','style' => 'width: 100%','onchange'=>'showTahunAjaran(this.value)'])->label('Kelas');  ?>
+
+			
+			<div class="form-group">
+				<label>Tahun Ajaran</label>
+				<select id="tagihan-idajaran" class="form-control" name="idajaran" aria-required="true" aria-invalid="false">
+					<option value="">- Pilih - </option>				
+				</select>
+			</div>
+			
 		</div>		
 	</div>
 </div>

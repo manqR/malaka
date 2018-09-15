@@ -202,7 +202,7 @@ $this->registerJs("
 				
 				 echo '<div class="col-md-6 col-lg-3">
 							<div class="pricing-plan">
-								<h5>'.$models->idkelas.' - '.$models->idjurusan.'</h5>
+								<h5>'.$models->kode.' - '.$models->idjurusan.'</h5>
 								<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->idajaran.' data-target=".add-siswa">add_circle_outline</i>
 								<p class="plan-title text-primary">'.$models->wali_kelas.'</p>
 								<div class="plan-price text-primary">

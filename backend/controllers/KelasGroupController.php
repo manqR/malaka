@@ -62,15 +62,20 @@ class KelasGroupController extends Controller
 				->groupBy(['tahun_ajaran'])
 				->All();
 		
-		$Ajaran = KelasGroup::find()				
+		$Ajaran = KelasGroup::find()	
+				->joinWith(['kelas'])			
 				->orderBy(['idgroup'=>SORT_DESC])
 				->One();
+		
 				
 		$model = KelasGroup::find()
-				->where(['status'=>'A'])
+				->joinWith('kelas')						
 				->AndWhere(['idajaran'=>$Ajaran])				
 				->All();
-				
+		
+		// $connection = \Yii::$app->db;
+		// $sql = $connection->createCommand("SELECT * FROM kelas_group a JOIN kelas b ON a.idkelas = b.idkelas WHERE a.`status` = 'A' AND b.idajaran = '".$Ajaran."' ");
+		// $models = $sql->queryAll();
 		
 				
 		$newModel = new TahunAjaran();
@@ -90,7 +95,7 @@ class KelasGroupController extends Controller
 		
 
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT a.idsiswa, a.nama_lengkap, a.jenis_kelamin, c.idkelas, c.idjurusan, d.tahun_ajaran, c.idajaran, b.id FROM siswa a JOIN detail_group b ON a.idsiswa = b.idsiswa JOIN kelas_group c ON b.idgroup = c.idgroup JOIN tahun_ajaran d ON c.idajaran = d.idajaran WHERE b.idgroup = '".$id."'");
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.nama_lengkap, a.jenis_kelamin, c.idkelas, d.idjurusan, e.tahun_ajaran, d.idajaran, b.id FROM siswa a JOIN detail_group b ON a.idsiswa = b.idsiswa JOIN kelas_group c ON b.idgroup = c.idgroup JOIN  kelas d ON c.idkelas = d.idkelas JOIN tahun_ajaran e ON d.idajaran = e.idajaran WHERE b.idgroup = '".$id."'");
 		$models = $sql->queryAll();
 		$output = array();
 			
@@ -118,7 +123,7 @@ class KelasGroupController extends Controller
 		$id = explode(";",$id);				
 		
 		$connection = \Yii::$app->db;
-		$sql = $connection->createcommand("SELECT idkelas FROM  kelas_group WHERE idgroup = ".$id[0]." AND idajaran = ".$id[1]." LIMIT 1");
+		$sql = $connection->createcommand("SELECT a.idkelas FROM  kelas_group a JOIN kelas b ON a.idkelas = b.idkelas WHERE a.idgroup = ".$id[0]." AND b.idajaran = ".$id[1]." LIMIT 1");
 		$kelas = $sql->queryall();
 			
 		if($kelas){
@@ -137,11 +142,14 @@ class KelasGroupController extends Controller
 													 ,a.tempat_lahir
 													 ,a.tanggal_lahir
 													 ,IFNULL(c.idkelas,'-') kelas
+													 ,d.kode
+													 ,c.wali_kelas
 												FROM siswa a 
 												LEFT JOIN detail_group b ON a.idsiswa = b.idsiswa 
-												LEFT JOIN kelas_group c ON b.idgroup = c.idgroup AND c.idajaran = ".$id[1]."
+												LEFT JOIN kelas_group c ON b.idgroup = c.idgroup 
+												LEFT JOIN kelas d ON c.idkelas = d.idkelas  AND d.idajaran = ".$id[1]."
 											");
-			
+															
 
 			$models = $sql->queryall();
 			
@@ -153,7 +161,7 @@ class KelasGroupController extends Controller
 				if($kelas == '-'){
 					$aksi = '<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$model['idsiswa'].'>add_box</i>';
 				}else{
-					$aksi = '<span class="tag tag-success">Terdaftar di kelas '.$model['kelas'].'</span>' ;
+					$aksi = '<span class="tag tag-success">Terdaftar di kelas '.$model['kode'].'- wali '.$model['wali_kelas'].'</span>' ;
 				}
 				$output[$key] = array($model['idsiswa']
 									 ,$model['nama_lengkap']
@@ -253,6 +261,7 @@ class KelasGroupController extends Controller
 		 $idSub2 = substr($id,4,5);
 		 
 		 $model = KelasGroup::find()
+		 		->joinWith('kelas')
 				->where(['idajaran'=>$id])
 				->all();
 		
@@ -261,12 +270,13 @@ class KelasGroupController extends Controller
 		foreach($model as $models):
 			 
 			 $connection = \Yii::$app->db;
-			 $sql = $connection->createCommand("SELECT COUNT(*) JUMLAH FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup WHERE b.idajaran = ".$id." AND a.idgroup = ".$models->idgroup."");
+			 $sql = $connection->createCommand("SELECT COUNT(*) JUMLAH FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN kelas c ON b.idkelas = c.idkelas WHERE c.idajaran = ".$id." AND a.idgroup = ".$models->idgroup."");
 			 $count = $sql->queryAll();
 			 				
 			 $connection = \Yii::$app->db;
-			 $sql = $connection->createCommand("SELECT c.nama_lengkap  FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN siswa c ON a.idsiswa = c.idsiswa WHERE b.idajaran = ".$models->idajaran." AND a.idgroup = ".$models->idgroup." ORDER BY a.tgl_add DESC LIMIT 5");
+			 $sql = $connection->createCommand("SELECT c.nama_lengkap  FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN siswa c ON a.idsiswa = c.idsiswa  JOIN kelas d ON d.idkelas = b.idkelas WHERE d.idajaran = ".$models->kelas->idajaran." AND a.idgroup = ".$models->idgroup." ORDER BY a.tgl_add DESC LIMIT 5");
 			 $siswa = $sql->queryAll();
+
 			 $ls_siswa='';
 			 
 			 foreach($siswa as $siswas):
@@ -275,8 +285,8 @@ class KelasGroupController extends Controller
 				
 			 echo '<div class="col-md-6 col-lg-3">
 						<div class="pricing-plan">
-							<h5>'.$models->idkelas.' - '.$models->idjurusan.'</h5>
-							<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->idajaran.' data-target=".add-siswa">add_circle_outline</i>
+							<h5>'.$models->kelas->kode.' - '.$models->kelas->idjurusan.'</h5>
+							<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->kelas->idajaran.' data-target=".add-siswa">add_circle_outline</i>
 							<p class="plan-title text-primary">'.$models->wali_kelas.'</p>
 							<div class="plan-price text-primary">
 								<span>'.$count[0]['JUMLAH'].'</span>
@@ -313,7 +323,10 @@ class KelasGroupController extends Controller
     {
         $model = new KelasGroup();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		if ($model->load(Yii::$app->request->post())){
+		
+			// $model->idajaran = $_POST['idajaran'];
+			$model->save();			
             return $this->redirect(['view', 'id' => $model->idgroup]);
         }
 

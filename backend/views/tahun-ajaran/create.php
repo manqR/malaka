@@ -10,9 +10,8 @@ $this->title = 'Tambah Tahun Ajaran';
 $this->params['breadcrumbs'][] = ['label' => 'Tahun Ajarans', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tahun-ajaran-create">
-
-   <h1 style="margin:10px"><?= Html::encode($this->title) ?></h1>
+<div class="card">
+   
 
     <?= $this->render('_form', [
         'model' => $model,

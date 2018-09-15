@@ -18,8 +18,8 @@ class KelasSearch extends Kelas
     public function rules()
     {
         return [
-            [['idkelas', 'nama_kelas'], 'safe'],
-            [['status'], 'integer'],
+            [['idkelas', 'idjurusan', 'nama_kelas'], 'safe'],
+            [['idajaran', 'status'], 'integer'],
         ];
     }
 
@@ -59,10 +59,12 @@ class KelasSearch extends Kelas
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'idajaran' => $this->idajaran,
             'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'idkelas', $this->idkelas])
+            ->andFilterWhere(['like', 'idjurusan', $this->idjurusan])
             ->andFilterWhere(['like', 'nama_kelas', $this->nama_kelas]);
 
         return $dataProvider;

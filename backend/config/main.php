@@ -43,21 +43,21 @@ return [
 				'ajaran-create'=>'tahun-ajaran/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
-				'kelas-view-<id>' => 'kelas/view',
+				'kelas-view-<idkelas>-<idajaran>-<idjurusan>' => 'kelas/view',
 				'jurusan-view-<id>' => 'jurusan/view',
 				'tagihan-view-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/view',
 				'class-view-<id>' => 'kelas-group/view',
 				'ajaran-view-<id>'=>'tahun-ajaran/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
-				'kelas-update-<id>' => 'kelas/update',
+				'kelas-update-<idkelas>-<idajaran>-<idjurusan>' => 'kelas/update',
 				'jurusan-update-<id>' => 'jurusan/update',
 				'tagihan-update-<idtagihan>-<idjurusan>-<idkelas>' => 'tagihan/update',
 				'class-update-<id>' => 'kelas-group/update',
 				'ajaran-update-<id>' => 'tahun-ajaran/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
-				'kelas-delete-<id>' => 'kelas/delete',
+				'kelas-delete-<idkelas>-<idajaran>-<idjurusan>' => 'kelas/delete',
 				'jurusan-delete-<id>' => 'jurusan/delete',
 				'tagihan-delete-<id>' => 'tagihan/delete',
 				'class-delete-<id>' => 'kelas-group/delete',

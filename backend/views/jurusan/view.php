@@ -28,21 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
 			[
-				'label'=>'Code of Majors',
+				'label'=>'Kode Jurusan',
 				'attribute' => 'idjurusan'
 			],     
 			[
-				'label'=>'Name of Majors',
+				'label'=>'Nama Jurusan',
 				'attribute' => 'nama_jurusan'
-			],                   
-			[
-				'attribute'=>'status', 
-				'label'=>'Status',
-				'format'=>'raw',
-				'value'=>$model->status == 1 ? 
-					'<span class="tag tag-success">Enable</span>' : 
-					'<span class="tag tag-danger">Disable</span>',			
-			],
+			],                   			
         ],
     ]) ?>
 

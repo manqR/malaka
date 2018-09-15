@@ -9,9 +9,7 @@ use Yii;
  *
  * @property int $idgroup
  * @property string $idkelas
- * @property string $idjurusan
  * @property string $wali_kelas
- * @property string $tahun_ajaran
  * @property string $status
  */
 class KelasGroup extends \yii\db\ActiveRecord
@@ -30,10 +28,10 @@ class KelasGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idkelas', 'idjurusan', 'wali_kelas', 'idajaran', 'status'], 'required'],
+            [['idkelas', 'wali_kelas', 'status'], 'required'],
             [['status'], 'string'],
-            [['idkelas', 'idjurusan'], 'string', 'max' => 10],
-            [['wali_kelas', 'idajaran'], 'string', 'max' => 50],
+            [['idkelas'], 'string', 'max' => 10],
+            [['wali_kelas'], 'string', 'max' => 50],
         ];
     }
 
@@ -45,12 +43,12 @@ class KelasGroup extends \yii\db\ActiveRecord
         return [
             'idgroup' => 'Idgroup',
             'idkelas' => 'Idkelas',
-            'idjurusan' => 'Idjurusan',
             'wali_kelas' => 'Wali Kelas',
-            'idajaran' => 'Idajaran',
             'status' => 'Status',
         ];
     }
-	
-	
+    public function getKelas()
+    {
+        return $this->hasOne(Kelas::className(), ['idkelas' => 'idkelas']);
+    }
 }

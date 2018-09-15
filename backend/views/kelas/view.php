@@ -29,11 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
 			[
-				'label'=>'Class Code',
+				'label'=>'Kode Kelas',
 				'attribute' => 'idkelas'
-			],     
+			],   
+			'idajaran',
+			'idjurusan',			
 			[
-				'label'=>'Class Name',
+				'label'=>'Nama Kelas',
 				'attribute' => 'nama_kelas'
 			],                   
 			[
@@ -44,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					'<span class="tag tag-success">Enable</span>' : 
 					'<span class="tag tag-danger">Disable</span>',			
 			],
+			
         ],
     ]) ?>
 

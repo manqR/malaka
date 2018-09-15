@@ -50,10 +50,15 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($idkelas, $idajaran, $idjurusan)
     {
+        $model = Kelas::find()
+                ->Where(['idkelas'=>$idkelas])
+                ->AndWhere(['idajaran'=>$idajaran])
+                ->AndWhere(['idjurusan'=>$idjurusan])
+                ->One();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -66,8 +71,10 @@ class KelasController extends Controller
     {
         $model = new Kelas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idkelas]);
+        if ($model->load(Yii::$app->request->post())){
+            
+            $model->save();
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -82,12 +89,16 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($idkelas, $idajaran, $idjurusan)
     {
-        $model = $this->findModel($id);
+        $model = Kelas::find()
+                ->Where(['idkelas'=>$idkelas])
+                ->AndWhere(['idajaran'=>$idajaran])
+                ->AndWhere(['idjurusan'=>$idjurusan])
+                ->One();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idkelas]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -102,9 +113,15 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($idkelas, $idajaran, $idjurusan)
     {
-        $this->findModel($id)->delete();
+        $model = Kelas::find()
+                ->Where(['idkelas'=>$idkelas])
+                ->AndWhere(['idajaran'=>$idajaran])
+                ->AndWhere(['idjurusan'=>$idjurusan])
+                ->One();
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }

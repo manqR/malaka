@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Spp;
+use backend\models\Jurusan;
+use backend\models\Kelas;
 
 /**
  * TagihanController implements the CRUD actions for Tagihan model.
@@ -65,6 +67,24 @@ class TagihanController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+	public function actionTagihan(){
+		$jurusan = $_POST['jurusan'];
+		// $jurusan = 'MM';
+		
+		$model = Kelas::find()
+				->joinWith('tahunAjaran')
+				->where(['idjurusan'=>$jurusan])
+				->All();
+		
+		
+		$zero = '<option value="">- Pilih - </option>';
+		foreach($model as $models):			
+			$zero .= '<option value="'.$models->idajaran.'">'.$models->tahunAjaran->tahun_ajaran.'</option>';						
+		endforeach;
+		echo $zero;
+		
+	}
+
     public function actionCreate()
     {
         $model = new Tagihan();
@@ -142,6 +162,7 @@ class TagihanController extends Controller
 			$model->asuransi = SaveRupiah($model->asuransi);
 			$model->date_create = date('Y-m-d H:i:s');
 			$model->user_create = Yii::$app->user->identity->username;
+			$model->idajaran = $_POST['idajaran'];
 			$model->save();
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);
         }
@@ -246,6 +267,7 @@ class TagihanController extends Controller
 			$model->asuransi = SaveRupiah($model->asuransi);
 			$model->date_update = date('Y-m-d H:i:s');
 			$model->user_update = Yii::$app->user->identity->username;
+			$model->idajaran = $_POST['idajaran'];
 			$model->save();
 			
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);

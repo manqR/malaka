@@ -18,7 +18,8 @@ class TagihanSearch extends Tagihan
     public function rules()
     {
         return [
-            [['idtagihan', 'idjurusan', 'idkelas', 'user_create', 'date_create', 'user_update', 'date_update'], 'safe'],
+            [['idtagihan', 'idkelas', 'user_create', 'date_create', 'user_update', 'date_update'], 'safe'],
+            [['idajaran'], 'integer'],
             [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
         ];
     }
@@ -59,6 +60,7 @@ class TagihanSearch extends Tagihan
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'idajaran' => $this->idajaran,
             'administrasi' => $this->administrasi,
             'pengembangan' => $this->pengembangan,
             'praktik' => $this->praktik,
@@ -75,7 +77,6 @@ class TagihanSearch extends Tagihan
         ]);
 
         $query->andFilterWhere(['like', 'idtagihan', $this->idtagihan])
-            ->andFilterWhere(['like', 'idjurusan', $this->idjurusan])
             ->andFilterWhere(['like', 'idkelas', $this->idkelas])
             ->andFilterWhere(['like', 'user_create', $this->user_create])
             ->andFilterWhere(['like', 'user_update', $this->user_update]);

@@ -19,7 +19,7 @@ class KelasGroupSearch extends KelasGroup
     {
         return [
             [['idgroup'], 'integer'],
-            [['idkelas', 'idjurusan', 'wali_kelas', 'idajaran', 'status'], 'safe'],
+            [['idkelas', 'wali_kelas', 'status'], 'safe'],
         ];
     }
 
@@ -63,9 +63,7 @@ class KelasGroupSearch extends KelasGroup
         ]);
 
         $query->andFilterWhere(['like', 'idkelas', $this->idkelas])
-            ->andFilterWhere(['like', 'idjurusan', $this->idjurusan])
             ->andFilterWhere(['like', 'wali_kelas', $this->wali_kelas])
-            ->andFilterWhere(['like', 'idajaran', $this->idajaran])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
