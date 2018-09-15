@@ -10,6 +10,7 @@ use Yii;
  * @property string $idtagihan
  * @property string $idkelas
  * @property int $idajaran
+ * @property string $idjurusan
  * @property double $administrasi
  * @property double $pengembangan
  * @property double $praktik
@@ -42,11 +43,11 @@ class Tagihan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtagihan', 'idkelas', 'idajaran'], 'required'],
+            [['idtagihan', 'idkelas', 'idajaran', 'idjurusan'], 'required'],
             [['idajaran'], 'integer'],
             [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
             [['date_create', 'date_update'], 'safe'],
-            [['idtagihan', 'idkelas'], 'string', 'max' => 10],
+            [['idtagihan', 'idkelas', 'idjurusan'], 'string', 'max' => 10],
             [['user_create', 'user_update'], 'string', 'max' => 50],
             [['idtagihan', 'idkelas'], 'unique', 'targetAttribute' => ['idtagihan', 'idkelas']],
         ];
@@ -61,6 +62,7 @@ class Tagihan extends \yii\db\ActiveRecord
             'idtagihan' => 'Idtagihan',
             'idkelas' => 'Idkelas',
             'idajaran' => 'Idajaran',
+            'idjurusan' => 'Idjurusan',
             'administrasi' => 'Administrasi',
             'pengembangan' => 'Pengembangan',
             'praktik' => 'Praktik',

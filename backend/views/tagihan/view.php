@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\models\Spp;
+use backend\models\Kelas;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tagihan */
@@ -32,6 +33,11 @@ function formatRupiah($val){
     </p>
 </div>
 
+<?php
+	$kode = Kelas::find()
+			->where(['idkelas'=>$model->idkelas])
+			->One();
+?>
 <div class="col-lg-6">
 	<div class="card card-block">
 		<div class="card-header no-bg b-a-0">			
@@ -72,7 +78,7 @@ function formatRupiah($val){
 							</td>
 							
 							<td class="align-middle">
-								<span class="label label-success"><?= $model->idkelas; ?></span>
+								<span class="label label-success"><?= $kode->kode; ?></span>
 							</td>
 						</tr>
 					</tbody>

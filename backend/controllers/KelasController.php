@@ -50,13 +50,9 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idkelas, $idajaran, $idjurusan)
+    public function actionView($idkelas)
     {
-        $model = Kelas::find()
-                ->Where(['idkelas'=>$idkelas])
-                ->AndWhere(['idajaran'=>$idajaran])
-                ->AndWhere(['idjurusan'=>$idjurusan])
-                ->One();
+        $model = Kelas::findOne($idkelas);              
         return $this->render('view', [
             'model' => $model,
         ]);

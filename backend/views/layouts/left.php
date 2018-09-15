@@ -94,7 +94,7 @@
                 <span class="menu-caret">
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
-                <i class="material-icons text-success">font_download</i>               
+                <i class="material-icons text-success">account_balance</i>               
                 <span>Student</span>
                 </a>
                 <ul class="sub-menu">
@@ -116,6 +116,31 @@
                 </ul>
             </li>
             <!-- /student -->
+
+			<!-- student -->
+            <li>
+                <a href="javascript:;">
+                <span class="menu-caret">
+                <i class="material-icons">arrow_drop_down</i>
+                </span>
+                <i class="material-icons text-warning">apps</i>               
+                <span>Lainnya</span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="registration">
+                        <span>Pengeluaran Umum</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration">
+                        <span>Pemasukan Umum</span>
+                        </a>
+                    </li>
+								            
+                </ul>
+            </li>
+            <!-- /student -->
 			
             <!-- setup -->
             <li>
@@ -123,7 +148,7 @@
                 <span class="menu-caret">
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
-                <i class="material-icons text-danger">explore</i>
+                <i class="material-icons text-danger">settings</i>
                 <span>Setup</span>
                 </a>
                 <ul class="sub-menu">
@@ -150,6 +175,30 @@
                 </ul>
             </li>
             <!-- /setup -->
+           
+            <!-- report -->
+            <li>
+                <a href="javascript:;">
+                <span class="menu-caret">
+                <i class="material-icons">arrow_drop_down</i>
+                </span>
+                <i class="material-icons text-default">assessment</i>
+                <span>Report</span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="tunggakan">
+                        <span>Surat Tunggakan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="keuangan">
+                        <span>Laporan Keuangan</span>
+                        </a>
+                    </li>                                 
+                </ul>
+            </li>
+            <!-- /report -->
             
 			
             <li>

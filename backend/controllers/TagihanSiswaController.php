@@ -103,16 +103,17 @@ class TagihanSiswaController extends Controller
 			return number_format($num, 0,'.','.');
 		}
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT SUM(d.administrasi + d.pengembangan + d.praktik) TAGIHAN_BIL_OPTION,
+		$sql = $connection->createCommand("SELECT SUM(e.administrasi + e.pengembangan + e.praktik) TAGIHAN_BIL_OPTION,
 										 (SELECT IFNULL(SUM(xx.besaran),0) FROM tagihan_siswa xx WHERE xx.idsiswa = b.idsiswa AND xx.idgroup = c.idgroup AND xx.nama_tagihan IN ('administrasi','pengembangan','praktik')) BillingOption,		 
-										  SUM(d.semester_a + d.semester_b + d.lab_inggris + d.lks + d.perpustakaan + d.osis + d.mpls + d.asuransi) TAGIHAN_FIX_CHARGE,		 
+										  SUM(e.semester_a + e.semester_b + e.lab_inggris + e.lks + e.perpustakaan + e.osis + e.mpls + e.asuransi) TAGIHAN_FIX_CHARGE,		 
 										 (SELECT IFNULL(SUM(yy.besaran),0) FROM tagihan_siswa yy WHERE yy.idsiswa = b.idsiswa AND yy.idgroup = c.idgroup AND yy.nama_tagihan IN ('semester_a','semester_b','lab_inggris','lks','perpustakaan','osis','mpls','asuransi'))  FixCharge,
-										 (SELECT SUM(x.besaran) FROM spp x WHERE x.idtagihan = d.idtagihan) TAGIHAN_SPP,
+										 (SELECT SUM(x.besaran) FROM spp x WHERE x.idtagihan = e.idtagihan) TAGIHAN_SPP,
 										 IFNULL((SELECT SUM(z.besaran) FROM spp_siswa z WHERE z.idsiswa = b.idsiswa AND z.idgroup = c.idgroup),0)  SPP 
 									FROM siswa a JOIN 
 										 detail_group b ON a.idsiswa = b.idsiswa JOIN
 										 kelas_group c ON b.idgroup = c.idgroup JOIN
-										 tagihan d ON c.idkelas = d.idkelas AND c.idjurusan = d.idjurusan
+										 kelas d ON c.idkelas = d.idkelas JOIN
+										 tagihan e ON d.idkelas = e.idkelas AND d.idjurusan = e.idjurusan
 									WHERE a.idsiswa = '".$id."' 
 									GROUP BY b.idgroup
 									ORDER BY b.id DESC LIMIT 1 ");
@@ -211,7 +212,8 @@ class TagihanSiswaController extends Controller
 		$sql = $connection->createCommand("SELECT d.bulan, d.besaran, IFNULL(e.besaran,0) sudah_dibayar, a.idgroup, a.idsiswa
 											FROM detail_group a 
 												JOIN kelas_group b ON a.idgroup = b.idgroup 
-												JOIN tagihan c ON b.idkelas = c.idkelas AND b.idjurusan = c.idjurusan
+												JOIN kelas f ON b.idkelas = f.idkelas
+												JOIN tagihan c ON b.idkelas = c.idkelas AND f.idjurusan = c.idjurusan
 												JOIN spp d ON d.idtagihan = c.idtagihan
 												LEFT JOIN spp_siswa e ON e.idsiswa = a.idsiswa AND e.idgroup = a.idgroup AND e.bulan = d.bulan
 											WHERE a.idsiswa = '".$id."' AND a.id = (SELECT x.id FROM detail_group x WHERE x.idsiswa = '".$id."' ORDER BY x.id DESC LIMIT 1)");
@@ -241,8 +243,10 @@ class TagihanSiswaController extends Controller
 	public function actionFixlist($id){
 		
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, b.idjurusan, b.idkelas 
-										   FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, c.idjurusan, c.idkelas 
+										   FROM detail_group a 
+										   	JOIN kelas_group b ON a.idgroup = b.idgroup 
+											JOIN kelas c ON b.idkelas = c.idkelas
 										   WHERE a.idsiswa = '".$id."' ORDER BY id DESC LIMIT 1");
 		$model = $sql->queryAll();
 		
@@ -323,8 +327,10 @@ class TagihanSiswaController extends Controller
 	public function actionOptionlist($id){
 		
 		$connection = \Yii::$app->db;
-		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, b.idjurusan, b.idkelas 
-										   FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup 
+		$sql = $connection->createCommand("SELECT a.idsiswa, a.idgroup, c.idjurusan, c.idkelas 
+										   FROM detail_group a 
+										   JOIN kelas_group b ON a.idgroup = b.idgroup
+										   JOIN kelas c ON b.idkelas = c.idkelas 
 										   WHERE a.idsiswa = '".$id."' ORDER BY id DESC LIMIT 1");
 		$model = $sql->queryAll();
 						
@@ -375,6 +381,7 @@ class TagihanSiswaController extends Controller
 											FROM detail_group a 
 												  JOIN siswa b ON a.idsiswa = b.idsiswa
 												  JOIN kelas_group c ON a.idgroup = c.idgroup
+												  JOIN kelas d ON c.idkelas = d.idkelas
 											WHERE b.idsiswa = '".$id."' ORDER BY a.id DESC LIMIT 1
 										");
 		$models = $sql->queryAll();

@@ -148,6 +148,9 @@ class TagihanController extends Controller
 				
 			}
 			// var_dump(Yii::$app->request->post());
+			$find = Kelas::find()
+					->where(['idkelas'=>$model->idkelas])
+					->One();
 			
 			$model->administrasi = SaveRupiah($model->administrasi);
 			$model->pengembangan = SaveRupiah($model->pengembangan);
@@ -162,7 +165,8 @@ class TagihanController extends Controller
 			$model->asuransi = SaveRupiah($model->asuransi);
 			$model->date_create = date('Y-m-d H:i:s');
 			$model->user_create = Yii::$app->user->identity->username;
-			$model->idajaran = $_POST['idajaran'];
+			$model->idajaran = $find->idajaran;
+			$model->idjurusan = $find->idjurusan;
 			$model->save();
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);
         }

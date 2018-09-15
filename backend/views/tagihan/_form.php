@@ -74,19 +74,20 @@ $this->registerCssFile('vendors/select2/select2.css');
 			?>
 			
 			
-			
-			
-			<?= $form->field($model, 'idkelas', ['options' => ['tag' => 'false']])-> dropDownList(
-						ArrayHelper::map(Kelas::find()->all(),'idkelas','nama_kelas'),
-						['prompt'=>'- Pilih Kelas -','class'=>'select2 m-b-1','style' => 'width: 100%','onchange'=>'showTahunAjaran(this.value)'])->label('Kelas');  ?>
-
-			
-			<div class="form-group">
-				<label>Tahun Ajaran</label>
-				<select id="tagihan-idajaran" class="form-control" name="idajaran" aria-required="true" aria-invalid="false">
-					<option value="">- Pilih - </option>				
-				</select>
-			</div>
+			<?php
+				$connection = \Yii::$app->db;
+				$sql = $connection->createCommand("SELECT a.idkelas,a.nama_kelas, c.tahun_ajaran, b.nama_jurusan FROM kelas a JOIN jurusan b oN a.idjurusan = b.idjurusan JOIN tahun_ajaran c ON a.idajaran = c.idajaran");
+				$modelx = $sql->queryAll();
+				
+				$data = array();
+				foreach ($modelx as $modelxs):
+					$data[$modelxs['idkelas']] = $modelxs['nama_kelas'].' - '.$modelxs['tahun_ajaran'] . ' - '. ucfirst($modelxs['nama_jurusan']);
+				endforeach;
+				
+				
+			?>
+	
+			<?= $form->field($model, 'idkelas')->dropDownList($data ,array('prompt'=>'Pilih Kelas...','class'=>'select2 m-b-1','style' => 'width: 100%'))->label('Kelas');	?>										
 			
 		</div>		
 	</div>
