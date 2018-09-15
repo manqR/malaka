@@ -50,9 +50,13 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idkelas)
+    public function actionView($kode, $idajaran, $idjurusan)
     {
-        $model = Kelas::findOne($idkelas);              
+        $model = Kelas::find()
+                    ->Where(['kode'=>$kode])
+                    ->AndWhere(['idajaran'=>$idajaran])
+                    ->AndWhere(['idjurusan'=>$idjurusan])
+                    ->One();           
         return $this->render('view', [
             'model' => $model,
         ]);
@@ -70,7 +74,7 @@ class KelasController extends Controller
         if ($model->load(Yii::$app->request->post())){
             
             $model->save();
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'kode' => $model->kode , 'idajaran' => $model->idajaran , 'idjurusan' => $model->idjurusan]);            
         }
 
         return $this->render('create', [
@@ -85,16 +89,16 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idkelas, $idajaran, $idjurusan)
+    public function actionUpdate($kode, $idajaran, $idjurusan)
     {
         $model = Kelas::find()
-                ->Where(['idkelas'=>$idkelas])
+                ->Where(['kode'=>$kode])
                 ->AndWhere(['idajaran'=>$idajaran])
                 ->AndWhere(['idjurusan'=>$idjurusan])
                 ->One();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
+            return $this->redirect(['view', 'kode' => $model->kode , 'idajaran' => $model->idajaran , 'idjurusan' => $model->idjurusan]);            
         }
 
         return $this->render('update', [
@@ -109,10 +113,10 @@ class KelasController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idkelas, $idajaran, $idjurusan)
+    public function actionDelete($kode, $idajaran, $idjurusan)
     {
         $model = Kelas::find()
-                ->Where(['idkelas'=>$idkelas])
+                ->Where(['kode'=>$kode])
                 ->AndWhere(['idajaran'=>$idajaran])
                 ->AndWhere(['idjurusan'=>$idjurusan])
                 ->One();

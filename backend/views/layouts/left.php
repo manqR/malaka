@@ -124,7 +124,7 @@
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
                 <i class="material-icons text-warning">apps</i>               
-                <span>Lainnya</span>
+                <span>Pembayaran Lainnya</span>
                 </a>
                 <ul class="sub-menu">
                     <li>
