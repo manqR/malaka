@@ -115,32 +115,7 @@
                     </li> 					            
                 </ul>
             </li>
-            <!-- /student -->
-
-			<!-- student -->
-            <li>
-                <a href="javascript:;">
-                <span class="menu-caret">
-                <i class="material-icons">arrow_drop_down</i>
-                </span>
-                <i class="material-icons text-warning">apps</i>               
-                <span>Pembayaran Lainnya</span>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a href="registration">
-                        <span>Pengeluaran Umum</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="registration">
-                        <span>Pemasukan Umum</span>
-                        </a>
-                    </li>
-								            
-                </ul>
-            </li>
-            <!-- /student -->
+            <!-- /student -->			
 			
             <!-- setup -->
             <li>
@@ -172,6 +147,11 @@
                         <span>Tahun Ajaran</span>
                         </a>
                     </li>                   
+					<li>
+                        <a href="ajaran">
+                        <span>Komponen Biaya Tidak Tetaps</span>
+                        </a>
+                    </li>                   
                 </ul>
             </li>
             <!-- /setup -->
@@ -182,7 +162,7 @@
                 <span class="menu-caret">
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
-                <i class="material-icons text-default">assessment</i>
+                <i class="material-icons text-warning">assessment</i>
                 <span>Report</span>
                 </a>
                 <ul class="sub-menu">

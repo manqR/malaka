@@ -1,14 +1,19 @@
 -- --------------------------------------------------------
--- Host:                         localhost
--- Server version:               10.1.25-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win32
--- HeidiSQL Version:             9.3.0.4984
+-- Host:                         127.0.0.1
+-- Server version:               10.1.6-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- Dumping database structure for malaka
+CREATE DATABASE IF NOT EXISTS `malaka` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `malaka`;
+
 
 -- Dumping structure for table malaka.beasiswa
 CREATE TABLE IF NOT EXISTS `beasiswa` (
@@ -25,6 +30,21 @@ CREATE TABLE IF NOT EXISTS `beasiswa` (
 /*!40000 ALTER TABLE `beasiswa` ENABLE KEYS */;
 
 
+-- Dumping structure for table malaka.biaya_tidak_tetap
+CREATE TABLE IF NOT EXISTS `biaya_tidak_tetap` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `keterangan` varchar(50) DEFAULT NULL,
+  `nominal` double DEFAULT NULL,
+  `user_created` varchar(50) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table malaka.biaya_tidak_tetap: ~0 rows (approximately)
+/*!40000 ALTER TABLE `biaya_tidak_tetap` DISABLE KEYS */;
+/*!40000 ALTER TABLE `biaya_tidak_tetap` ENABLE KEYS */;
+
+
 -- Dumping structure for table malaka.detail_group
 CREATE TABLE IF NOT EXISTS `detail_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -32,12 +52,14 @@ CREATE TABLE IF NOT EXISTS `detail_group` (
   `idgroup` int(11) NOT NULL,
   `tgl_add` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.detail_group: ~4 rows (approximately)
+-- Dumping data for table malaka.detail_group: ~3 rows (approximately)
 /*!40000 ALTER TABLE `detail_group` DISABLE KEYS */;
 INSERT INTO `detail_group` (`id`, `idsiswa`, `idgroup`, `tgl_add`) VALUES
-	(14, '176001', 12, '2018-08-24 00:00:00');
+	(59, '176001', 26, '2018-09-15 00:00:00'),
+	(60, '176002', 27, '2018-09-15 00:00:00'),
+	(61, '176003', 27, '2018-09-15 00:00:00');
 /*!40000 ALTER TABLE `detail_group` ENABLE KEYS */;
 
 
@@ -45,51 +67,53 @@ INSERT INTO `detail_group` (`id`, `idsiswa`, `idgroup`, `tgl_add`) VALUES
 CREATE TABLE IF NOT EXISTS `jurusan` (
   `idjurusan` char(10) NOT NULL,
   `nama_jurusan` varchar(50) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`idjurusan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.jurusan: ~2 rows (approximately)
+-- Dumping data for table malaka.jurusan: ~3 rows (approximately)
 /*!40000 ALTER TABLE `jurusan` DISABLE KEYS */;
-INSERT INTO `jurusan` (`idjurusan`, `nama_jurusan`, `status`) VALUES
-	('AA', 'AA', 1),
-	('MM', 'MM', 1);
+INSERT INTO `jurusan` (`idjurusan`, `nama_jurusan`) VALUES
+	('TKJ', 'Teknik Komputer Jaringan '),
+	('TPM', 'Teknik Pemesinan'),
+	('TPO', 'Teknik Mesin Otomotif ');
 /*!40000 ALTER TABLE `jurusan` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.kelas
 CREATE TABLE IF NOT EXISTS `kelas` (
-  `idkelas` char(10) NOT NULL,
+  `idkelas` int(11) NOT NULL AUTO_INCREMENT,
+  `kode` char(10) NOT NULL,
+  `idajaran` int(11) NOT NULL,
+  `idjurusan` char(10) NOT NULL,
   `nama_kelas` varchar(50) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idkelas`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`kode`,`idajaran`,`idjurusan`),
+  KEY `idkelas` (`idkelas`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.kelas: ~2 rows (approximately)
+-- Dumping data for table malaka.kelas: ~3 rows (approximately)
 /*!40000 ALTER TABLE `kelas` DISABLE KEYS */;
-INSERT INTO `kelas` (`idkelas`, `nama_kelas`, `status`) VALUES
-	('XI', 'Kelas 11', 1),
-	('XII', 'Kelas 12', 1);
+INSERT INTO `kelas` (`idkelas`, `kode`, `idajaran`, `idjurusan`, `nama_kelas`, `status`) VALUES
+	(6, 'X', 13, 'TPM', 'Kelas 10', 1),
+	(7, 'X', 13, 'TPO', 'Kelas 10', 1),
+	(10, 'XII', 15, 'TKJ', 'Kelas 12', 1);
 /*!40000 ALTER TABLE `kelas` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.kelas_group
 CREATE TABLE IF NOT EXISTS `kelas_group` (
   `idgroup` int(11) NOT NULL AUTO_INCREMENT,
-  `idajaran` int(11) NOT NULL,
   `idkelas` char(10) NOT NULL,
-  `idjurusan` char(10) NOT NULL,
   `wali_kelas` varchar(50) NOT NULL,
   `status` enum('A','I') NOT NULL,
   PRIMARY KEY (`idgroup`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.kelas_group: ~4 rows (approximately)
+-- Dumping data for table malaka.kelas_group: ~2 rows (approximately)
 /*!40000 ALTER TABLE `kelas_group` DISABLE KEYS */;
-INSERT INTO `kelas_group` (`idgroup`, `idajaran`, `idkelas`, `idjurusan`, `wali_kelas`, `status`) VALUES
-	(12, 5, 'XI', 'MM', 'Bagus', 'A'),
-	(13, 5, 'XI', 'MM', 'Faishal', 'A'),
-	(15, 5, 'XI', 'AA', 'Bagusx', 'A');
+INSERT INTO `kelas_group` (`idgroup`, `idkelas`, `wali_kelas`, `status`) VALUES
+	(26, '6', 'Faishal', 'A'),
+	(27, '10', 'Bagus', 'A');
 /*!40000 ALTER TABLE `kelas_group` ENABLE KEYS */;
 
 
@@ -159,9 +183,9 @@ CREATE TABLE IF NOT EXISTS `siswa` (
   `date_update` datetime DEFAULT NULL,
   `urutan` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`urutan`,`idsiswa`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.siswa: ~0 rows (approximately)
+-- Dumping data for table malaka.siswa: ~13 rows (approximately)
 /*!40000 ALTER TABLE `siswa` DISABLE KEYS */;
 INSERT INTO `siswa` (`idsiswa`, `nama_lengkap`, `jenis_kelamin`, `nisn`, `no_seri_ijazah_smp`, `no_seri_skhun_smp`, `no_ujian_nasional`, `nik`, `tempat_lahir`, `tanggal_lahir`, `agama`, `alamat`, `kelurahan`, `kecamatan`, `kota`, `provinsi`, `transportasi`, `tlp_rumah`, `hp`, `email`, `status_kps`, `no_kps`, `tinggi_badan`, `berat_badan`, `jarak_tempat_tinggal`, `waktu_tempuh`, `jml_saudara`, `user_create`, `date_create`, `user_update`, `date_update`, `urutan`) VALUES
 	('176001', 'Abie Nugraha', 'L', '21770861', 'DN-01 DI/06 0081374', 'DN-01 D 0102083', '', '367109280320006', '', '0000-00-00', 'Islam', 'Kp. Sumur Rt.08/10 Klender Duren Sawit Jaktim', 'Klender', 'Duren Sawit', 'Jakarta Timur', 'DKI Jakarta', 'Umum', '', '87885293983', 'email1@yahoo.com', 0, '', 0, 0, 0, 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 1),
@@ -191,53 +215,161 @@ CREATE TABLE IF NOT EXISTS `spp` (
   `date_create` datetime NOT NULL,
   `date_update` datetime DEFAULT NULL,
   PRIMARY KEY (`idspp`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.spp: ~36 rows (approximately)
+-- Dumping data for table malaka.spp: ~144 rows (approximately)
 /*!40000 ALTER TABLE `spp` DISABLE KEYS */;
 INSERT INTO `spp` (`idspp`, `idtagihan`, `besaran`, `bulan`, `user_create`, `user_update`, `date_create`, `date_update`) VALUES
-	(148, 'MM001', 300000, 'Juli', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:45'),
-	(149, 'MM001', 300000, 'Agustus', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:45'),
-	(150, 'MM001', 300000, 'September', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:45'),
-	(151, 'MM001', 300000, 'Oktober', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(152, 'MM001', 300000, 'November', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(153, 'MM001', 300000, 'Desember', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(154, 'MM001', 300000, 'Januari', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(155, 'MM001', 300000, 'Februari', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(156, 'MM001', 300000, 'Maret', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(157, 'MM001', 300000, 'April', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(158, 'MM001', 300000, 'Mei', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(159, 'MM001', 300000, 'Juni', 'admin', 'admin', '2018-07-24 13:18:08', '2018-07-25 04:12:46'),
-	(160, 'BIl2202', 300000, 'Juli', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(161, 'BIl2202', 300000, 'Agustus', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(162, 'BIl2202', 300000, 'September', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(163, 'BIl2202', 300000, 'Oktober', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(164, 'BIl2202', 300000, 'November', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(165, 'BIl2202', 300000, 'Desember', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(166, 'BIl2202', 300000, 'Januari', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(167, 'BIl2202', 300000, 'Februari', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(168, 'BIl2202', 300000, 'Maret', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(169, 'BIl2202', 300000, 'April', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(170, 'BIl2202', 300000, 'Mei', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(171, 'BIl2202', 300000, 'Juni', 'admin', NULL, '2018-08-17 13:09:45', NULL),
-	(172, 'BILAA01', 150000, 'Juli', 'admin', NULL, '2018-08-18 12:44:28', NULL),
-	(173, 'BILAA01', 150000, 'Agustus', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(174, 'BILAA01', 150000, 'September', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(175, 'BILAA01', 150000, 'Oktober', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(176, 'BILAA01', 150000, 'November', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(177, 'BILAA01', 150000, 'Desember', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(178, 'BILAA01', 150000, 'Januari', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(179, 'BILAA01', 150000, 'Februari', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(180, 'BILAA01', 150000, 'Maret', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(181, 'BILAA01', 150000, 'April', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(182, 'BILAA01', 150000, 'Mei', 'admin', NULL, '2018-08-18 12:44:29', NULL),
-	(183, 'BILAA01', 150000, 'Juni', 'admin', NULL, '2018-08-18 12:44:29', NULL);
+	(292, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(293, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(294, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(295, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(296, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(297, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:43:25', NULL),
+	(298, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(299, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(300, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(301, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(302, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(303, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:43:26', NULL),
+	(304, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:44:26', NULL),
+	(305, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(306, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(307, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(308, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(309, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(310, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(311, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(312, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(313, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(314, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(315, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:44:27', NULL),
+	(316, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(317, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(318, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(319, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(320, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(321, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(322, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(323, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(324, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(325, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(326, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:45:08', NULL),
+	(327, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:45:09', NULL),
+	(328, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(329, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(330, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(331, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(332, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(333, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(334, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:45:17', NULL),
+	(335, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:45:18', NULL),
+	(336, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:45:18', NULL),
+	(337, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:45:18', NULL),
+	(338, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:45:18', NULL),
+	(339, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:45:18', NULL),
+	(340, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:45:33', NULL),
+	(341, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:45:33', NULL),
+	(342, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:45:33', NULL),
+	(343, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(344, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(345, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(346, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(347, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(348, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(349, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(350, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(351, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:45:34', NULL),
+	(352, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:45:55', NULL),
+	(353, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:45:55', NULL),
+	(354, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:45:55', NULL),
+	(355, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:45:55', NULL),
+	(356, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(357, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(358, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(359, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(360, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(361, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(362, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(363, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:45:56', NULL),
+	(364, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(365, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(366, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(367, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(368, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(369, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(370, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(371, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(372, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(373, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(374, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(375, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:50:45', NULL),
+	(376, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(377, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(378, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(379, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(380, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(381, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(382, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(383, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(384, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(385, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(386, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(387, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:51:27', NULL),
+	(388, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:51:34', NULL),
+	(389, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(390, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(391, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(392, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(393, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(394, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(395, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(396, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(397, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(398, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(399, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:51:35', NULL),
+	(400, 'BIL0001', 300000, 'Juli', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(401, 'BIL0001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(402, 'BIL0001', 300000, 'September', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(403, 'BIL0001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(404, 'BIL0001', 300000, 'November', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(405, 'BIL0001', 300000, 'Desember', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(406, 'BIL0001', 300000, 'Januari', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(407, 'BIL0001', 300000, 'Februari', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(408, 'BIL0001', 300000, 'Maret', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(409, 'BIL0001', 300000, 'April', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(410, 'BIL0001', 300000, 'Mei', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(411, 'BIL0001', 300000, 'Juni', 'admin', NULL, '2018-09-15 10:54:06', NULL),
+	(412, 'BIL0002', 150000, 'Juli', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(413, 'BIL0002', 150000, 'Agustus', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(414, 'BIL0002', 150000, 'September', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(415, 'BIL0002', 150000, 'Oktober', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(416, 'BIL0002', 150000, 'November', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(417, 'BIL0002', 150000, 'Desember', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(418, 'BIL0002', 150000, 'Januari', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(419, 'BIL0002', 150000, 'Februari', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(420, 'BIL0002', 150000, 'Maret', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(421, 'BIL0002', 150000, 'April', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(422, 'BIL0002', 150000, 'Mei', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(423, 'BIL0002', 150000, 'Juni', 'admin', NULL, '2018-09-15 10:57:00', NULL),
+	(424, 'BIL001', 300000, 'Juli', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(425, 'BIL001', 300000, 'Agustus', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(426, 'BIL001', 300000, 'September', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(427, 'BIL001', 300000, 'Oktober', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(428, 'BIL001', 300000, 'November', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(429, 'BIL001', 300000, 'Desember', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(430, 'BIL001', 300000, 'Januari', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(431, 'BIL001', 300000, 'Februari', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(432, 'BIL001', 300000, 'Maret', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(433, 'BIL001', 300000, 'April', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(434, 'BIL001', 300000, 'Mei', 'admin', NULL, '2018-09-15 11:05:37', NULL),
+	(435, 'BIL001', 300000, 'Juni', 'admin', NULL, '2018-09-15 11:05:38', NULL);
 /*!40000 ALTER TABLE `spp` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.spp_siswa
 CREATE TABLE IF NOT EXISTS `spp_siswa` (
-  `idtagihan_siswa` int(11) NOT NULL,
+  `idtagihan_siswa` int(11) NOT NULL AUTO_INCREMENT,
   `idsiswa` char(10) NOT NULL,
   `idgroup` int(11) NOT NULL,
   `bulan` varchar(50) NOT NULL,
@@ -245,21 +377,22 @@ CREATE TABLE IF NOT EXISTS `spp_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`,`idsiswa`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.spp_siswa: ~2 rows (approximately)
 /*!40000 ALTER TABLE `spp_siswa` DISABLE KEYS */;
 INSERT INTO `spp_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `bulan`, `besaran`, `user_create`, `date_create`) VALUES
-	(1, '18010010', 12, 'Juli', 300000, 'admin', '2018-08-18 17:39:42'),
-	(2, '18010010', 12, 'Agustus', 3300000, 'admin', '2018-08-18 17:40:53');
+	(32, '176001', 26, 'Juli', 300000, 'admin', '2018-09-15 11:15:59'),
+	(33, '176001', 26, 'Agustus', 3000000, 'admin', '2018-09-15 13:06:59');
 /*!40000 ALTER TABLE `spp_siswa` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.tagihan
 CREATE TABLE IF NOT EXISTS `tagihan` (
   `idtagihan` char(10) NOT NULL,
-  `idjurusan` char(10) NOT NULL,
   `idkelas` char(10) NOT NULL,
+  `idajaran` int(11) NOT NULL,
+  `idjurusan` char(10) NOT NULL,
   `administrasi` double DEFAULT NULL,
   `pengembangan` double DEFAULT NULL,
   `praktik` double DEFAULT NULL,
@@ -275,15 +408,13 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
   `date_create` datetime DEFAULT NULL,
   `user_update` varchar(50) DEFAULT NULL,
   `date_update` datetime DEFAULT NULL,
-  PRIMARY KEY (`idtagihan`,`idjurusan`,`idkelas`)
+  PRIMARY KEY (`idtagihan`,`idkelas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan: ~3 rows (approximately)
+-- Dumping data for table malaka.tagihan: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tagihan` DISABLE KEYS */;
-INSERT INTO `tagihan` (`idtagihan`, `idjurusan`, `idkelas`, `administrasi`, `pengembangan`, `praktik`, `semester_a`, `semester_b`, `lab_inggris`, `lks`, `perpustakaan`, `osis`, `mpls`, `asuransi`, `user_create`, `date_create`, `user_update`, `date_update`) VALUES
-	('BIl2202', 'MM', 'XII', 50000, 1500000, 2000000, 300000, 300000, 200000, 150000, 150000, 150000, 250000, 250000, 'admin', '2018-08-17 13:09:45', NULL, NULL),
-	('BILAA01', 'AA', 'XI', 50000, 1500000, 2000000, 300000, 300000, 200000, 300000, 150000, 150000, 250000, 250000, 'admin', '2018-08-18 12:44:29', NULL, NULL),
-	('MM001', 'MM', 'XI', 50000, 0, 2000000, 300000, 300000, 200000, 300000, 150000, 150000, 250000, 250000, 'admin', '2018-07-24 11:07:27', 'admin', '2018-07-25 04:12:46');
+INSERT INTO `tagihan` (`idtagihan`, `idkelas`, `idajaran`, `idjurusan`, `administrasi`, `pengembangan`, `praktik`, `semester_a`, `semester_b`, `lab_inggris`, `lks`, `perpustakaan`, `osis`, `mpls`, `asuransi`, `user_create`, `date_create`, `user_update`, `date_update`) VALUES
+	('BIL001', '6', 13, 'TPM', 50000, 200000, 200000, 300000, 300000, 150000, 250000, 150000, 200000, 150000, 200000, 'admin', '2018-09-15 11:05:38', NULL, NULL);
 /*!40000 ALTER TABLE `tagihan` ENABLE KEYS */;
 
 
@@ -298,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `tagihan_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.tagihan_siswa: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_siswa` DISABLE KEYS */;
@@ -311,13 +442,14 @@ CREATE TABLE IF NOT EXISTS `tahun_ajaran` (
   `tahun_ajaran` varchar(10) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`idajaran`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Dumping data for table malaka.tahun_ajaran: ~2 rows (approximately)
+-- Dumping data for table malaka.tahun_ajaran: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tahun_ajaran` DISABLE KEYS */;
 INSERT INTO `tahun_ajaran` (`idajaran`, `tahun_ajaran`, `status`) VALUES
-	(5, '2018/2019', 1),
-	(6, '1020/3023', 1);
+	(13, '2018/2019', 1),
+	(14, '2019/2020', 1),
+	(15, '2020/2021', 1);
 /*!40000 ALTER TABLE `tahun_ajaran` ENABLE KEYS */;
 
 
