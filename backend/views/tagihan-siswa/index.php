@@ -29,7 +29,12 @@ $this->registerJsFile($root."/vendors/x-editable/dist/inputs-ext/typeaheadjs/lib
 $this->registerJsFile($root."/vendors/sweetalert/dist/sweetalert.min.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
-
+$this->registerJsFile($root."/vendors/datatables/media/js/jquery.dataTables.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
+$this->registerJsFile($root."/vendors/datatables/media/js/dataTables.bootstrap4.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
 
 $this->registerJsFile($root."/scripts/table/x-editable.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
@@ -198,8 +203,56 @@ $this->registerJs("
 ");
 
 
+$this->registerJs("   					 					
+					$(document).on(\"click\", \".addbiaya\", function () {								
+						var group = $(this).data('id');
+						console.log(group);
+						
+						var table = $('.datatable').DataTable({
+								'destroy': true,										
+								'ajax': './tagihan-siswa/listtagihan?id='+group
+						});																								
+					})
+
+					$(document).on(\"click\", \".tambah\", function () {		
+						var datas = $(this).data('id');
+						swal({
+							title: 'Are you sure ?',
+							text: 'Tagihan akan ditambahkan ',
+							type: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#DD6B55',
+							confirmButtonText: 'Yes, save it!',
+							closeOnConfirm: false
+						  }, function() {							
+							  console.log(datas);
+							  $.post('kelas-group/postkelas',{
+								  data: datas
+							  },
+							  function(data, status){	
+								  if(data.err == 'sukses'){										
+									  var rld = datas.split(';');										
+									  $('.datatable').DataTable({
+										  'destroy': true,										
+										  'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+									  
+									  });		
+									  swal('Saving!', 'Tagihan Berhasil ditambahkan', 'success');
+								  }else{										
+									  swal('Saving!', 'Tagihan Tdak Berhasil ditambahkan', 'error');
+								  }
+																		  
+							  });
+						  });
+																				  
+					  })
+
+				");
+
+
 $this->registerCssFile($root."/vendors/select2/select2.css");
 $this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
+$this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap4.css");
 $this->registerCss(".add_bill{cursor: pointer;} .add_fix{cursor: pointer;}");
 $this->registerCss	("
 					::placeholder {
@@ -390,7 +443,69 @@ $this->registerCss	("
 			<!-- PROFILE -->
 			<div id="profileDetail">
 			</div>
+			
+			<div class="table-responsive">
+				 <table class="table table-bordered databiaya" style="width:100%">
+					<thead>
+						<tr>
+							<th>
+								Kode
+							</th>
+							<th>
+								Keterangan
+							</th>									
+							<th>
+								Nominal
+							</th>
+							<th>
+								Aksi
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+
             <!-- /PROFILE -->
+
+
+	<!-- ------------ MODAL ADD BIAYA------------------>
+	<div class="modal fade add-biaya" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 800px" >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Tambah Tagihan</h4>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+						 <table class="table table-bordered datatable" style="width:100%">
+							<thead>
+								<tr>
+									<th>
+										Keterangan
+									</th>
+									<th>
+										Nominal
+									</th>									
+									<th>
+										Aksi
+									</th>
+
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>						
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ------------ /MODAL ADD BIAYA ------------------>
 			
         </div>
     </div>

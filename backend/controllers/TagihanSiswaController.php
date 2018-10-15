@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Siswa;
 use backend\models\SppSiswa;
+use backend\models\BiayaTidakTetap;
 use yii\web\Response;
 
 /**
@@ -395,7 +396,7 @@ class TagihanSiswaController extends Controller
 					</div>
 					<div class="col v-align-middle p-l-2">
 						<h1>
-							<b>'.$models[0]['nama_lengkap'].'</b>                        
+							<b>'.$models[0]['nama_lengkap'].'</b> <i class="material-icons addbiaya" aria-hidden="true" data-toggle="modal" data-id='.$models[0]['idgroup'].';'.$models[0]['idkelas'].' data-target=".add-biaya">open_in_new</i>
 						</h1>
 						<h3>'.$models[0]['wali_kelas'].'</h3>
 					</div>
@@ -534,6 +535,35 @@ class TagihanSiswaController extends Controller
         ]);
     }
 
+	public function actionListtagihan($id){
+
+		$id = explode(";",$id);	
+		$model = BiayaTidakTetap::find()
+				->all();
+
+		$output = array();
+				
+		foreach($model as $key => $models):						
+			$aksi = '';
+			
+				$aksi = '<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$models->id.'>add_box</i>';
+			
+			$output[$key] = array($models->keterangan
+								 ,number_format($models->nominal,0,'.','.')						 
+								 ,$aksi);
+		endforeach;
+				
+				
+		$data = json_encode($output);
+		$data = [
+			'data'=>$output
+		];
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		return $data;
+				
+		
+
+	}
     /**
      * Creates a new TagihanSiswa model.
      * If creation is successful, the browser will be redirected to the 'view' page.

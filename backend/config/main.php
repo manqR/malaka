@@ -32,6 +32,7 @@ return [
 				'jurusan'=>'jurusan/index',				
 				'registration'=>'siswa/index',
 				'ajaran'=>'tahun-ajaran/index',
+				'biaya_tidak_tetap'=>'biaya-tidak-tetap/index',
 				
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',
@@ -41,6 +42,7 @@ return [
 				'tagihan-siswa-create'=>'tagihan_siswa/create',
 				'class-create'=>'kelas-group/create',
 				'ajaran-create'=>'tahun-ajaran/create',
+				'biaya_tidak_tetap-create'=>'biaya-tidak-tetap/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<kode>-<idajaran>-<idjurusan>' => 'kelas/view',
@@ -48,6 +50,7 @@ return [
 				'tagihan-view-<idtagihan>-<idkelas>' => 'tagihan/view',
 				'class-view-<id>' => 'kelas-group/view',
 				'ajaran-view-<id>'=>'tahun-ajaran/view',
+				'biaya_tidak_tetap-view-<id>'=>'biaya-tidak-tetap/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
 				'kelas-update-<kode>-<idajaran>-<idjurusan>' => 'kelas/update',
@@ -55,6 +58,7 @@ return [
 				'tagihan-update-<idtagihan>-<idkelas>' => 'tagihan/update',
 				'class-update-<id>' => 'kelas-group/update',
 				'ajaran-update-<id>' => 'tahun-ajaran/update',
+				'biaya_tidak_tetap-update-<id>' => 'biaya-tidak-tetap/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
 				'kelas-delete-<kode>-<idajaran>-<idjurusan>' => 'kelas/delete',
@@ -62,6 +66,7 @@ return [
 				'tagihan-delete-<idtagihan>-<idkelas>' => 'tagihan/delete',
 				'class-delete-<id>' => 'kelas-group/delete',
 				'ajaran-delete-<id>' => 'tahun-ajaran/delete',
+				'biaya_tidak_tetap-delete-<id>' => 'biaya-tidak-tetap/delete',
 				
 				//---------------------------------- API -----------------------------//
 				// 'class-apigroup-<id>' => 'kelas-group/apigroup',

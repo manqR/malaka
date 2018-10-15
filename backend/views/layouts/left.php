@@ -148,8 +148,8 @@
                         </a>
                     </li>                   
 					<li>
-                        <a href="ajaran">
-                        <span>Komponen Biaya Tidak Tetaps</span>
+                        <a href="biaya_tidak_tetap">
+                        <span>Komponen Biaya Tidak Tetap</span>
                         </a>
                     </li>                   
                 </ul>
