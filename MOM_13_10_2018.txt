@@ -1,0 +1,9 @@
+* Siswa langsuung ke Biaya Tidak Tetap 
+* Invoice Khusus Biaya tidak tetap per Assign
+* ketika Assign biaya tidak tetap, no invoice langsung terbit
+* mencatat pemasukan umum -> invoice list
+* membuat table setelah assign tagihan tidak tetap di biliing 
+
+
+2018-10-20
+Target Minggu depan proses tagihan pembayaran tetap/tidak tetap dari yang belum bayar - sudah lunas.
