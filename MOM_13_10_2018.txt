@@ -1,8 +1,8 @@
-* Siswa langsuung ke Biaya Tidak Tetap 
-* Invoice Khusus Biaya tidak tetap per Assign
-* ketika Assign biaya tidak tetap, no invoice langsung terbit
+* Siswa langsuung ke Biaya Tidak Tetap -> Done
+* Invoice Khusus Biaya tidak tetap per Assign -> Done
+* ketika Assign biaya tidak tetap, no invoice langsung terbit -> DOne
 * mencatat pemasukan umum -> invoice list
-* membuat table setelah assign tagihan tidak tetap di biliing 
+* membuat table setelah assign tagihan tidak tetap di biliing -> Done
 
 
 2018-10-20

@@ -76,6 +76,7 @@ $this->registerJs("
 				document.getElementById(\"show1\").style.cursor = \"pointer\";
 				document.getElementById(\"show2\").style.cursor = \"pointer\";
 				document.getElementById(\"show3\").style.cursor = \"pointer\";				
+				
 			}
 		});	
 		$.ajax({
@@ -84,7 +85,8 @@ $this->registerJs("
 			data: url,
 			cache: false,
 			success: function(html) {											
-				$('#profileDetail').html(html);     
+				$('#profileDetail').html(html);   
+				document.getElementById(\"addbiaya\").style.cursor = \"pointer\";				  
 			}
 		});
 		$.ajax({
@@ -114,6 +116,12 @@ $this->registerJs("
 				$('#listoption').html(html);     
 			}
 		});
+
+		var table = $('.databiaya').DataTable({
+			'destroy': true,										
+			'ajax': './tagihan-siswa/tagihantidaktetap?'+url
+		});		
+				
     }	
 ",View::POS_HEAD);								
 
@@ -198,6 +206,46 @@ $this->registerJs("
 		});
 																  
 	})
+	$(document).on(\"click\", \".add_option\", function () {		
+		var biayax = document.getElementById('biayax').value;	
+		var keteranganx = document.getElementById('keteranganx').value;
+		var nama_tagihanx = document.getElementById('nama_tagihanx').value;
+		var idsiswax = document.getElementById('idsiswax').value;
+		var idgroupx = document.getElementById('groupx').value;
+
+		swal({
+			title: 'Simpan Pembayaran Optional ?',
+			text: 'Data yang sudah disimpan tidak dapat diubah ! ',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#DD6B55',
+			confirmButtonText: 'Yes, save it!',
+			closeOnConfirm: false
+		}, function() {							
+			  	console.log(biaya);
+			  	$.post('tagihan-siswa/postoptional',{
+					biaya: biayax,					
+					keterangan: keteranganx,
+					nama_tagihan: nama_tagihanx,				  
+					idsiswa: idsiswax,				  
+					group: idgroupx,				  
+
+			},
+			function(data, status){	
+				console.log(data)
+			  	if(data.err == 'sukses'){														  
+					  swal('Saving!', 'Pembayaran Optional Berhasil ditambahkan', 'success');	
+					  $('.optional').modal('hide');
+					  showDetail(idsiswax);				  					  
+			  	}else{										
+					  swal('Saving!', 'Pembayaran Optional Gagal ditambahkan', 'error');		
+					  $('.optional').modal('hide');					  
+			  	}
+													  
+			});
+		});
+																  
+	})
 
 
 ");
@@ -214,10 +262,11 @@ $this->registerJs("
 						});																								
 					})
 
-					$(document).on(\"click\", \".tambah\", function () {		
+					$(document).on(\"click\", \".assign\", function () {		
 						var datas = $(this).data('id');
+						
 						swal({
-							title: 'Are you sure ?',
+							title: 'Apa anda yakin ?',
 							text: 'Tagihan akan ditambahkan ',
 							type: 'warning',
 							showCancelButton: true,
@@ -226,20 +275,55 @@ $this->registerJs("
 							closeOnConfirm: false
 						  }, function() {							
 							  console.log(datas);
-							  $.post('kelas-group/postkelas',{
+							  $.post('tagihan-siswa/postbiaya',{
 								  data: datas
 							  },
 							  function(data, status){	
-								  if(data.err == 'sukses'){										
+								  if(data.err == 'sukses'){	
+									  console.log(data.err);									
 									  var rld = datas.split(';');										
-									  $('.datatable').DataTable({
-										  'destroy': true,										
-										  'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
-									  
-									  });		
+									  var table = $('.databiaya').DataTable({
+										'destroy': true,										
+										'ajax': './tagihan-siswa/tagihantidaktetap?id='+rld[0]
+										});			
 									  swal('Saving!', 'Tagihan Berhasil ditambahkan', 'success');
 								  }else{										
 									  swal('Saving!', 'Tagihan Tdak Berhasil ditambahkan', 'error');
+								  }
+																		  
+							  });
+						  });
+																				  
+					  })
+
+
+					  $(document).on(\"click\", \".bayar\", function () {		
+						var datas = $(this).data('id');
+						
+						swal({
+							title: 'Apa anda yakin ?',
+							text:  'Tagihan ini akan dibayarkan ',
+							type:  'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#DD6B55',
+							confirmButtonText: 'Yes, save it!',
+							closeOnConfirm: false
+						  }, function() {							
+							  console.log(datas);
+							  $.post('tagihan-siswa/postpembayaran',{
+								  data: datas
+							  },
+							  function(data, status){	
+								  if(data.err == 'sukses'){	
+									  console.log(data.err);									
+									  var rld = datas.split(';');										
+									  var table = $('.databiaya').DataTable({
+										'destroy': true,										
+										'ajax': './tagihan-siswa/tagihantidaktetap?id='+rld[0]
+										});			
+									  swal('Saving!', 'Tagihan Berhasil diupdate', 'success');
+								  }else{										
+									  swal('Saving!', 'Tagihan Tdak Berhasil diupdate', 'error');
 								  }
 																		  
 							  });
@@ -253,13 +337,14 @@ $this->registerJs("
 $this->registerCssFile($root."/vendors/select2/select2.css");
 $this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
 $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap4.css");
-$this->registerCss(".add_bill{cursor: pointer;} .add_fix{cursor: pointer;}");
+$this->registerCss(".add_bill{cursor: pointer;} .add_fix{cursor: pointer;} .assign{cursor: pointer;} .bayar{cursor: pointer;} .add_option{cursor:pointer;}");
 $this->registerCss	("
 					::placeholder {
 						font-size: 10px;
 					  }"
 					);
 
+				
 ?>
 
 <div class="layout-xs contacts-container">
@@ -444,7 +529,7 @@ $this->registerCss	("
 			<div id="profileDetail">
 			</div>
 			
-			<div class="table-responsive">
+			<div class="card card-block table-responsive">
 				 <table class="table table-bordered databiaya" style="width:100%">
 					<thead>
 						<tr>
@@ -457,6 +542,9 @@ $this->registerCss	("
 							<th>
 								Nominal
 							</th>
+							<th>
+								Status
+							</th>	
 							<th>
 								Aksi
 							</th>

@@ -10,7 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Siswa;
 use backend\models\SppSiswa;
-use backend\models\BiayaTidakTetap;
+use backend\models\BiayaTidakTetap; 
+use backend\models\TagihanBiayaTidaktetap; 
 use yii\web\Response;
 
 /**
@@ -335,18 +336,18 @@ class TagihanSiswaController extends Controller
 										   WHERE a.idsiswa = '".$id."' ORDER BY id DESC LIMIT 1");
 		$model = $sql->queryAll();
 						
-		$query = $connection->createCommand("SELECT keterangan, 
+		$query = $connection->createCommand("SELECT keterangan, nama_tagihan,
 													(CASE WHEN keterangan = 'Administrasi' THEN administrasi 
 														WHEN keterangan = 'Pengembangan'  THEN pengembangan
 															WHEN keterangan = 'Praktek' 	THEN praktik 			
 														ELSE 0 END) Biaya,
 														urutan 
 											FROM (
-												SELECT 'Administrasi' keterangan , administrasi,pengembangan, praktik, 1 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												SELECT 'Administrasi' keterangan ,  'administrasi' nama_tagihan, administrasi,pengembangan, praktik, 1 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
 												UNION ALL
-												SELECT 'Pengembangan' keterangan , administrasi,pengembangan, praktik, 2 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												SELECT 'Pengembangan' keterangan , 'pengembangan' nama_tagihan, administrasi,pengembangan, praktik, 2 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
 												UNION ALL
-												SELECT 'Praktek' keterangan, administrasi,pengembangan, praktik, 3 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
+												SELECT 'Praktek' keterangan, 'praktik' nama_tagihan, administrasi,pengembangan, praktik, 3 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
 
 											)src
 											GROUP BY keterangan
@@ -355,24 +356,40 @@ class TagihanSiswaController extends Controller
 
 		$ls = '';
 		foreach($data as $datas):
-			$class='<input type="text" class="form-control" id="biaya" style="display: inline-block;width: 90%;">
-						<i class="material-icons add_bill" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 
-			$ls .=  '<tr>
+			$pay = $connection->createCommand("SELECT IFNULL(besaran,0)besaran FROM tagihan_siswa x WHERE x.idsiswa = '".$model[0]['idsiswa']."' AND x.idgroup = '".$model[0]['idgroup']."' AND x.nama_tagihan = '".$datas['nama_tagihan']."'");
+			$modelPay = $pay->queryAll();
+			
+			$xx=0;
+			if($modelPay){
+				$xx = $modelPay[0]['besaran'];
+			}else{
+				$xx;
+			}
+			// var_dump($xx);
+			$sisa_pembayaran = $xx;
+			$class = '';
+			if($sisa_pembayaran - $datas['Biaya']  >= 0){
+				$class = '<span class="tag tag-success">Lunas</span>'; 								
+			}else{						
+
+				$class='<input type="text" class="form-control" id="biayax" style="display: inline-block;width: 90%;">
+					<input type="hidden" id="groupx" value='.$model[0]['idgroup'].' />
+					<input type="hidden" id="idsiswax" value='.$model[0]['idsiswa'].'>
+					<input type="hidden" id="keteranganx" value="'.$datas['keterangan'].'">
+					<input type="hidden" id="nama_tagihanx" value="'.$datas['nama_tagihan'].'">
+					<i class="material-icons add_option" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
+			}
+			echo '<tr>
 					<td>'.$datas['keterangan'].'</td>
 					<td>'.$datas['Biaya'].'</td>
 					<td>0</td>
 					<td> '.$class.'</td>
 				</tr>';			
+				
+				
 		endforeach;
 
-		echo $ls .'
-			<tr>
-				<td><input type="text" class="form-control" placeholder="Keterangan Pembayaran .." id="keterangan"></td>
-				<td><input type="text" class="form-control" placeholder="Jumlah Pembayaran .." id="jumlah"></td>
-				<td>0</td>
-				<td> '.$class.'</td>
-			</tr>';
 
 	}
 	public function actionProfiledetail($id){
@@ -396,7 +413,7 @@ class TagihanSiswaController extends Controller
 					</div>
 					<div class="col v-align-middle p-l-2">
 						<h1>
-							<b>'.$models[0]['nama_lengkap'].'</b> <i class="material-icons addbiaya" aria-hidden="true" data-toggle="modal" data-id='.$models[0]['idgroup'].';'.$models[0]['idkelas'].' data-target=".add-biaya">open_in_new</i>
+							<b>'.$models[0]['nama_lengkap'].'</b> <i class="material-icons addbiaya" title="Assign Biaya Tidak Tetap" aria-hidden="true" id="addbiaya" style="color:red" data-toggle="modal" data-id='.$models[0]['idsiswa'].' data-target=".add-biaya">open_in_new</i>
 						</h1>
 						<h3>'.$models[0]['wali_kelas'].'</h3>
 					</div>
@@ -528,6 +545,140 @@ class TagihanSiswaController extends Controller
 			return $data;
 		}
 	}
+
+	public function actionPostbiaya(){
+		if(Yii::$app->user->identity->auth_key){
+			
+			$data = explode(";",$_POST['data']);	
+			$admin = Yii::$app->user->identity->username;		
+				
+			$model = new TagihanBiayaTidaktetap();
+
+			$models = BiayaTidakTetap::findOne($data[1]);			
+			$no_invoice ='BIL'.rand(99999,11111);
+			$model->idsiswa = $data[0];
+			$model->idbiaya = $data[1];
+			$model->no_tagihan = $no_invoice;
+			$model->keterangan = $models->keterangan;
+			$model->nominal = $models->nominal;
+			$model->flag = 0;
+			$model->tgl_assign = date('Y-m-d H:i:s');
+			$model->user = $admin;
+			$model->save();	
+						
+			$data = ['err'=>'sukses'];
+
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['']
+			];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
+	}
+
+	public function actionPostoptional(){
+		if(Yii::$app->user->identity->auth_key){
+			$biaya = $_POST['biaya'];								
+			$keterangan = $_POST['keterangan'];			
+			$nama_tagihan = $_POST['nama_tagihan'];			
+			$idsiswa = $_POST['idsiswa'];			
+			$group = $_POST['group'];			
+			$admin = Yii::$app->user->identity->username;		
+				
+		
+			// $biaya =300000;			
+			// $group = 15;			
+			// $keterangan = 'Semester A';			
+			// $idsiswa = '17006';	
+			// $nama_tagihan = 'pembangunan';			
+			// $admin = Yii::$app->user->identity->username;	
+			
+			$model = new TagihanSiswa();
+			
+			$model->idsiswa = $idsiswa;			
+			$model->nama_tagihan = $nama_tagihan;
+			$model->keterangan = $keterangan;
+			$model->idgroup = $group;
+			$model->besaran = $biaya;
+			$model->user_create = $admin;
+			$model->date_create = date('Y-m-d H:i:s');
+			$model->save();	
+						
+
+			// $data = ['err'=>'sukses',
+			// 		 'biaya'=>$biaya,
+			// 		 'group' => $group,
+			// 		 'keterangan' => $keterangan,
+			// 		 'nama_tagihan' => $nama_tagihan,
+			// 		 'idsiswa' => $idsiswa,
+			// 		 'admin' => $admin
+			// 		];
+
+			$data = ['err'=>'sukses'];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}else{
+			$data = [
+				'data'=>['']
+			];
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+		}
+	}
+
+	public function actionTagihantidaktetap($id){
+		
+		$model = TagihanBiayaTidaktetap::find()
+				->where(['idsiswa'=>$id])
+				->All();
+		$output = array();
+
+		$aksi = '';
+		$status = '';
+		foreach($model as $key => $models):						
+			if($models->flag == 0){
+				$aksi = '<i class="material-icons bayar" aria-hidden="true" data-id='.$id.';'.$models->id.'>touch_app</i>';
+				$status =  '<span class="tag tag-danger">Belum Lunas</span>'; 
+			}else{
+				$aksi = '<i class="material-icons cetak" aria-hidden="true" data-id='.$id.';'.$models->id.'>print</i>';
+				$status =  '<span class="tag tag-success">Lunas</span>'; 
+			}
+			
+			$output[$key] = array($models->no_tagihan
+								 ,$models->keterangan
+								 ,number_format($models->nominal,0,'.','.')	
+								 ,$status					 
+								 ,$aksi);
+		endforeach;
+				
+				
+		$data = json_encode($output);
+		$data = [
+			'data'=>$output
+		];
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		return $data;
+		
+	}
+
+	public function actionPostpembayaran(){
+			$data = explode(";",$_POST['data']);
+			$model  = TagihanBiayaTidaktetap::findOne($data[1]);
+
+			$model->flag = 1;
+			$model->tgl_payment = date('Y-m-d H:i:s');
+			$model->user = Yii::$app->user->identity->username;
+			$model->save();
+
+			$data = ['err'=>'sukses'];
+
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return $data;
+	}
+
     public function actionView($id)
     {
         return $this->render('view', [
@@ -537,7 +688,7 @@ class TagihanSiswaController extends Controller
 
 	public function actionListtagihan($id){
 
-		$id = explode(";",$id);	
+		// $id = explode(";",$id);	
 		$model = BiayaTidakTetap::find()
 				->all();
 
@@ -546,7 +697,7 @@ class TagihanSiswaController extends Controller
 		foreach($model as $key => $models):						
 			$aksi = '';
 			
-				$aksi = '<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$models->id.'>add_box</i>';
+				$aksi = '<i class="material-icons assign" id="assign" aria-hidden="true" data-id='.$id.';'.$models->id.'>add_box</i>';
 			
 			$output[$key] = array($models->keterangan
 								 ,number_format($models->nominal,0,'.','.')						 
