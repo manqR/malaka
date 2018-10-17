@@ -1,19 +1,14 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.1.6-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             9.1.0.4867
+-- Host:                         localhost
+-- Server version:               10.1.25-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win32
+-- HeidiSQL Version:             9.3.0.4984
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Dumping database structure for malaka
-CREATE DATABASE IF NOT EXISTS `malaka` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `malaka`;
-
 
 -- Dumping structure for table malaka.beasiswa
 CREATE TABLE IF NOT EXISTS `beasiswa` (
@@ -38,10 +33,12 @@ CREATE TABLE IF NOT EXISTS `biaya_tidak_tetap` (
   `user_created` varchar(50) DEFAULT NULL,
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table malaka.biaya_tidak_tetap: ~0 rows (approximately)
+-- Dumping data for table malaka.biaya_tidak_tetap: ~1 rows (approximately)
 /*!40000 ALTER TABLE `biaya_tidak_tetap` DISABLE KEYS */;
+INSERT INTO `biaya_tidak_tetap` (`id`, `keterangan`, `nominal`, `user_created`, `date_created`) VALUES
+	(1, 'Wisuda', 15000000, 'admin', '2018-10-16 03:21:50');
 /*!40000 ALTER TABLE `biaya_tidak_tetap` ENABLE KEYS */;
 
 
@@ -377,13 +374,14 @@ CREATE TABLE IF NOT EXISTS `spp_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`,`idsiswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.spp_siswa: ~2 rows (approximately)
 /*!40000 ALTER TABLE `spp_siswa` DISABLE KEYS */;
 INSERT INTO `spp_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `bulan`, `besaran`, `user_create`, `date_create`) VALUES
 	(32, '176001', 26, 'Juli', 300000, 'admin', '2018-09-15 11:15:59'),
-	(33, '176001', 26, 'Agustus', 3000000, 'admin', '2018-09-15 13:06:59');
+	(33, '176001', 26, 'Agustus', 3000000, 'admin', '2018-09-15 13:06:59'),
+	(34, '176001', 26, 'September', 300000, 'admin', '2018-10-16 04:22:34');
 /*!40000 ALTER TABLE `spp_siswa` ENABLE KEYS */;
 
 
@@ -411,11 +409,34 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
   PRIMARY KEY (`idtagihan`,`idkelas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan: ~1 rows (approximately)
+-- Dumping data for table malaka.tagihan: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tagihan` DISABLE KEYS */;
 INSERT INTO `tagihan` (`idtagihan`, `idkelas`, `idajaran`, `idjurusan`, `administrasi`, `pengembangan`, `praktik`, `semester_a`, `semester_b`, `lab_inggris`, `lks`, `perpustakaan`, `osis`, `mpls`, `asuransi`, `user_create`, `date_create`, `user_update`, `date_update`) VALUES
 	('BIL001', '6', 13, 'TPM', 50000, 200000, 200000, 300000, 300000, 150000, 250000, 150000, 200000, 150000, 200000, 'admin', '2018-09-15 11:05:38', NULL, NULL);
 /*!40000 ALTER TABLE `tagihan` ENABLE KEYS */;
+
+
+-- Dumping structure for table malaka.tagihan_biaya_tidaktetap
+CREATE TABLE IF NOT EXISTS `tagihan_biaya_tidaktetap` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idbiaya` int(11) NOT NULL DEFAULT '0',
+  `no_tagihan` char(10) NOT NULL,
+  `idsiswa` char(10) NOT NULL,
+  `keterangan` varchar(50) NOT NULL,
+  `nominal` double NOT NULL,
+  `flag` int(11) NOT NULL,
+  `tgl_assign` datetime NOT NULL,
+  `tgl_payment` datetime DEFAULT NULL,
+  `user` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table malaka.tagihan_biaya_tidaktetap: ~0 rows (approximately)
+/*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` DISABLE KEYS */;
+INSERT INTO `tagihan_biaya_tidaktetap` (`id`, `idbiaya`, `no_tagihan`, `idsiswa`, `keterangan`, `nominal`, `flag`, `tgl_assign`, `tgl_payment`, `user`) VALUES
+	(9, 1, 'BIL86936', '176001', 'Wisuda', 15000000, 1, '2018-10-16 04:47:19', '2018-10-16 05:28:47', 'admin'),
+	(10, 1, 'BIL43704', '176001', 'Wisuda', 15000000, 0, '2018-10-16 04:48:17', '2018-10-16 05:26:04', 'admin');
+/*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.tagihan_siswa
@@ -429,10 +450,13 @@ CREATE TABLE IF NOT EXISTS `tagihan_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.tagihan_siswa: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_siswa` DISABLE KEYS */;
+INSERT INTO `tagihan_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `nama_tagihan`, `besaran`, `keterangan`, `user_create`, `date_create`) VALUES
+	(25, '176001', 26, 'administrasi', 50000, 'Administrasi', 'admin', '2018-10-16 12:26:33'),
+	(26, '176001', 26, 'pengembangan', 200000, 'Pengembangan', 'admin', '2018-10-17 02:21:25');
 /*!40000 ALTER TABLE `tagihan_siswa` ENABLE KEYS */;
 
 
