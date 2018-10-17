@@ -155,7 +155,26 @@
                 </ul>
             </li>
             <!-- /setup -->
-           
+
+           <!-- Laporan pemasukan / pengeluaran -->
+           <li>
+                <a href="javascript:;">
+                <span class="menu-caret">
+                <i class="material-icons">arrow_drop_down</i>
+                </span>
+                <i class="material-icons text-default">description</i>
+                <span>Pencatatan Keuangan</span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="pencatatan">
+                        <span>Tambah Pencatatan</span>
+                        </a>
+                    </li>                                                 
+                </ul>
+            </li>
+            <!-- /Laporan pemasukan / pengeluaran -->
+
             <!-- report -->
             <li>
                 <a href="javascript:;">
@@ -179,6 +198,8 @@
                 </ul>
             </li>
             <!-- /report -->
+
+            
             
 			
             <li>

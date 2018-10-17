@@ -218,7 +218,9 @@ class TagihanSiswaController extends Controller
 												JOIN tagihan c ON b.idkelas = c.idkelas AND f.idjurusan = c.idjurusan
 												JOIN spp d ON d.idtagihan = c.idtagihan
 												LEFT JOIN spp_siswa e ON e.idsiswa = a.idsiswa AND e.idgroup = a.idgroup AND e.bulan = d.bulan
-											WHERE a.idsiswa = '".$id."' AND a.id = (SELECT x.id FROM detail_group x WHERE x.idsiswa = '".$id."' ORDER BY x.id DESC LIMIT 1)");
+												LEFT JOIN months g ON d.bulan = g.namabulan
+											WHERE a.idsiswa = '".$id."' AND a.id = (SELECT x.id FROM detail_group x WHERE x.idsiswa = '".$id."' ORDER BY x.id DESC LIMIT 1)
+												  AND g.urutan <= (SELECT urutan FROM months WHERE idbulan = MONTH(now())) AND  IFNULL(e.besaran,0) <= 0 ");
 		$models = $sql->queryAll();	
 		
 		foreach($models as $model):

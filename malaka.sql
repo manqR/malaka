@@ -129,6 +129,53 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 /*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 
 
+-- Dumping structure for table malaka.months
+CREATE TABLE IF NOT EXISTS `months` (
+  `idbulan` int(11) NOT NULL,
+  `namabulan` varchar(50) DEFAULT NULL,
+  `urutan` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idbulan`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table malaka.months: ~12 rows (approximately)
+/*!40000 ALTER TABLE `months` DISABLE KEYS */;
+INSERT INTO `months` (`idbulan`, `namabulan`, `urutan`) VALUES
+	(1, 'Januari', 7),
+	(2, 'Februari', 8),
+	(3, 'Maret', 9),
+	(4, 'April', 10),
+	(5, 'Mei', 11),
+	(6, 'Juni', 12),
+	(7, 'Juli', 1),
+	(8, 'Agustus', 2),
+	(9, 'September', 3),
+	(10, 'Oktober', 4),
+	(11, 'November', 5),
+	(12, 'Desember', 6);
+/*!40000 ALTER TABLE `months` ENABLE KEYS */;
+
+
+-- Dumping structure for table malaka.pencatatan_keuangan
+CREATE TABLE IF NOT EXISTS `pencatatan_keuangan` (
+  `idcatat` int(11) NOT NULL AUTO_INCREMENT,
+  `no_pencatatan` char(10) NOT NULL,
+  `kategori` varchar(50) NOT NULL,
+  `keterangan` varchar(50) NOT NULL,
+  `nominal` double NOT NULL,
+  `flag` int(11) NOT NULL,
+  `user_create` varchar(50) NOT NULL,
+  `date_create` datetime NOT NULL,
+  PRIMARY KEY (`idcatat`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table malaka.pencatatan_keuangan: ~0 rows (approximately)
+/*!40000 ALTER TABLE `pencatatan_keuangan` DISABLE KEYS */;
+INSERT INTO `pencatatan_keuangan` (`idcatat`, `no_pencatatan`, `kategori`, `keterangan`, `nominal`, `flag`, `user_create`, `date_create`) VALUES
+	(1, 'IN31573', 'pemasukan', 'abcd', 100000, 1, 'admin', '2018-10-17 05:57:21'),
+	(2, 'OUT45484', 'pengeluaran', 'abcd', 100000, 1, 'admin', '2018-10-17 05:58:29');
+/*!40000 ALTER TABLE `pencatatan_keuangan` ENABLE KEYS */;
+
+
 -- Dumping structure for table malaka.prestasi
 CREATE TABLE IF NOT EXISTS `prestasi` (
   `idsiswa` char(10) NOT NULL,
@@ -374,14 +421,13 @@ CREATE TABLE IF NOT EXISTS `spp_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`,`idsiswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table malaka.spp_siswa: ~2 rows (approximately)
 /*!40000 ALTER TABLE `spp_siswa` DISABLE KEYS */;
 INSERT INTO `spp_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `bulan`, `besaran`, `user_create`, `date_create`) VALUES
 	(32, '176001', 26, 'Juli', 300000, 'admin', '2018-09-15 11:15:59'),
-	(33, '176001', 26, 'Agustus', 3000000, 'admin', '2018-09-15 13:06:59'),
-	(34, '176001', 26, 'September', 300000, 'admin', '2018-10-16 04:22:34');
+	(35, '176001', 26, 'Agustus', 300000, 'admin', '2018-10-17 05:32:26');
 /*!40000 ALTER TABLE `spp_siswa` ENABLE KEYS */;
 
 
@@ -429,13 +475,14 @@ CREATE TABLE IF NOT EXISTS `tagihan_biaya_tidaktetap` (
   `tgl_payment` datetime DEFAULT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan_biaya_tidaktetap: ~0 rows (approximately)
+-- Dumping data for table malaka.tagihan_biaya_tidaktetap: ~3 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` DISABLE KEYS */;
 INSERT INTO `tagihan_biaya_tidaktetap` (`id`, `idbiaya`, `no_tagihan`, `idsiswa`, `keterangan`, `nominal`, `flag`, `tgl_assign`, `tgl_payment`, `user`) VALUES
 	(9, 1, 'BIL86936', '176001', 'Wisuda', 15000000, 1, '2018-10-16 04:47:19', '2018-10-16 05:28:47', 'admin'),
-	(10, 1, 'BIL43704', '176001', 'Wisuda', 15000000, 0, '2018-10-16 04:48:17', '2018-10-16 05:26:04', 'admin');
+	(10, 1, 'BIL43704', '176001', 'Wisuda', 15000000, 0, '2018-10-16 04:48:17', '2018-10-16 05:26:04', 'admin'),
+	(11, 1, 'BIL40678', '176001', 'Wisuda', 15000000, 1, '2018-10-17 05:32:59', '2018-10-17 05:33:32', 'admin');
 /*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` ENABLE KEYS */;
 
 
@@ -452,7 +499,7 @@ CREATE TABLE IF NOT EXISTS `tagihan_siswa` (
   PRIMARY KEY (`idtagihan_siswa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan_siswa: ~0 rows (approximately)
+-- Dumping data for table malaka.tagihan_siswa: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_siswa` DISABLE KEYS */;
 INSERT INTO `tagihan_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `nama_tagihan`, `besaran`, `keterangan`, `user_create`, `date_create`) VALUES
 	(25, '176001', 26, 'administrasi', 50000, 'Administrasi', 'admin', '2018-10-16 12:26:33'),
