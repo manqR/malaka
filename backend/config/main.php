@@ -32,8 +32,18 @@ return [
 				'jurusan'=>'jurusan/index',				
 				'registration'=>'siswa/index',
 				'ajaran'=>'tahun-ajaran/index',
-				'biaya_tidak_tetap'=>'biaya-tidak-tetap/index',
+				'biaya_tidak_tetap'=>'biaya-tidak-tetap/index',								
+				//---------------------------------- /SETUP -----------------------------//
+
+
+				//---------------------------------- <PENCATATAN KEUANGAN> -----------------------------//
 				'pencatatan'=>'pencatatan-keuangan/index',
+
+				//---------------------------------- </PENCATATAN KEUANGAN> -----------------------------//
+
+				//---------------------------------- <KASIR> -----------------------------//
+				'kasir'=>'kasir/index',
+				//---------------------------------- </KASIR> -----------------------------//
 				
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',

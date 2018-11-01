@@ -95,12 +95,12 @@
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
                 <i class="material-icons text-success">account_balance</i>               
-                <span>Student</span>
+                <span>Siswa</span>
                 </a>
                 <ul class="sub-menu">
                     <li>
                         <a href="registration">
-                        <span>Registration</span>
+                        <span>Registrasi</span>
                         </a>
                     </li>
 					<li>
@@ -110,7 +110,7 @@
                     </li>      
                     <li>
                         <a href="billing">
-                        <span>Billing</span>
+                        <span>Tagihan</span>
                         </a>
                     </li> 					            
                 </ul>
@@ -124,22 +124,22 @@
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
                 <i class="material-icons text-danger">settings</i>
-                <span>Setup</span>
+                <span>Pengaturan</span>
                 </a>
                 <ul class="sub-menu">
                     <li>
                         <a href="tagihan">
-                        <span>Setup Tagihan</span>
+                        <span>Tagihan</span>
                         </a>
                     </li>
                     <li>
                         <a href="kelas">
-                        <span>Tambah Kelas</span>
+                        <span>Kelas</span>
                         </a>
                     </li>
                     <li>
                         <a href="jurusan">
-                        <span>Tambah Jurusan</span>
+                        <span>Jurusan</span>
                         </a>
                     </li>      
 					<li>
@@ -149,7 +149,7 @@
                     </li>                   
 					<li>
                         <a href="biaya_tidak_tetap">
-                        <span>Komponen Biaya Tidak Tetap</span>
+                        <span>Biaya Tidak Tetap</span>
                         </a>
                     </li>                   
                 </ul>
@@ -175,6 +175,15 @@
             </li>
             <!-- /Laporan pemasukan / pengeluaran -->
 
+             <!-- dashboard -->
+             <li>
+                <a href="kasir">
+                    <i class="material-icons text-danger">attach_money</i>
+                    <span>Kasir</span>
+                </a>
+            </li>
+            <!-- /dashboard -->
+
             <!-- report -->
             <li>
                 <a href="javascript:;">
@@ -182,7 +191,7 @@
                 <i class="material-icons">arrow_drop_down</i>
                 </span>
                 <i class="material-icons text-warning">assessment</i>
-                <span>Report</span>
+                <span>Laporan</span>
                 </a>
                 <ul class="sub-menu">
                     <li>
