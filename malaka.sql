@@ -35,11 +35,39 @@ CREATE TABLE IF NOT EXISTS `biaya_tidak_tetap` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table malaka.biaya_tidak_tetap: ~1 rows (approximately)
+-- Dumping data for table malaka.biaya_tidak_tetap: ~0 rows (approximately)
 /*!40000 ALTER TABLE `biaya_tidak_tetap` DISABLE KEYS */;
 INSERT INTO `biaya_tidak_tetap` (`id`, `keterangan`, `nominal`, `user_created`, `date_created`) VALUES
 	(1, 'Wisuda', 15000000, 'admin', '2018-10-16 03:21:50');
 /*!40000 ALTER TABLE `biaya_tidak_tetap` ENABLE KEYS */;
+
+
+-- Dumping structure for table malaka.cart
+CREATE TABLE IF NOT EXISTS `cart` (
+  `idcart` int(11) NOT NULL AUTO_INCREMENT,
+  `idsiswa` char(10) NOT NULL,
+  `keterangan` varchar(50) NOT NULL,
+  `nominal` double NOT NULL,
+  `catatan` varchar(50) NOT NULL,
+  `user_create` varchar(50) NOT NULL,
+  `date_create` datetime NOT NULL,
+  PRIMARY KEY (`idcart`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table malaka.cart: ~0 rows (approximately)
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+
+
+-- Dumping structure for table malaka.cart_detail
+CREATE TABLE IF NOT EXISTS `cart_detail` (
+  `idcart` int(11) DEFAULT NULL,
+  `idtagihan` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table malaka.cart_detail: ~0 rows (approximately)
+/*!40000 ALTER TABLE `cart_detail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart_detail` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.detail_group
@@ -168,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `pencatatan_keuangan` (
   PRIMARY KEY (`idcatat`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.pencatatan_keuangan: ~0 rows (approximately)
+-- Dumping data for table malaka.pencatatan_keuangan: ~2 rows (approximately)
 /*!40000 ALTER TABLE `pencatatan_keuangan` DISABLE KEYS */;
 INSERT INTO `pencatatan_keuangan` (`idcatat`, `no_pencatatan`, `kategori`, `keterangan`, `nominal`, `flag`, `user_create`, `date_create`) VALUES
 	(1, 'IN31573', 'pemasukan', 'abcd', 100000, 1, 'admin', '2018-10-17 05:57:21'),
