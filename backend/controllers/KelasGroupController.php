@@ -157,8 +157,9 @@ class KelasGroupController extends Controller
 				
 			foreach($models as $key => $model):
 				$kelas = $model['kelas'];				
+				$kode = $model['kode'];				
 				$aksi = '';
-				if($kelas == '-'){
+				if($kelas == '-' || $kode == ''){
 					$aksi = '<i class="material-icons tambah" aria-hidden="true" data-id='.$id[0].';'.$id[1].';'.$model['idsiswa'].'>add_box</i>';
 				}else{
 					$aksi = '<span class="tag tag-success">Terdaftar di kelas '.$model['kode'].'- wali '.$model['wali_kelas'].'</span>' ;
@@ -167,7 +168,7 @@ class KelasGroupController extends Controller
 									 ,$model['nama_lengkap']
 									 ,$model['jenis_kelamin']
 									 ,$model['tempat_lahir']
-									 ,$model['tanggal_lahir']
+									 ,$model['kelas']
 									 ,$aksi);
 			endforeach;
 			
