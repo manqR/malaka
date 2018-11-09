@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Siswa;
+use yii\web\Response;
 
 /**
  * KasirController implements the CRUD actions for Cart model.
@@ -47,49 +48,20 @@ class KasirController extends Controller
 
     public function actionCart($id){
         $connection = \Yii::$app->db;
-		$query = $connection->createCommand("SELECT keterangan, nama_tagihan,
-													(CASE WHEN keterangan = 'Semester Ganjil' 	THEN semester_a 
-														WHEN keterangan = 'Semester Genap'  	THEN semester_b
-															WHEN keterangan = 'Perpustakaan' 	THEN perpustakaan 
-															WHEN keterangan = 'Osis'			THEN osis
-															WHEN keterangan = 'MPLS'			THEN mpls
-															WHEN keterangan = 'LKS'				THEN lks
-															WHEN keterangan = 'Lab Bhs Inggis'	THEN lab_inggris
-															WHEN keterangan = 'Asuransi'		THEN asuransi
-														ELSE 0 END) Biaya,
-														urutan 
-											FROM (
-												SELECT 'Semester Ganjil' keterangan ,'semester_a' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 1 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'Semester Genap' keterangan, 'semester_b' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 2 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'Lab Bhs Inggis' keterangan, 'lab_inggris' nama_tagihan , semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 3 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'LKS' keterangan, 'lks' nama_tagihan ,semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 4 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'Perpustakaan' keterangan, 'perpustakaan' nama_tagihan , semester_a, semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 5 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'Osis' keterangan,semester_a, 'osis' nama_tagihan, semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 6 urutan FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'MPLS' keterangan,semester_a, 'mpls' nama_tagihan  ,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi, 7 urutan  FROM tagihan WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-												UNION ALL
-												SELECT 'Asuransi' keterangan, 'asuransi' nama_tagihan, semester_a,semester_b, lab_inggris, lks, perpustakaan, osis, mpls, asuransi , 8 urutan FROM tagihan	 WHERE idkelas = '".$model[0]['idkelas']."' AND idjurusan = '".$model[0]['idjurusan']."'
-											)src
-											GROUP BY keterangan
-											ORDER BY urutan ");
+		$query = $connection->createCommand("SELECT * FROM v_tagihan_siswa a LEFT JOIN tahun_ajaran b ON a.ajaran = b.idajaran WHERE idsiswa = '".$id."' ORDER BY ajaran ASC");
 		$data = $query->queryAll();
-        $model = $sql->queryAll();	
         
         $output = array();
-				
-		foreach($model as $key => $models):
 		
-			$output[$key] = array($model['idsiswa']
-								 ,$model['nama_lengkap']
-								 ,$model['jenis_kelamin']
-								 ,$model['tempat_lahir']
-								 ,$model['tanggal_lahir']
-								 ,$aksi);
+        foreach($data as $key => $models):
+            
+            $ajaran = isset($models['ajaran']) ? $models['ajaran'] : 'X';
+            $aksi = '<i class="material-icons tambah" aria-hidden="true" data-id="'.$models['key_'].';'.$ajaran.';'.$models['idsiswa'].'">add_box</i>';
+			$output[$key] = array($models['idsiswa']
+								 ,$models['keterangan']
+								 ,$models['nominal']
+                                 ,isset($models['tahun_ajaran']) ? $models['tahun_ajaran'] : '-'
+                                 ,$aksi);
 		endforeach;
 		
 		

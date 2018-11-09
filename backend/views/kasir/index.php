@@ -27,6 +27,9 @@ $this->registerJsFile($root."/vendors/datatables/media/js/jquery.dataTables.js",
 $this->registerJsFile($root."/vendors/datatables/media/js/dataTables.bootstrap4.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
+$this->registerJsFile($root."/vendors/sweetalert/dist/sweetalert.min.js",
+['depends' => [\yii\web\JqueryAsset::className()],
+'position' => View::POS_END]);
 $this->registerJs(" 
                 $('.app').addClass('offcanvas');
                 $(document).on(\"click\", \".addCart\", function () {								
@@ -40,10 +43,47 @@ $this->registerJs("
                 });
                 ");
 
+$this->registerJs("
+    $(document).on(\"click\", \".tambah\", function () {		
+        var datas = $(this).data('id');
+        console.log(datas);
+        swal({
+            title: 'Are you sure?',
+            text: 'Masukan Tagihan kedalam Cart ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Yes, save it!',
+            closeOnConfirm: false
+        }, function() {							
+            console.log(datas);
+            $.post('kelas-group/postkelas',{
+                data: datas
+            },
+            function(data, status){	
+                if(data.err == 'sukses'){										
+                    var rld = datas.split(';');										
+                    $('.datatable').DataTable({
+                        'destroy': true,										
+                        'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
+                    
+                    });		
+                    swal('Saving!', 'Data Siswa Berhasil ditambahkan', 'success');
+                }else{										
+                    swal('Saving!', 'Data Tidak Berhasil ditambahkan', 'error');
+                }
+                                                        
+            });
+        });
+                                                                
+    })
+");
+
 /* @CSS */
 $this->registerCssFile($root."/vendors/select2/select2.css");
+$this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
 $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap4.css");
-
+$this->registerCss(".tambah{cursor: pointer;}");
 
 ?>
 
@@ -52,7 +92,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
         <?php
             foreach($model as $models):
         ?>
-        <option value="<?= $models->idsiswa?>"><?= $models->nama_lengkap?></option>
+        <option value="<?= $models->idsiswa?>"><?= $models->nama_lengkap?> - <?= $models->idsiswa?></option>
         <?php
             endforeach;
         ?>       
@@ -111,7 +151,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
                 Subtotal
                 </strong>
                 <span class="invoice-totals-value">
-                $1619.97
+                0
                 </span>
             </div>
             <div class="invoice-totals-row">
@@ -119,7 +159,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
                 Total
                 </strong>
                 <span class="invoice-totals-value">
-                $1619.97
+                0
                 </span>
             </div>
             <div class="invoice-totals-row">
@@ -127,7 +167,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
                 Amount Paid
                 </strong>
                 <span class="invoice-totals-value">
-                $0.00
+                0
                 </span>
             </div>
             <div class="invoice-totals-row">
@@ -135,7 +175,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
                 Amount Due
                 </strong>
                 <span class="invoice-totals-value">
-                $1619.97
+                0
                 </span>
             </div>
         </div>      
@@ -157,7 +197,7 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Tambah Siswa</h4>
+					<h4 class="modal-title" id="myModalLabel">List Tagihan</h4>
 				</div>
 				<div class="modal-body">
 					<div class="table-responsive">
@@ -168,17 +208,14 @@ $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap
 										NIS
 									</th>
 									<th>
-										Nama
+										Keterangan
 									</th>
 									<th>
-										Janis Kelamin
+										Nominal
 									</th>
 									<th>
-										Tempat Lahir
-									</th>
-									<th>
-										Tanggal Lahir
-									</th>
+										Tahun Ajaran
+									</th>								
 									<th>
 										Aksi
 									</th>

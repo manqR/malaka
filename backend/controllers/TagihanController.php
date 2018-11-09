@@ -55,10 +55,10 @@ class TagihanController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idtagihan, $idjurusan, $idkelas)
+    public function actionView($idtagihan,  $idkelas)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idtagihan, $idjurusan, $idkelas),
+            'model' => $this->findModel($idtagihan, $idkelas),
         ]);
     }
 
@@ -186,9 +186,9 @@ class TagihanController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idtagihan, $idjurusan, $idkelas)
+    public function actionUpdate($idtagihan, $idkelas)
     {
-        $model = $this->findModel($idtagihan, $idjurusan, $idkelas);
+        $model = $this->findModel($idtagihan, $idkelas);
 		$spp = Spp::find()
 			   ->where(['idtagihan'=>$idtagihan])
 			   ->One();
@@ -294,7 +294,7 @@ class TagihanController extends Controller
      */
     public function actionDelete($idtagihan, $idjurusan, $idkelas)
     {
-        $this->findModel($idtagihan, $idjurusan, $idkelas)->delete();
+        $this->findModel($idtagihan,  $idkelas)->delete();
 
         return $this->redirect(['index']);
     }
@@ -308,9 +308,9 @@ class TagihanController extends Controller
      * @return Tagihan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idtagihan, $idjurusan, $idkelas)
+    protected function findModel($idtagihan,  $idkelas)
     {
-        if (($model = Tagihan::findOne(['idtagihan' => $idtagihan, 'idjurusan' => $idjurusan, 'idkelas' => $idkelas])) !== null) {
+        if (($model = Tagihan::findOne(['idtagihan' => $idtagihan,  'idkelas' => $idkelas])) !== null) {
             return $model;
         }
 

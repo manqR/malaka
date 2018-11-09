@@ -9,9 +9,11 @@ use Yii;
  *
  * @property int $idcart
  * @property string $idsiswa
+ * @property string $key_
+ * @property string $ajaran
  * @property string $keterangan
  * @property double $nominal
- * @property string $catatan
+ * @property int $flag
  * @property string $user_create
  * @property string $date_create
  */
@@ -31,11 +33,12 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idsiswa', 'keterangan', 'nominal', 'catatan', 'user_create', 'date_create'], 'required'],
+            [['idsiswa', 'key_', 'ajaran', 'keterangan', 'nominal', 'flag', 'user_create', 'date_create'], 'required'],
             [['nominal'], 'number'],
+            [['flag'], 'integer'],
             [['date_create'], 'safe'],
-            [['idsiswa'], 'string', 'max' => 10],
-            [['keterangan', 'catatan', 'user_create'], 'string', 'max' => 50],
+            [['idsiswa', 'ajaran'], 'string', 'max' => 10],
+            [['key_', 'keterangan', 'user_create'], 'string', 'max' => 50],
         ];
     }
 
@@ -47,9 +50,11 @@ class Cart extends \yii\db\ActiveRecord
         return [
             'idcart' => 'Idcart',
             'idsiswa' => 'Idsiswa',
+            'key_' => 'Key',
+            'ajaran' => 'Ajaran',
             'keterangan' => 'Keterangan',
             'nominal' => 'Nominal',
-            'catatan' => 'Catatan',
+            'flag' => 'Flag',
             'user_create' => 'User Create',
             'date_create' => 'Date Create',
         ];
