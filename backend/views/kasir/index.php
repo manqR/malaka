@@ -34,14 +34,59 @@ $this->registerJs("
                 $('.app').addClass('offcanvas');
                 $(document).on(\"click\", \".addCart\", function () {								
                     var id = document.getElementById('siswa').value;
-                    console.log(id);
                     
                     var table = $('.datatable').DataTable({
                             'destroy': true,										
                             'ajax': './kasir/cart?id='+id
                     });																								
                 });
+                               
+                
                 ");
+
+$this->registerJs("
+    function listTagihan() {
+        var id = document.getElementById('siswa').value;
+        $.ajax({
+			type: 'GET',
+			url: 'kasir/list?id='+id,
+			data: 'kasir/list?id='+id,
+			cache: false,
+			success: function(html) {											
+				$('#show').html(html);   				
+			}
+        });
+        
+        $.ajax({
+			type: 'GET',
+			url: 'kasir/jumlah-list?id='+id,
+			data: 'kasir/jumlah-list?id='+id,
+			cache: false,
+			success: function(html) {											
+				$('#jml').html(html);   				
+			}
+        });
+        
+       
+    };
+    function rupiah(bilangan){           
+        var	number_string = bilangan.toString(),
+            sisa 	= number_string.length % 3,
+            result 	= number_string.substr(0, sisa),
+            ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            result += separator + ribuan.join('.');
+        }
+        return result;
+    };
+    function Checkout(){
+
+
+
+    }
+", View::POS_HEAD); 
 
 $this->registerJs("
     $(document).on(\"click\", \".tambah\", function () {		
@@ -57,26 +102,61 @@ $this->registerJs("
             closeOnConfirm: false
         }, function() {							
             console.log(datas);
-            $.post('kelas-group/postkelas',{
+            $.post('kasir/post',{
                 data: datas
             },
             function(data, status){	
-                if(data.err == 'sukses'){										
-                    var rld = datas.split(';');										
-                    $('.datatable').DataTable({
-                        'destroy': true,										
-                        'ajax': './kelas-group/listsiswa?id='+rld[0]+';'+rld[1]
-                    
-                    });		
-                    swal('Saving!', 'Data Siswa Berhasil ditambahkan', 'success');
-                }else{										
-                    swal('Saving!', 'Data Tidak Berhasil ditambahkan', 'error');
+                if(data.err == 'sukses'){										                    
+                    swal('Saving!', 'Data Pembayaran berhasil ditambahkan', 'success');
+                    listTagihan();
+                }else{                    									
+                    swal('Saving!', 'Data Pembayaran gagal ditambahkan', 'error');
                 }
                                                         
             });
         });
                                                                 
     })
+
+    $(document).on(\"click\", \".checkout\", function (){
+        var nominal = document.getElementById('nominal').value;
+        var siswa = document.getElementById('siswa').value;
+        swal({
+          title: 'Jumlah Uang',
+          text: 'Masukan jumlah uang dibayarkan ',
+          type: 'input',
+          showCancelButton: true,
+          closeOnConfirm: false,
+          animation: 'slide-from-top',
+          inputPlaceholder: 'Write something'
+        }, function(inputValue) {
+            
+            if (inputValue === false) {
+                return false;
+            }
+            if (inputValue === '' || isNaN(inputValue) || inputValue < nominal) {
+                console.log(inputValue);
+                console.log(nominal);
+                swal.showInputError('Nilai yang dimasukan salah');
+                return false;
+            }
+                $.post('kasir/checkout',{
+                    data: siswa
+                },
+                function(data, status){	
+                    if(data.err == 'sukses'){										                    
+                        var kembalian = inputValue - nominal;
+                        swal('Pembayaran Berhasil', 'Nilai Kembailan: Rp ' + rupiah(kembalian), 'success');
+                        listTagihan();
+                    }else{                    									
+                        swal('Saving!', 'Proses Checkout Gagal !', 'error');
+                    }
+                                                        
+            });
+          
+        });
+      });
+
 ");
 
 /* @CSS */
@@ -88,7 +168,8 @@ $this->registerCss(".tambah{cursor: pointer;}");
 ?>
 
 <div class="card card-block">
-    <select data-placeholder="Your Favorite Football Team" class="select2 m-b-1" style="width: 100%;" id="siswa">
+    <select data-placeholder="pilih siswa" class="select2 m-b-1" style="width: 100%;" id="siswa" onchange="listTagihan()">
+        <option value="">- pilih siswa -</option>
         <?php
             foreach($model as $models):
         ?>
@@ -110,78 +191,40 @@ $this->registerCss(".tambah{cursor: pointer;}");
                 <thead>
                     <tr>
                         <th>
-                            Description
+                            NIS
                         </th>
                         <th>
-                            Unit Price
+                            Keterangan
                         </th>
                         <th>
-                            Quantity
+                            Nominal
                         </th>
                         <th>
-                            Amount
+                            Qty
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="show">
                     <tr>
                         <td colspan="4" class="text-xs-center">No data available in table</td>
-                    </tr>
-                    <!-- <tr>
-                        <td>
-                            Monthly web updates for http://www.themeforest.net
-                        </td>
-                        <td>
-                            $250.00
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            $250.00
-                        </td>
-                    </tr> -->
-                  
+                    </tr>            
                 </tbody>
             </table>
         </div>
-        <div class="invoice-totals p-t-2 p-b-2">
+        <div class="invoice-totals p-t-2 p-b-2" id="jml">
             <div class="invoice-totals-row">
                 <strong class="invoice-totals-title">
                 Subtotal
                 </strong>
                 <span class="invoice-totals-value">
-                0
+                <b>Rp 0</b>
                 </span>
-            </div>
-            <div class="invoice-totals-row">
-                <strong class="invoice-totals-title">
-                Total
-                </strong>
-                <span class="invoice-totals-value">
-                0
-                </span>
-            </div>
-            <div class="invoice-totals-row">
-                <strong class="invoice-totals-title">
-                Amount Paid
-                </strong>
-                <span class="invoice-totals-value">
-                0
-                </span>
-            </div>
-            <div class="invoice-totals-row">
-                <strong class="invoice-totals-title">
-                Amount Due
-                </strong>
-                <span class="invoice-totals-value">
-                0
-                </span>
-            </div>
+                <input type='hidden' id='nominal' name='nominal' value=0>
+            </div>        
         </div>      
     </div>
     <div class="card-footer text-xs-right" style="background-color:#f7f7f700">      
-        <button type="button" class="btn btn-danger btn-icon btn-sm">
+        <button type="button" class="btn btn-danger btn-icon btn-sm checkout">
         <i class="material-icons">shopping_basket</i>
         Checkout
         </button>

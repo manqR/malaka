@@ -10,7 +10,7 @@ use Yii;
  * @property int $idcart
  * @property string $idsiswa
  * @property string $key_
- * @property string $ajaran
+ * @property string $idkelas
  * @property string $keterangan
  * @property double $nominal
  * @property int $flag
@@ -33,12 +33,12 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idsiswa', 'key_', 'ajaran', 'keterangan', 'nominal', 'flag', 'user_create', 'date_create'], 'required'],
+            [['idsiswa', 'key_', 'idkelas', 'keterangan', 'nominal', 'flag', 'user_create', 'date_create'], 'required'],
             [['nominal'], 'number'],
             [['flag'], 'integer'],
             [['date_create'], 'safe'],
-            [['idsiswa', 'ajaran'], 'string', 'max' => 10],
-            [['key_', 'keterangan', 'user_create'], 'string', 'max' => 50],
+            [['idsiswa'], 'string', 'max' => 10],
+            [['key_', 'idkelas', 'keterangan', 'user_create'], 'string', 'max' => 50],
         ];
     }
 
@@ -51,7 +51,7 @@ class Cart extends \yii\db\ActiveRecord
             'idcart' => 'Idcart',
             'idsiswa' => 'Idsiswa',
             'key_' => 'Key',
-            'ajaran' => 'Ajaran',
+            'idkelas' => 'Idkelas',
             'keterangan' => 'Keterangan',
             'nominal' => 'Nominal',
             'flag' => 'Flag',
