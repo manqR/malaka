@@ -175,14 +175,33 @@
             </li>
             <!-- /Laporan pemasukan / pengeluaran -->
 
-             <!-- dashboard -->
+             <!-- Kasir -->
              <li>
                 <a href="kasir">
                     <i class="material-icons text-danger">attach_money</i>
                     <span>Kasir</span>
                 </a>
             </li>
-            <!-- /dashboard -->
+            <!-- /kasir -->
+
+             <!-- Spp -->
+             <li>
+                <a href="spp">
+                    <i class="material-icons">receipt</i>
+                    <span>Spp</span>
+                </a>
+            </li>
+            <!-- /spp -->
+
+             <!-- Import -->
+             <li>
+                <a href="upload">
+                    <i class="material-icons text-success">cloud_upload</i>
+                    <span>Upload</span>
+                </a>
+            </li>
+            <!-- /Import -->
+
 
             <!-- report -->
             <li>

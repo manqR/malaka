@@ -24,6 +24,10 @@ return [
 				'siswa'=>'siswa/index',								
 				'class'=>'kelas-group/index',								
 				'billing'=>'tagihan-siswa/index',
+				'spp' => 'spp/index',
+				'upload' => 'upload/index',
+				'upload-upload' => 'upload/upload',
+				'tagihan_siswa-print-<idsiswa>-<idbilling>' => 'tagihan-siswa/print',
 				//---------------------------------- </STUDENT -----------------------------//
 				
 				//---------------------------------- SETUP -----------------------------//

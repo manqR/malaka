@@ -157,6 +157,12 @@ $this->registerJs("
         });
       });
 
+
+    $(document).on(\"click\", \".print\", function (){    
+        var siswa = document.getElementById('siswa').value; 
+        window.open('http://localhost/malaka/kasir/print?id='+siswa, 'cetak');          
+    });
+
 ");
 
 /* @CSS */
@@ -228,6 +234,10 @@ $this->registerCss(".tambah{cursor: pointer;}");
         <i class="material-icons">shopping_basket</i>
         Checkout
         </button>
+        <button type="button" class="btn btn-warning btn-icon btn-sm print">
+        <i class="material-icons">print</i>
+        Cetak
+        </button>        
     </div>
 </div>
 
