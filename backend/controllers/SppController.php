@@ -26,7 +26,7 @@ class SppController extends \yii\web\Controller
 												JOIN spp d ON d.idtagihan = c.idtagihan
 												LEFT JOIN spp_siswa e ON e.idsiswa = a.idsiswa AND e.idgroup = a.idgroup AND e.bulan = d.bulan
 												LEFT JOIN months g ON d.bulan = g.namabulan
-											WHERE a.idsiswa = '".$id."' AND a.id = (SELECT x.id FROM detail_group x WHERE x.idsiswa = '".$id."' ORDER BY x.id DESC LIMIT 1)");
+											WHERE a.idsiswa = '".$id."'");
 		$models = $sql->queryAll();	
 		
 		foreach($models as $model):

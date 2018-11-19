@@ -9,7 +9,7 @@
 - tanggal payment diganti tanggal duedate
 
 * Master Biaya Tidak Tetap
-- Tambah Field Tahun Ajaran
+- Tambah Field Tahun Ajaran 
 
 * Kuitansi
 - Masih tunggu format
