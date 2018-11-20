@@ -8060,6 +8060,19 @@ label.error {
   font-weight: 400;
   color: #d26d54; }
 
+
+
+/* CUSTOME */
+
+.listMenu{
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.listMenu a {
+  margin: 0 20px;
+}
 /* $portlets
  ------------------------------------------*/
 .draggable-portlets-wrapper .draggable-portlets {
