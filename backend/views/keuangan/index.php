@@ -44,6 +44,20 @@ $this->registerJs("
     
     }
 
+    function submitForm(){
+        var kategori = $('#kategori').val();
+        var tahun_ajaran = $('#tahun_ajaran').val();
+        $.ajax ({
+            type: 'POST',
+            url: 'keuangan/postdata',
+            data: {'kategori': kategori,'tahun_ajaran': tahun_ajaran},
+            cache: false,
+            success: function(html) {											
+				$('#listspp').html(html);     
+			}
+        });
+    }
+
 ",View::POS_HEAD);
 
 $this->registerCss(".ball-beat{display: none;} .text-center{text-align:center} .back{display:none} .aksi{display:none}");
@@ -71,18 +85,42 @@ $this->registerCssFile($root."/styles/loaders.css");
         </div> 
 
 
-        <form action="keuangan/post" method="POST" class="aksi">
+        <div class="aksi">
             <input type="hidden" name="kategori" id="kategori" value="" />
             <div class="form-group">
                 <label>Tahun Ajaran</label>
-                <select name="tahun_ajaran" class="form-control">
-                    <option></option>
-                </select>
+                <select class="form-control" name="tahun_ajaran" id ="tahun_ajaran" style="font-size:12px">
+                	<option value="" disabled selected>- Tahun Ajaran -</option>     
+                    <?php
+                        foreach($model as $models):
+                    ?>
+                    <option value="<?= $models['idajaran']?>"><?= $models['tahun_ajaran']?></option>
+                    <?php
+                        endforeach;
+                    ?>           	
+                </select>                
             </div>       
             <div class="form-group">
-                <input type="submit" class="btn btn-success btn-md" value="Search" />
+                <input type="submit" class="btn btn-success btn-md" value="Search" onclick="submitForm()"/>
             </div>   
-        </form> 
+        </div>
+
+        <table class="table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nis</th>
+                    <th>Kelas</th>
+                    <th>Jurusan</th>
+                    <th>Bulan</th>
+                    <th>Besaran</th>
+                </tr>
+            </thead>
+            <tbody id="listspp">																			
+                
+                
+            </tbody>
+        </table>
+   
     </div>
 </div>
 <a href="javascript:;" onclick="back();" class="btn btn-outline-info back btn-sm m-r-xs">Back</a>
