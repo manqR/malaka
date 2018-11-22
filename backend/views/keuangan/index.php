@@ -22,8 +22,8 @@ $this->registerJs("
         $('.listMenu').css(\"display\",\"none\");        
         $('.back').css(\"display\",\"block\");        
         loading();        
-        $('.aksi').css(\"display\",\"block\");
-        removeLoading();        
+        $('.aksi').css(\"display\",\"block\");        
+        removeLoading();              
         document.getElementById('kategori').value = 'spp';
     }
     function lainnya(){        
@@ -40,6 +40,7 @@ $this->registerJs("
         $('.ball-beat').css(\"display\",\"none\");
         $('.back').css(\"display\",\"none\");
         $('.listMenu').css(\"display\",\"flex\");
+        $('.showTableSpp').css(\"display\",\"none\");
         $('.aksi').css(\"display\",\"none\");
     
     }
@@ -52,15 +53,27 @@ $this->registerJs("
             url: 'keuangan/postdata',
             data: {'kategori': kategori,'tahun_ajaran': tahun_ajaran},
             cache: false,
-            success: function(html) {											
-				$('#listspp').html(html);     
+            success: function(html) {	
+                loading();										
+                $('#listspp').html(html);     
+                $('.showTableSpp').css(\"display\",\"block\");
+                removeLoading();
 			}
         });
     }
 
+
 ",View::POS_HEAD);
 
-$this->registerCss(".ball-beat{display: none;} .text-center{text-align:center} .back{display:none} .aksi{display:none}");
+$this->registerJs("
+    $(document).on(\"click\", \".print\", function (){    
+        var kategori = $('#kategori').val();
+        var tahun_ajaran = $('#tahun_ajaran').val();
+        window.open('http://localhost:8080/malaka/keuangan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
+    });
+");
+
+$this->registerCss(".ball-beat{display: none;} .text-center{text-align:center} .back{display:none} .aksi{display:none} .showTableSpp{display:none}");
 
 $this->registerCssFile($root."/styles/loaders.css");
 ?>
@@ -104,23 +117,27 @@ $this->registerCssFile($root."/styles/loaders.css");
                 <input type="submit" class="btn btn-success btn-md" value="Search" onclick="submitForm()"/>
             </div>   
         </div>
-
-        <table class="table table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Nis</th>
-                    <th>Kelas</th>
-                    <th>Jurusan</th>
-                    <th>Bulan</th>
-                    <th>Besaran</th>
-                </tr>
-            </thead>
-            <tbody id="listspp">																			
-                
-                
-            </tbody>
-        </table>
-   
+        <div class="showTableSpp">
+            <table class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Nis</th>
+                        <th>Kelas</th>
+                        <th>Jurusan</th>
+                        <th>Bulan</th>
+                        <th>Besaran</th>
+                    </tr>
+                </thead>
+                <tbody id="listspp">																			
+                    
+                    
+                </tbody>
+            </table>
+            <button type="button" style="float:right;" class="btn btn-danger btn-icon btn-sm print">
+            <i class="material-icons">print</i>
+                Print
+            </button>
+        </div>
     </div>
 </div>
 <a href="javascript:;" onclick="back();" class="btn btn-outline-info back btn-sm m-r-xs">Back</a>
