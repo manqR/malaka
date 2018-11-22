@@ -43,7 +43,22 @@ function showSpp(el) {
         }
     });
             
-}	
+}
+
+function submitForm(){
+    var idsiswa = $('#idsiswa').val();
+    var tahun_ajaran = $('#tahun_ajaran').val();
+    $.ajax ({
+        type: 'POST',
+        url: 'spp/spplistfilter',
+        data: {'idsiswa': idsiswa,'tahun_ajaran': tahun_ajaran},
+        cache: false,
+        success: function(html) {	            								
+            $('#listspp').html(html);                 
+            
+        }
+    });
+}
 ",View::POS_HEAD);	
 
 
@@ -66,7 +81,9 @@ function showSpp(el) {
            
 
 			<div id="lsSiswa" style="display:none">
+            
 			</div>
+            
 			<div id="lsItems">
 				<?php
 					foreach($model as $models):
