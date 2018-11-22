@@ -8,10 +8,15 @@ class SppController extends \yii\web\Controller
 {
     public function actionIndex()
     {
+		$connection = \Yii::$app->db;
+		$sql = $connection->createCommand("SELECT DISTINCT b.tahun_ajaran, b.idajaran FROM tagihan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran AND b.`status` = 1 ORDER BY b.idajaran ASC");
+        $modelx = $sql->queryAll();    
+		
         $model = Siswa::find()
 				->All();
         return $this->render('index', [
-			'model' => $model
+			'model' => $model,
+			'modelx' => $modelx
         ]);
     }
 

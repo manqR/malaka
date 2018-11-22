@@ -48,9 +48,32 @@ class KeuanganController extends \yii\web\Controller
                 endforeach;
                                
             }else{
-                echo "<p style='font-size:12px'>Method Not Allowed..</p>";
+                $connection = \Yii::$app->db;
+                $sql = $connection->createCommand("SELECT * 
+                                                    FROM tagihan_siswa a 
+                                                    JOIN kelas_group b ON a.idgroup = b.idgroup 
+                                                    JOIN kelas c ON b.idkelas = c.idkelas
+                                                    WHERE c.idajaran = ".$_POST['tahun_ajaran']." ");
+                $model = $sql->queryAll();
+
+                foreach($model as $models):
+                    if($models){
+
+                        echo '<tr><td>'.$models['idsiswa'].'</td>
+                                 <td>'.$models['nama_kelas'].'</td>
+                                 <td>'.$models['idjurusan'].'</td>
+                                 <td>'.$models['keterangan'].'</td>
+                                 <td>'.number_format($models['besaran'],0,".",".").'</td>
+                                </tr>';                        
+                    }else{
+                        echo '<td coslpan="4">Data Tidak ditemukan</td>';
+                    }                                                
+                       
+                endforeach;
             }
-       }
+       }else{
+            echo "<p style='font-size:12px'>Method Not Allowed..</p>";
+        }
 
        
     }

@@ -17,8 +17,7 @@ $this->registerJs("
         $('.ball-beat').css(\"display\",\"none\");
     }
     
-    function spp(){        
-        alert('abcd');
+    function spp(){                
         $('.listMenu').css(\"display\",\"none\");        
         $('.back').css(\"display\",\"block\");        
         loading();        
@@ -26,8 +25,7 @@ $this->registerJs("
         removeLoading();              
         document.getElementById('kategori').value = 'spp';
     }
-    function lainnya(){        
-        alert('defg');
+    function lainnya(){                
         $('.listMenu').css(\"display\",\"none\");
         $('.back').css(\"display\",\"block\");
         $('.ball-beat').css(\"display\",\"block\");
@@ -124,7 +122,7 @@ $this->registerCssFile($root."/styles/loaders.css");
                         <th>Nis</th>
                         <th>Kelas</th>
                         <th>Jurusan</th>
-                        <th>Bulan</th>
+                        <th>Keterangan</th>
                         <th>Besaran</th>
                     </tr>
                 </thead>

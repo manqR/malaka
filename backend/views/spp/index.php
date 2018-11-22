@@ -63,6 +63,8 @@ function showSpp(el) {
 		
         <div class="flex-xs scroll-y">
             
+           
+
 			<div id="lsSiswa" style="display:none">
 			</div>
 			<div id="lsItems">
@@ -88,8 +90,28 @@ function showSpp(el) {
 			
         </div>
     </div>
-    <div class="flex-xs scroll-y p-a-3 card card-block">
-        <div class="table-responsive">
+   
+    <div class="flex-xs scroll-y p-a-3 ">        
+        <div class="card card-block">
+            <div class="form-group">
+                    <label>Tahun Ajaran</label>
+                    <select class="form-control" name="tahun_ajaran" id ="tahun_ajaran" style="font-size:12px">
+                        <option value="" disabled selected>- Tahun Ajaran -</option>     
+                        <?php
+                            foreach($modelx as $modelxx):
+                        ?>
+                        <option value="<?= $modelxx['idajaran']?>"><?= $modelxx['tahun_ajaran']?></option>
+                        <?php
+                            endforeach;
+                        ?>           	
+                    </select>                
+                </div>       
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success btn-md" value="Search" onclick="submitForm()"/>
+            </div>   
+        </div>
+        
+        <div class="table-responsive card card-block">
             <table class="table table-bordered" style="width:100%">
                 <thead>
                     <tr>
