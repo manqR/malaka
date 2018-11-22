@@ -1,14 +1,19 @@
 -- --------------------------------------------------------
--- Host:                         localhost
--- Server version:               10.1.25-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win32
--- HeidiSQL Version:             9.3.0.4984
+-- Host:                         127.0.0.1
+-- Server version:               10.1.6-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- Dumping database structure for malaka
+CREATE DATABASE IF NOT EXISTS `malaka` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `malaka`;
+
 
 -- Dumping structure for table malaka.beasiswa
 CREATE TABLE IF NOT EXISTS `beasiswa` (
@@ -33,12 +38,17 @@ CREATE TABLE IF NOT EXISTS `biaya_tidak_tetap` (
   `user_created` varchar(50) DEFAULT NULL,
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
--- Dumping data for table malaka.biaya_tidak_tetap: ~0 rows (approximately)
+-- Dumping data for table malaka.biaya_tidak_tetap: ~5 rows (approximately)
 /*!40000 ALTER TABLE `biaya_tidak_tetap` DISABLE KEYS */;
 INSERT INTO `biaya_tidak_tetap` (`id`, `keterangan`, `nominal`, `user_created`, `date_created`) VALUES
-	(1, 'Wisuda', 15000000, 'admin', '2018-10-16 03:21:50');
+	(1, 'Wisuda', 15000000, 'admin', '2018-10-16 03:21:50'),
+	(2, '﻿wisuda', 150000, 'admin', '2018-11-17 07:28:48'),
+	(3, '﻿wisuda', 150000, 'admin', '2018-11-17 07:32:10'),
+	(4, '﻿wisuda', 150000, 'admin', '2018-11-17 07:32:37'),
+	(5, '﻿tagihan1', 15000, 'admin', '2018-11-17 11:41:30'),
+	(6, 'tagihan 2', 40000, 'admin', '2018-11-17 11:41:30');
 /*!40000 ALTER TABLE `biaya_tidak_tetap` ENABLE KEYS */;
 
 
@@ -47,29 +57,33 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `idcart` int(11) NOT NULL AUTO_INCREMENT,
   `idsiswa` char(10) NOT NULL,
   `key_` varchar(50) NOT NULL,
-  `ajaran` char(10) NOT NULL,
+  `idkelas` char(50) NOT NULL,
   `keterangan` varchar(50) NOT NULL,
   `nominal` double NOT NULL,
   `flag` int(11) NOT NULL,
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idcart`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.cart: ~0 rows (approximately)
+-- Dumping data for table malaka.cart: ~14 rows (approximately)
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` (`idcart`, `idsiswa`, `key_`, `idkelas`, `keterangan`, `nominal`, `flag`, `user_create`, `date_create`) VALUES
+	(26, '176001', 'BIL86936', 'X', 'BIL86936', 15000000, 2, 'admin', '2018-11-10 00:00:00'),
+	(27, '176001', 'praktik', '6', 'praktik', 200000, 2, 'admin', '2018-11-10 00:00:00'),
+	(28, '176001', 'praktik', '6', 'praktik', 200000, 2, 'admin', '2018-11-10 00:00:00'),
+	(29, '176001', 'BIL40678', 'X', 'BIL40678', 15000000, 2, 'admin', '2018-11-10 00:00:00'),
+	(30, '176002', 'praktik', '10', 'praktik', 200000, 2, 'admin', '2018-11-10 00:00:00'),
+	(31, '176003', 'praktik', '10', 'praktik', 200000, 2, 'admin', '2018-11-10 00:00:00'),
+	(32, '176001', 'lab_inggris', '10', 'lab_inggris', 150000, 2, 'admin', '2018-11-10 00:00:00'),
+	(33, '176001', 'lab_inggris', '6', 'lab_inggris', 150000, 2, 'admin', '2018-11-10 00:00:00'),
+	(34, '176001', 'BIL43704', 'X', 'BIL43704', 15000000, 2, 'admin', '2018-11-10 00:00:00'),
+	(35, '176001', 'BIL29022', 'X', 'BIL29022', 15000000, 2, 'admin', '2018-11-10 00:00:00'),
+	(36, '176001', 'BIL34426', 'X', 'BIL34426', 15000000, 2, 'admin', '2018-11-11 00:00:00'),
+	(37, '176001', 'perpustakaan', '10', 'perpustakaan', 150000, 2, 'admin', '2018-11-11 00:00:00'),
+	(38, '176001', 'semester_b', '6', 'semester_b', 300000, 1, 'admin', '2018-11-17 00:00:00'),
+	(39, '176001', 'osis', '6', 'osis', 200000, 1, 'admin', '2018-11-17 00:00:00');
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
-
-
--- Dumping structure for table malaka.cart_detail
-CREATE TABLE IF NOT EXISTS `cart_detail` (
-  `idcart` int(11) DEFAULT NULL,
-  `idtagihan` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table malaka.cart_detail: ~0 rows (approximately)
-/*!40000 ALTER TABLE `cart_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cart_detail` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.detail_group
@@ -89,6 +103,24 @@ INSERT INTO `detail_group` (`id`, `idsiswa`, `idgroup`, `tgl_add`) VALUES
 	(61, '176003', 27, '2018-09-15 00:00:00'),
 	(62, '176001', 27, '2018-11-02 00:00:00');
 /*!40000 ALTER TABLE `detail_group` ENABLE KEYS */;
+
+
+-- Dumping structure for table malaka.import
+CREATE TABLE IF NOT EXISTS `import` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kategori` varchar(50) DEFAULT NULL,
+  `file` varchar(50) NOT NULL,
+  `user` varchar(50) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table malaka.import: ~2 rows (approximately)
+/*!40000 ALTER TABLE `import` DISABLE KEYS */;
+INSERT INTO `import` (`id`, `kategori`, `file`, `user`, `date`) VALUES
+	(1, 'master', 'import/1542434568.csv', NULL, NULL),
+	(2, 'master', 'import/1542436128.csv', NULL, NULL);
+/*!40000 ALTER TABLE `import` ENABLE KEYS */;
 
 
 -- Dumping structure for table malaka.jurusan
@@ -387,14 +419,20 @@ CREATE TABLE IF NOT EXISTS `tagihan_biaya_tidaktetap` (
   `tgl_payment` datetime DEFAULT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan_biaya_tidaktetap: ~3 rows (approximately)
+-- Dumping data for table malaka.tagihan_biaya_tidaktetap: ~9 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` DISABLE KEYS */;
 INSERT INTO `tagihan_biaya_tidaktetap` (`id`, `idbiaya`, `no_tagihan`, `idsiswa`, `keterangan`, `nominal`, `flag`, `tgl_assign`, `tgl_payment`, `user`) VALUES
-	(9, 1, 'BIL86936', '176001', 'Wisuda', 15000000, 1, '2018-10-16 04:47:19', '2018-10-16 05:28:47', 'admin'),
-	(10, 1, 'BIL43704', '176001', 'Wisuda', 15000000, 0, '2018-10-16 04:48:17', '2018-10-16 05:26:04', 'admin'),
-	(11, 1, 'BIL40678', '176001', 'Wisuda', 15000000, 1, '2018-10-17 05:32:59', '2018-10-17 05:33:32', 'admin');
+	(9, 1, 'BIL86936', '176001', 'Wisuda', 15000000, 1, '2018-10-16 04:47:19', '2018-11-11 04:48:02', 'admin'),
+	(10, 1, 'BIL43704', '176001', 'Wisuda', 15000000, 1, '2018-10-16 04:48:17', '2018-11-11 04:48:02', 'admin'),
+	(11, 1, 'BIL40678', '176001', 'Wisuda', 15000000, 1, '2018-10-17 05:32:59', '2018-11-11 04:48:02', 'admin'),
+	(13, 1, 'BIL29022', '176001', 'Wisuda', 15000000, 1, '2018-11-10 16:38:09', '2018-11-11 04:48:03', 'admin'),
+	(14, 1, 'BIL34426', '176001', 'Wisuda', 15000000, 1, '2018-11-11 04:46:37', '2018-11-11 04:48:03', 'admin'),
+	(15, 0, 'BIL02020', '176001', 'XXX', 153342, 1, '1970-01-01 01:00:00', '2018-11-11 01:00:00', 'user'),
+	(16, 0, 'BIL02020', '176001', 'XXX', 153342, 1, '1970-01-01 01:00:00', '1970-01-01 01:00:00', 'user'),
+	(17, 0, 'BIL02020', '176001', 'XXX', 153342, 1, '1970-01-01 01:00:00', '1970-01-01 01:00:00', 'user'),
+	(18, 0, 'BIL02021', '176001', 'XXX', 153342, 1, '1970-01-01 01:00:00', '1970-01-01 01:00:00', 'user');
 /*!40000 ALTER TABLE `tagihan_biaya_tidaktetap` ENABLE KEYS */;
 
 
@@ -409,13 +447,52 @@ CREATE TABLE IF NOT EXISTS `tagihan_siswa` (
   `user_create` varchar(50) NOT NULL,
   `date_create` datetime NOT NULL,
   PRIMARY KEY (`idtagihan_siswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
--- Dumping data for table malaka.tagihan_siswa: ~2 rows (approximately)
+-- Dumping data for table malaka.tagihan_siswa: ~39 rows (approximately)
 /*!40000 ALTER TABLE `tagihan_siswa` DISABLE KEYS */;
 INSERT INTO `tagihan_siswa` (`idtagihan_siswa`, `idsiswa`, `idgroup`, `nama_tagihan`, `besaran`, `keterangan`, `user_create`, `date_create`) VALUES
 	(25, '176001', 26, 'administrasi', 50000, 'Administrasi', 'admin', '2018-10-16 12:26:33'),
-	(26, '176001', 26, 'pengembangan', 200000, 'Pengembangan', 'admin', '2018-10-17 02:21:25');
+	(26, '176001', 26, 'pengembangan', 200000, 'Pengembangan', 'admin', '2018-10-17 02:21:25'),
+	(27, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 14:03:59'),
+	(28, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:05:22'),
+	(29, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:09:41'),
+	(30, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:09:41'),
+	(31, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:10:54'),
+	(32, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:10:54'),
+	(33, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:11:14'),
+	(34, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:11:14'),
+	(35, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:11:40'),
+	(36, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:11:40'),
+	(37, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:12:01'),
+	(38, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:12:01'),
+	(39, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:16:01'),
+	(40, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 15:16:01'),
+	(41, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:06:09'),
+	(42, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:06:09'),
+	(43, '176002', 27, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:06:36'),
+	(44, '176002', 27, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:07:53'),
+	(45, '176003', 27, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:11:19'),
+	(46, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:24:07'),
+	(47, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:24:07'),
+	(48, '176001', 27, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:24:07'),
+	(49, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:28:36'),
+	(50, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:28:36'),
+	(51, '176001', 26, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:28:36'),
+	(52, '176001', 27, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:28:36'),
+	(53, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:35:42'),
+	(54, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:35:42'),
+	(55, '176001', 26, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:35:42'),
+	(56, '176001', 27, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:35:42'),
+	(57, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:38:39'),
+	(58, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-10 16:38:39'),
+	(59, '176001', 26, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:38:39'),
+	(60, '176001', 27, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-10 16:38:39'),
+	(61, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-11 04:48:02'),
+	(62, '176001', 26, 'praktik', 200000, 'praktik', 'admin', '2018-11-11 04:48:02'),
+	(63, '176001', 26, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-11 04:48:02'),
+	(64, '176001', 27, 'lab_inggris', 150000, 'lab_inggris', 'admin', '2018-11-11 04:48:02'),
+	(65, '176001', 27, 'perpustakaan', 150000, 'perpustakaan', 'admin', '2018-11-11 04:48:02');
 /*!40000 ALTER TABLE `tagihan_siswa` ENABLE KEYS */;
 
 
@@ -461,13 +538,21 @@ INSERT INTO `user` (`id`, `role`, `username`, `auth_key`, `password_hash`, `pass
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 
+-- Dumping structure for view malaka.v_tagihan_master
+-- Creating temporary table to overcome VIEW dependency errors
+CREATE TABLE `v_tagihan_master` (
+	`Keterangan` VARCHAR(12) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`Nominal` DOUBLE NULL
+) ENGINE=MyISAM;
+
+
 -- Dumping structure for view malaka.v_tagihan_siswa
 -- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `v_tagihan_siswa` (
 	`idsiswa` CHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
 	`nominal` DOUBLE NULL,
 	`keterangan` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
-	`ajaran` INT(11) NULL,
+	`idkelas` INT(11) NULL,
 	`key_` VARCHAR(12) NOT NULL COLLATE 'latin1_swedish_ci'
 ) ENGINE=MyISAM;
 
@@ -488,13 +573,61 @@ CREATE TABLE IF NOT EXISTS `wali_siswa` (
 /*!40000 ALTER TABLE `wali_siswa` ENABLE KEYS */;
 
 
+-- Dumping structure for view malaka.v_tagihan_master
+-- Removing temporary table and create final VIEW structure
+DROP TABLE IF EXISTS `v_tagihan_master`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `v_tagihan_master` AS SELECT 'administrasi' Keterangan
+		,administrasi  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'pengembangan' Keterangan
+		,pengembangan  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'praktik' Keterangan
+		,praktik  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'semester_a' Keterangan
+		,semester_a  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'semester_b' Keterangan
+		,semester_b  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'lab_inggris' Keterangan
+		,lab_inggris  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'lks' Keterangan
+		,lks  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'perpustakaan' Keterangan
+		,perpustakaan  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'osis' Keterangan
+		,osis  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'mpls' Keterangan
+		,mpls  Nominal
+FROM tagihan
+UNION ALL
+SELECT 'asuransi' Keterangan
+		,asuransi  Nominal
+FROM tagihan ;
+
+
 -- Dumping structure for view malaka.v_tagihan_siswa
 -- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `v_tagihan_siswa`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `v_tagihan_siswa` AS SELECT a.idsiswa
 		,d.administrasi nominal
 		,'Administrasi' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'administrasi' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -506,7 +639,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.pengembangan nominal
 		,'Pengembangan' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'pengembangan' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -518,7 +651,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.praktik nominal
 		,'Praktik' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'praktik' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -530,7 +663,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.semester_a nominal
 		,'Semester Ganjil' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'semester_a' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -542,7 +675,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.semester_b nominal
 		,'Semester Genap' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'semester_b' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -554,7 +687,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.lab_inggris nominal
 		,'Lab B.Inggris' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'lab_inggris' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -566,7 +699,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.lks nominal
 		,'Lks' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'lks' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -578,7 +711,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.perpustakaan nominal
 		,'Perpustakaan' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'perpustakaan' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -590,7 +723,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.osis nominal
 		,'Osis' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'osis' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -602,7 +735,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.mpls nominal
 		,'Mpls' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'mpls' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
@@ -614,7 +747,7 @@ UNION ALL
 SELECT a.idsiswa
 		,d.asuransi nominal
 		,'Asuransi' keterangan
-		,c.idajaran ajaran
+		,c.idkelas idkelas
 		,'asuransi' key_
 FROM detail_group a 
 JOIN kelas_group b ON a.idgroup = b.idgroup
