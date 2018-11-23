@@ -67,7 +67,7 @@ $this->registerJs("
     $(document).on(\"click\", \".print\", function (){    
         var kategori = $('#kategori').val();
         var tahun_ajaran = $('#tahun_ajaran').val();
-        window.open('http://localhost:8080/malaka/keuangan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
+        window.open('http://localhost/malaka/keuangan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
     });
 ");
 

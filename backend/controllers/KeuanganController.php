@@ -22,11 +22,7 @@ class KeuanganController extends \yii\web\Controller
         if($_POST){
             if($_POST['kategori'] == 'spp'){
                 $connection = \Yii::$app->db;
-                $sql = $connection->createCommand("SELECT DISTINCT *
-                                                    FROM spp_siswa a 
-                                                    JOIN kelas_group b ON a.idgroup = b.idgroup 
-                                                    JOIN kelas c ON b.idkelas = c.idkelas 
-                                                    WHERE c.idajaran = ".$_POST['tahun_ajaran']." ");
+                $sql = $connection->createCommand("SELECT * FROM v_pelunasan_spp WHERE idajaran= ".$_POST['tahun_ajaran']." ");
                 $model = $sql->queryAll();
                 
                 $data = '';
@@ -49,11 +45,7 @@ class KeuanganController extends \yii\web\Controller
                                
             }else{
                 $connection = \Yii::$app->db;
-                $sql = $connection->createCommand("SELECT * 
-                                                    FROM tagihan_siswa a 
-                                                    JOIN kelas_group b ON a.idgroup = b.idgroup 
-                                                    JOIN kelas c ON b.idkelas = c.idkelas
-                                                    WHERE c.idajaran = ".$_POST['tahun_ajaran']." ");
+                $sql = $connection->createCommand("SELECT * FROM v_pelunasan_tagihan WHERE ajaran= ".$_POST['tahun_ajaran']." OR ajaran = '-'");
                 $model = $sql->queryAll();
 
                 foreach($model as $models):
@@ -63,7 +55,7 @@ class KeuanganController extends \yii\web\Controller
                                  <td>'.$models['nama_kelas'].'</td>
                                  <td>'.$models['idjurusan'].'</td>
                                  <td>'.$models['keterangan'].'</td>
-                                 <td>'.number_format($models['besaran'],0,".",".").'</td>
+                                 <td>'.number_format($models['nominal'],0,".",".").'</td>
                                 </tr>';                        
                     }else{
                         echo '<td coslpan="4">Data Tidak ditemukan</td>';
@@ -84,33 +76,10 @@ class KeuanganController extends \yii\web\Controller
             if($kat == 'spp'){
 
                 include './inc/pdf.php';
+                PrintLaporan($kat,$th);                            
+            }else{
+                include './inc/pdf.php';
                 PrintLaporan($kat,$th);
-                // $connection = \Yii::$app->db;
-                // $sql = $connection->createCommand("SELECT DISTINCT *
-                //                                     FROM spp_siswa a 
-                //                                     JOIN kelas_group b ON a.idgroup = b.idgroup 
-                //                                     JOIN kelas c ON b.idkelas = c.idkelas 
-                //                                     WHERE c.idajaran = ".$_GET['tahun_ajaran']." ");
-                // $model = $sql->queryAll();
-                
-                // $data = '';
-                // $sum =0;
-                // foreach($model as $models):
-                //     if($models){
-                //         $sum += $models['besaran'];
-                      
-                //         $data .= '<tr>';
-                //         $data .=    '<td>'.$models['idsiswa'].'</td>';
-                //         $data .=    '<td>'.$models['nama_kelas'].'</td>';
-                //         $data .=    '<td>'.$models['idjurusan'].'</td>';
-                //         $data .=    '<td>'.$models['bulan'].'</td>';
-                //         $data .=    '<td>'.number_format($models['besaran'],0,".",".").'</td>';
-                //         $data .= '</tr>';                  
-                //     }else{
-                //         echo '<td coslpan="4">Data Tidak ditemukan</td>';
-                //     }                                                
-                       
-                // endforeach;                
             }
         }else{
             echo "<p style='font-size:12px'>Method Not Allowed..</p>";

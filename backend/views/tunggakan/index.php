@@ -48,7 +48,7 @@ $this->registerJs("
         var tahun_ajaran = $('#tahun_ajaran').val();
         $.ajax ({
             type: 'POST',
-            url: 'keuangan/postdata',
+            url: 'tunggakan/postdata',
             data: {'kategori': kategori,'tahun_ajaran': tahun_ajaran},
             cache: false,
             success: function(html) {	
@@ -67,7 +67,7 @@ $this->registerJs("
     $(document).on(\"click\", \".print\", function (){    
         var kategori = $('#kategori').val();
         var tahun_ajaran = $('#tahun_ajaran').val();
-        window.open('http://localhost:8080/malaka/keuangan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
+        window.open('http://localhost/malaka/tunggakan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
     });
 ");
 
