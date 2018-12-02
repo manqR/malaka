@@ -145,7 +145,7 @@ use backend\models\TagihanBiayaTidaktetap;
                         $data .= '<td class="alignright" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" align="right" valign="top">'.number_format($models['nominal'],0,".",".").'</td>';
                     $data .= '</tr>';                           
                 }                                              
-            endforeach;
+            endforeach; 
         }
 
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format'=>'A4']);	
