@@ -4,6 +4,7 @@
 (function($) {
   'use strict';
 
+
   /******** Select 2 plugin ********/
 	$('.select2').select2();
 	
@@ -26,12 +27,25 @@
   });
 	
 	/******** Labelauty plugin ********/
-  $('.to-labelauty').labelauty({
-    minimum_width: '155px',
-    class: 'labelauty btn-block'
-  });
-  $('.to-labelauty-icon').labelauty({
-    label: false
-  });
+  // $('.to-labelauty').labelauty({
+  //   minimum_width: '155px',
+  //   class: 'labelauty btn-block'
+  // });
+  // $('.to-labelauty-icon').labelauty({
+  //   label: false
+  // });
+
+
 	
+
+   /******** Dateranger picker ********/
+   $('.drp').daterangepicker({
+    timePicker: false,
+    timePickerIncrement: 30,
+    locale: {
+      format: 'YYYY-MM-DD'
+    }
+  });
+
+
 })(jQuery);

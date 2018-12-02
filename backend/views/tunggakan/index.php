@@ -7,7 +7,7 @@ use yii\web\View;
 $this->title = 'Laporan Tunggakan';
 // @root
 $root = '@web';
-
+include './inc/url.php';
 $this->registerJs("
 
     function loading(){
@@ -67,7 +67,7 @@ $this->registerJs("
     $(document).on(\"click\", \".print\", function (){    
         var kategori = $('#kategori').val();
         var tahun_ajaran = $('#tahun_ajaran').val();
-        window.open('http://localhost/malaka/tunggakan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
+        window.open('".$link."tunggakan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
     });
 ");
 

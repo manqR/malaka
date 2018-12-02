@@ -11,10 +11,12 @@ use yii\web\View;
 $this->title = 'Kasir';
 $this->params['breadcrumbs'][] = $this->title;
 
+include './inc/url.php';
 
 /* @ROOT */
 $root = '@web';
 /* @JS */
+
 $this->registerJsFile($root."/vendors/select2/select2.js",
 ['depends' => [\yii\web\JqueryAsset::className()],
 'position' => View::POS_END]);
@@ -160,7 +162,7 @@ $this->registerJs("
 
     $(document).on(\"click\", \".print\", function (){    
         var siswa = document.getElementById('siswa').value; 
-        window.open('http://localhost/malaka/kasir/print?id='+siswa, 'cetak');          
+        window.open('".$link."kasir/print?id='+siswa, 'cetak');          
     });
 
 ");
