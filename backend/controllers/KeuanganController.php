@@ -116,4 +116,9 @@ class KeuanganController extends \yii\web\Controller
         }
     }
 
+    public function actionPrintTest(){
+        include './inc/pdf.php';
+        Test();
+    }
+
 }
