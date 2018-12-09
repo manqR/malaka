@@ -18,7 +18,7 @@ use backend\models\TagihanBiayaTidaktetap;
         $mpdf->Output();
 
     }
-   function PrintLaporan($kat, $th){
+   function PrintLaporan($kat, $th,$kls,$period){
 
     
     $head = '<style>
@@ -42,9 +42,19 @@ use backend\models\TagihanBiayaTidaktetap;
 
 
     if($kat){
+        $filter = '';
+
+        if($kls !='-'){
+            $filter = " AND  kode = '".$kls."' ";
+        }
+        $date = explode(';',$period);
+
+
         if($kat == 'spp'){
+
+           
             $connection = \Yii::$app->db;
-            $sql = $connection->createCommand("SELECT * FROM v_pelunasan_spp WHERE idajaran= ".$th." ");
+            $sql = $connection->createCommand("SELECT * FROM v_pelunasan_spp WHERE idajaran= ".$th."  AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND date_create BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");            
             $model = $sql->queryAll();
             
             $data = '';
@@ -70,7 +80,7 @@ use backend\models\TagihanBiayaTidaktetap;
             include 'terbilang.php';
 
             $connection = \Yii::$app->db;
-            $sql = $connection->createCommand("SELECT SUM(nominal) nominal FROM v_pelunasan_tagihan WHERE ajaran= ".$th." OR ajaran = '-'");
+            $sql = $connection->createCommand("SELECT  SUM(nominal) nominal FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$th." OR ajaran = '-') AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");            
             $model = $sql->queryOne();
             $mpdf->writeHTML($head.' 
                                 <img src="images/logo.png" >
@@ -126,10 +136,9 @@ use backend\models\TagihanBiayaTidaktetap;
             $mpdf->addPage();  
 
             $connection = \Yii::$app->db;
-            $sql = $connection->createCommand("SELECT nama_kelas, SUM(nominal) nominal FROM v_pelunasan_tagihan WHERE ajaran= ".$th." OR ajaran = '-' 
-            GROUP BY nama_kelas ");
+            $sql = $connection->createCommand("SELECT b.nama_kelas, SUM(nominal) nominal  FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$th." OR ajaran = '-') AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter." GROUP BY nama_kelas ");
             $model = $sql->queryAll();
-
+           
             $datakelas = '';
             $sumKelas =0;
             foreach($model as $models):
@@ -195,7 +204,7 @@ use backend\models\TagihanBiayaTidaktetap;
             
             
             $connection = \Yii::$app->db;
-            $sql = $connection->createCommand("SELECT * FROM v_pelunasan_tagihan WHERE ajaran= ".$th." OR ajaran = '-' ");
+            $sql = $connection->createCommand("SELECT *  FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$th." OR ajaran = '-') AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");                        
             $model = $sql->queryAll();
             $data = '';
             $sum =0;

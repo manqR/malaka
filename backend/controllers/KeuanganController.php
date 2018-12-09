@@ -7,6 +7,32 @@ use backend\models\Spp;
 
 class KeuanganController extends \yii\web\Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','create','update','view'],
+                'rules' => [
+                  // allow authenticated users
+                      [
+                        'allow' => true,
+                        'roles' => ['@'],
+                      ],
+                  // everything else is denied
+                ],
+            ],
+        ];
+    }
+
+    
     public function actionIndex(){       
         $connection = \Yii::$app->db;
 		$sql = $connection->createCommand("SELECT DISTINCT b.tahun_ajaran, b.idajaran FROM tagihan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran AND b.`status` = 1 ORDER BY b.idajaran ASC");
@@ -71,7 +97,7 @@ class KeuanganController extends \yii\web\Controller
 
                
                 $connection = \Yii::$app->db;
-                $sql = $connection->createCommand("SELECT * FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$_POST['tahun_ajaran']." OR ajaran = '-') AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");
+                $sql = $connection->createCommand("SELECT * FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$_POST['tahun_ajaran']." OR ajaran = '-') AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");
                 $model = $sql->queryAll();
                 // $sql = "SELECT * FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$_POST['tahun_ajaran']." OR ajaran = '-') AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."";
                 // echo $sql;
@@ -100,16 +126,16 @@ class KeuanganController extends \yii\web\Controller
        
     }
 
-    public function actionPrint($kat, $th){
+    public function actionPrint($kat, $th,$kls,$period){
         if($kat){
             
             if($kat == 'spp'){
 
                 include './inc/pdf.php';
-                PrintLaporan($kat,$th);                            
+                PrintLaporan($kat, $th,$kls,$period);                            
             }else{
                 include './inc/pdf.php';
-                PrintLaporan($kat,$th);
+                PrintLaporan($kat, $th,$kls,$period);
             }
         }else{
             return "<p style='font-size:12px'>Method Not Allowed..</p>";

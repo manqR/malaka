@@ -925,8 +925,13 @@ code {
     padding-bottom: 20px;
     line-height: 13px; }
     .brand .brand-logo img {
-      max-height: 16px; }
+      max-height: 59px; }
 
+.textLogo{  
+  margin: 10px;
+  font-size: 18px;
+  font-family: sans-serif;
+}
 .sidebar-panel .brand {
   min-height: 56px;
   padding-left: 1.5rem;

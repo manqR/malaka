@@ -70,7 +70,9 @@ $this->registerJs("
     $(document).on(\"click\", \".print\", function (){    
         var kategori = $('#kategori').val();
         var tahun_ajaran = $('#tahun_ajaran').val();
-        window.open('".$link."keuangan/print?kat='+kategori+'&th='+tahun_ajaran, 'cetak');          
+        var kelas = $('#kelas').val();
+        var periode = $('#periode').val();
+        window.open('".$link."keuangan/print?kat='+kategori+'&th='+tahun_ajaran+'&kls='+kelas+'&period='+periode, 'cetak');          
     });
 
     $(document).ready(function(){

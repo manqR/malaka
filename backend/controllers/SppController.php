@@ -6,6 +6,32 @@ use backend\models\Siswa;
 
 class SppController extends \yii\web\Controller
 {
+
+	public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','create','update','view'],
+                'rules' => [
+                  // allow authenticated users
+                      [
+                        'allow' => true,
+                        'roles' => ['@'],
+                      ],
+                  // everything else is denied
+                ],
+            ],
+        ];
+    }
+
+	
     public function actionIndex()
     {
 		$connection = \Yii::$app->db;

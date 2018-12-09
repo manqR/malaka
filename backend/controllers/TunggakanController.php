@@ -6,6 +6,31 @@ use backend\models\Spp;
 
 class TunggakanController extends \yii\web\Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index','create','update','view'],
+                'rules' => [
+                  // allow authenticated users
+                      [
+                        'allow' => true,
+                        'roles' => ['@'],
+                      ],
+                  // everything else is denied
+                ],
+            ],
+        ];
+    }
+    
     public function actionIndex(){       
         $connection = \Yii::$app->db;
 		$sql = $connection->createCommand("SELECT DISTINCT b.tahun_ajaran, b.idajaran FROM tagihan a JOIN tahun_ajaran b ON a.idajaran = b.idajaran AND b.`status` = 1 ORDER BY b.idajaran ASC");

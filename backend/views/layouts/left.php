@@ -46,7 +46,8 @@
         <!-- /toggle offscreen menu -->
         <!-- logo -->
         <a class="brand-logo">
-			<img class="expanding-hidden" src="images/logo.png" alt=""/>
+            <img class="expanding-hidden" src="images/logo.png" alt=""/>
+            <span class="textLogo">SMK MALAKA</span>
         </a>
         <!-- /logo -->
     </div>
