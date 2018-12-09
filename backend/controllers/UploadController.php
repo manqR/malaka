@@ -7,6 +7,7 @@ use yii\web\UploadedFile;
 use backend\models\Import;
 use backend\models\BiayaTidakTetap;
 use backend\models\TagihanBiayaTidaktetap;
+use yii\filters\VerbFilter;
 
 class UploadController extends \yii\web\Controller
 {
@@ -38,7 +39,7 @@ class UploadController extends \yii\web\Controller
             ],
         ];
     }
-    
+
     public function actionIndex()
     {
         $model = new Import();

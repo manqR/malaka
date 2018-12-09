@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Siswa;
+use yii\filters\VerbFilter;
 
 class SppController extends \yii\web\Controller
 {
@@ -31,7 +32,7 @@ class SppController extends \yii\web\Controller
         ];
     }
 
-	
+
     public function actionIndex()
     {
 		$connection = \Yii::$app->db;
