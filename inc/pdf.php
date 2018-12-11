@@ -40,7 +40,9 @@ use backend\models\TagihanBiayaTidaktetap;
             }
             </style>';
 
-
+    $data = '';
+    $mpdf = new \Mpdf\Mpdf(['autoPageBreak' => true]);	
+    
     if($kat){
         $filter = '';
 
@@ -54,28 +56,29 @@ use backend\models\TagihanBiayaTidaktetap;
 
            
             $connection = \Yii::$app->db;
-            $sql = $connection->createCommand("SELECT * FROM v_pelunasan_spp WHERE idajaran= ".$th."  AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND date_create BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");            
+            $sql = $connection->createCommand("SELECT * FROM v_pelunasan_spp a JOIN siswa b ON a.idsiswa = b.idsiswa WHERE idajaran= ".$th."  AND a.date_create BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");            
             $model = $sql->queryAll();
-            
-            $data = '';
+                        
             $sum =0;
             foreach($model as $models):
                 if($models){
                     $sum += $models['besaran'];
-                    $data .= ' <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">';
-                        $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.$models['idsiswa'].'</td>';
+                    $data .= '  <style>.sign th { border: 1px solid black;height:20px;font-weight:100;font-size:12px}</style><tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">';
+                        $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.$models['nama_lengkap'].'</td>';
                         $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.$models['bulan'].'</td>';
                         $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.$models['nama_kelas'].'</td>';
                         $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.$models['idjurusan'].'</td>';
                         $data .= '<td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">'.number_format($models['besaran'],0,".",".").'</td>';                        
-                    $data .= '</tr>';       
+                    $data .= '</tr>';  
+                    
+
                 }                                              
             endforeach;
         }else{
             
             
 
-            $mpdf = new \Mpdf\Mpdf(['autoPageBreak' => true]);	
+           
 
             include 'terbilang.php';
 
@@ -205,8 +208,7 @@ use backend\models\TagihanBiayaTidaktetap;
             
             $connection = \Yii::$app->db;
             $sql = $connection->createCommand("SELECT *  FROM v_pelunasan_tagihan a JOIN kelas b ON a.ajaran = b.idajaran WHERE (ajaran= ".$th." OR ajaran = '-') AND a.idjurusan = b.idjurusan AND a.idkelas = b.idkelas AND tgl_payment BETWEEN '".$date[0]."' AND '".$date[1]."' ".$filter."");                        
-            $model = $sql->queryAll();
-            $data = '';
+            $model = $sql->queryAll();            
             $sum =0;
             foreach($model as $models):
                 if($models){
