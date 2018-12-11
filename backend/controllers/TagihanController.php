@@ -93,7 +93,7 @@ class TagihanController extends Controller
 		foreach($model as $models):			
 			$zero .= '<option value="'.$models->idajaran.'">'.$models->tahunAjaran->tahun_ajaran.'</option>';						
 		endforeach;
-		echo $zero;
+		return $zero;
 		
 	}
 

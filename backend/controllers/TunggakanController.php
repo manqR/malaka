@@ -44,18 +44,19 @@ class TunggakanController extends \yii\web\Controller
 
     public function actionPostdata(){
 
-        if($_POST){
+        $data = '';
+        if($_POST){            
             if($_POST['kategori'] == 'spp'){
                 $connection = \Yii::$app->db;
                 $sql = $connection->createCommand("SELECT * FROM v_tagihan_spp WHERE idajaran = ".$_POST['tahun_ajaran']." ");
                 $model = $sql->queryAll();
                 
-                $data = '';
+                
                 $sum =0;
                 foreach($model as $models):
                     if($models){
                         $sum += $models['besaran'];
-                        echo '<tr><td>'.$models['idsiswa'].'</td>
+                        $data .= '<tr><td>'.$models['idsiswa'].'</td>
                                  <td>'.$models['nama_kelas'].'</td>
                                  <td>'.$models['idjurusan'].'</td>
                                  <td>'.$models['bulan'].'</td>
@@ -63,10 +64,11 @@ class TunggakanController extends \yii\web\Controller
                                 </tr>
                                  <input type="hidden" value='.$sum.'> name="total"';                        
                     }else{
-                        echo '<td coslpan="4">Data Tidak ditemukan</td>';
+                        $data = '<td coslpan="4">Data Tidak ditemukan</td>';
                     }                                                
                        
                 endforeach;
+               
                                
             }else{
                 $connection = \Yii::$app->db;
@@ -76,26 +78,29 @@ class TunggakanController extends \yii\web\Controller
                 foreach($model as $models):
                     if($models){
 
-                        echo '<tr><td>'.$models['idsiswa'].'</td>
+                        $data .= '<tr><td>'.$models['idsiswa'].'</td>
                                  <td>'.$models['nama_kelas'].'</td>
                                  <td>'.$models['idjurusan'].'</td>
                                  <td>'.$models['keterangan'].'</td>
                                  <td>'.number_format($models['nominal'],0,".",".").'</td>
                                 </tr>';                        
                     }else{
-                        echo '<td coslpan="4">Data Tidak ditemukan</td>';
+                        $data =  '<tr><td coslpan="4">Data Tidak ditemukan</td></tr>';
                     }                                                
                        
                 endforeach;
             }
        }else{
-            echo "<p style='font-size:12px'>Method Not Allowed..</p>";
+            $data =  "<p style='font-size:12px'>Method Not Allowed..</p>";
         }
+
+        return $data;
 
        
     }
 
     public function actionPrint($kat, $th){
+        $data = '';
         if($kat){
             
             if($kat == 'spp'){
@@ -107,8 +112,9 @@ class TunggakanController extends \yii\web\Controller
                 PrintTunggakan($kat,$th);   
             }
         }else{
-            echo "<p style='font-size:12px'>Method Not Allowed..</p>";
+            $data =  "<p style='font-size:12px'>Method Not Allowed..</p>";
         }
+        return $data;
     }
 
 }

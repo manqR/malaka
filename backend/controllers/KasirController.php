@@ -392,9 +392,10 @@ class KasirController extends Controller
             ->all();    
         
             // var_dump($view);
+        $data = '';
         if($view){
             foreach($view as $views):
-                echo "<tr>
+                $data .="<tr>
                          <td>".$views->idsiswa."</td>
                          <td>".$views->keterangan."</td>
                          <td>".number_format($views->nominal,0,".",".")."</td>
@@ -402,10 +403,11 @@ class KasirController extends Controller
                      </tr>";                                               
             endforeach;
         }else{
-            echo " <tr>
+            $data = " <tr>
                     <td colspan=\"4\" class=\"text-xs-center\">No data available in table</td>
                 </tr>";
         }
+        return $data;
         
     }
 
@@ -415,13 +417,12 @@ class KasirController extends Controller
             ->AndWhere(['flag'=>1])        
             ->sum('nominal');    
         
-            echo "<div class=\"invoice-totals-row\">
+            $data =  "<div class=\"invoice-totals-row\">
                          <strong class=\"invoice-totals-title\">Subtotal</strong>
                          <span class=\"invoice-totals-value\"><b>Rp ".number_format($nominal,0,".",".")."</b></span>
                          <input type='hidden' id='nominal' name='nominal' value=".$nominal.">
-                     </div>
-                     
-                   ";     
+                     </div>";  
+            return $data;   
     }
     /**
      * Displays a single Cart model.

@@ -97,11 +97,11 @@ class TagihanSiswaController extends Controller
 		$sql = $connection->createCommand("SELECT * FROM siswa WHERE nama_lengkap LIKE '%".$id."%' OR idsiswa LIKE '%".$id."%'");
 		$models = $sql->queryAll();
 		
-		
+		$data = '';
 		foreach($models as $model):			 	
 		
 				
-			 echo '<a href="javascript:;" onclick="return showDetail('.$model['idsiswa'].');" class="column-equal" data-toggle="contact">
+			 $data .= '<a href="javascript:;" onclick="return showDetail('.$model['idsiswa'].');" class="column-equal" data-toggle="contact">
 					<div class="col v-align-middle contact-avatar">
 						<div class="circle-icon bg-danger">'.substr(strtoupper($model['nama_lengkap']),0,1).'</div>
 					</div>
@@ -111,6 +111,7 @@ class TagihanSiswaController extends Controller
 					</div>
 				</a>';		
 		endforeach;		
+		return $data;
 	}
 	
 	
@@ -143,6 +144,7 @@ class TagihanSiswaController extends Controller
 		$class_FIX = 'success';
 		$class_OPT = 'success';
 		
+		$data = '';
 		if(isset($models[0]['SPP'])){
 			if($models[0]['SPP'] - $models[0]['TAGIHAN_SPP'] != 0){
 				$status_SPP = 'incomplete';
@@ -157,7 +159,7 @@ class TagihanSiswaController extends Controller
 				$class_OPT = 'danger';
 			}
 			
-			echo'<div class="row">
+			$data = '<div class="row">
 					<div class="col-sm-6 col-md-4 col-lg-4">
 						<div class="card card-block">
 							<h5 class="m-b-0 v-align-middle text-overflow">					
@@ -212,7 +214,7 @@ class TagihanSiswaController extends Controller
 				</div>';
 		}else{
 				
-			echo ' <div class="column-equal m-b-2">
+			$data =  ' <div class="column-equal m-b-2">
 					
 					<div class="col v-align-middle p-l-2">
 						<h3>
@@ -221,6 +223,7 @@ class TagihanSiswaController extends Controller
 					</div>
 				</div>';
 		}
+		return $data;
 	}
 	
 	public function actionSpplist($id){
@@ -237,7 +240,7 @@ class TagihanSiswaController extends Controller
 											WHERE a.idsiswa = '".$id."' AND a.id = (SELECT x.id FROM detail_group x WHERE x.idsiswa = '".$id."' ORDER BY x.id DESC LIMIT 1)
 												  AND g.urutan <= (SELECT urutan FROM months WHERE idbulan = MONTH(now())) AND  IFNULL(e.besaran,0) <= 0 ");
 		$models = $sql->queryAll();	
-		
+		$data='';
 		foreach($models as $model):
 			$class='';
 			if(($model['sudah_dibayar'] - $model['besaran']) >= 0){
@@ -249,13 +252,14 @@ class TagihanSiswaController extends Controller
 						<input type="hidden" id="idsiswa" value='.$model['idsiswa'].'>
 						<i class="material-icons add_bill" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 			}
-			echo '<tr>
+			$data .= '<tr>
 					<td>'.$model['bulan'].'</td>
 					<td>'.$model['besaran'].'</td>
 					<td>'.$model['sudah_dibayar'].'</td>
 					<td> '.$class.'</td>
 				</tr>';
 		endforeach;	
+		return $data;
 	
 	}
 	
@@ -307,7 +311,7 @@ class TagihanSiswaController extends Controller
 		$data = $query->queryAll();
 
 
-
+		$data='';
 		foreach($data as $datas):
 
 			$pay = $connection->createCommand("SELECT IFNULL(besaran,0)besaran FROM tagihan_siswa x WHERE x.idsiswa = '".$model[0]['idsiswa']."' AND x.idgroup = '".$model[0]['idgroup']."' AND x.nama_tagihan = '".$datas['nama_tagihan']."'");
@@ -333,13 +337,15 @@ class TagihanSiswaController extends Controller
 					<input type="hidden" id="nama_tagihan" value="'.$datas['nama_tagihan'].'">
 					<i class="material-icons add_fix" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 			}
-			echo '<tr>
+			$data .=  '<tr>
 					<td>'.$datas['keterangan'].'</td>
 					<td>'.$datas['Biaya'].'</td>
 					<td>0</td>
 					<td> '.$class.'</td>
 				</tr>';			
 		endforeach;
+
+		return $data;
 
 
 	}
@@ -372,6 +378,7 @@ class TagihanSiswaController extends Controller
 		$data = $query->queryAll();
 
 		$ls = '';
+		$rtn = '';
 		foreach($data as $datas):
 
 			$pay = $connection->createCommand("SELECT IFNULL(besaran,0)besaran FROM tagihan_siswa x WHERE x.idsiswa = '".$model[0]['idsiswa']."' AND x.idgroup = '".$model[0]['idgroup']."' AND x.nama_tagihan = '".$datas['nama_tagihan']."'");
@@ -397,7 +404,7 @@ class TagihanSiswaController extends Controller
 					<input type="hidden" id="nama_tagihanx" value="'.$datas['nama_tagihan'].'">
 					<i class="material-icons add_option" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 			}
-			echo '<tr>
+			$rtn .= '<tr>
 					<td>'.$datas['keterangan'].'</td>
 					<td>'.$datas['Biaya'].'</td>
 					<td>0</td>
@@ -406,6 +413,8 @@ class TagihanSiswaController extends Controller
 				
 				
 		endforeach;
+
+		return $rtn;
 
 
 	}
@@ -421,10 +430,10 @@ class TagihanSiswaController extends Controller
 										");
 		$models = $sql->queryAll();
 		
-		
+		$data = '';
 		if($models){
 		
-		echo ' <div class="column-equal m-b-2">
+		$data =  ' <div class="column-equal m-b-2">
 					<div class="col" style="width:128px;">
 						<img src="images/face1.jpg" class="avatar avatar-lg img-circle" alt="">
 					</div>
@@ -481,8 +490,9 @@ class TagihanSiswaController extends Controller
                 </div>
             </div>';
 		}else{
-			echo ' ';
+			$data = '';
 		}
+		return $data;
 			
 	}
 

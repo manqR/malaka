@@ -279,7 +279,7 @@ class KelasGroupController extends Controller
 				->all();
 		
 		
-			
+		$data = '';
 		foreach($model as $models):
 			 
 			 $connection = \Yii::$app->db;
@@ -296,7 +296,7 @@ class KelasGroupController extends Controller
 			 	$ls_siswa .= '<li>'.$siswas['nama_lengkap'].'</li>';
 			 endforeach;
 				
-			 echo '<div class="col-md-6 col-lg-3">
+			 $data .= '<div class="col-md-6 col-lg-3">
 						<div class="pricing-plan">
 							<h5>'.$models->kelas->kode.' - '.$models->kelas->idjurusan.'</h5>
 							<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$models->idgroup.';'.$models->kelas->idajaran.' data-target=".add-siswa">add_circle_outline</i>
@@ -311,6 +311,7 @@ class KelasGroupController extends Controller
 						</div>
 					</div>';
 		endforeach;
+		return $data;
 		
 		
 	}

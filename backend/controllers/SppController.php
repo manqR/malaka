@@ -60,7 +60,7 @@ class SppController extends \yii\web\Controller
 												LEFT JOIN months g ON d.bulan = g.namabulan
 											WHERE a.idsiswa = '".$id."' 	ORDER by g.urutan  ");
 		$models = $sql->queryAll();	
-		
+		$data = '';
 		foreach($models as $model):
 			$class='';
 			if(($model['sudah_dibayar'] - $model['besaran']) >= 0){
@@ -68,7 +68,7 @@ class SppController extends \yii\web\Controller
 			}else{
                 $class = '<span class="tag tag-danger">Belum Lunas</span>'; 		
 			}
-			echo '<tr>
+			$data .= '<tr>
 					<td>'.$model['bulan'].'</td>
 					<td>'.$model['besaran'].'</td>
 					<td>'.$model['sudah_dibayar'].'</td>
@@ -76,6 +76,7 @@ class SppController extends \yii\web\Controller
 					<input type="hidden" name="idsiswa" id="idsiswa" value="'.$id.'" />
 				</tr>';
 		endforeach;	
+		return $data;
 	
 	}
     public function actionSpplistfilter(){
@@ -93,6 +94,7 @@ class SppController extends \yii\web\Controller
 												WHERE a.idsiswa = '".$_POST['idsiswa']."' AND f.idajaran = ".$_POST['tahun_ajaran']." 	ORDER by g.urutan   ");
 			$models = $sql->queryAll();	
 			
+			$data = '';
 			foreach($models as $model):
 				$class='';
 				if(($model['sudah_dibayar'] - $model['besaran']) >= 0){
@@ -100,7 +102,7 @@ class SppController extends \yii\web\Controller
 				}else{
 					$class = '<span class="tag tag-danger">Belum Lunas</span>'; 		
 				}
-				echo '<tr>
+				$data .=  '<tr>
 						<td>'.$model['bulan'].'</td>
 						<td>'.$model['besaran'].'</td>
 						<td>'.$model['sudah_dibayar'].'</td>
@@ -109,10 +111,9 @@ class SppController extends \yii\web\Controller
 					</tr>';
 			endforeach;	
 		}else{
-			echo "<p style='font-size:12px'>Method Not Allowed..</p>";
+			$data =  "<p style='font-size:12px'>Method Not Allowed..</p>";
 		}
-	
-		
+		return $data;
 	
 	}
 
