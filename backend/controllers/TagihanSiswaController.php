@@ -311,7 +311,7 @@ class TagihanSiswaController extends Controller
 		$data = $query->queryAll();
 
 
-		$data='';
+		$rtn='';
 		foreach($data as $datas):
 
 			$pay = $connection->createCommand("SELECT IFNULL(besaran,0)besaran FROM tagihan_siswa x WHERE x.idsiswa = '".$model[0]['idsiswa']."' AND x.idgroup = '".$model[0]['idgroup']."' AND x.nama_tagihan = '".$datas['nama_tagihan']."'");
@@ -337,7 +337,7 @@ class TagihanSiswaController extends Controller
 					<input type="hidden" id="nama_tagihan" value="'.$datas['nama_tagihan'].'">
 					<i class="material-icons add_fix" aria-hidden="true" style="position: absolute;margin-top: 7px;">add_box</i>';
 			}
-			$data .=  '<tr>
+			$rtn .=  '<tr>
 					<td>'.$datas['keterangan'].'</td>
 					<td>'.$datas['Biaya'].'</td>
 					<td>0</td>
@@ -345,7 +345,7 @@ class TagihanSiswaController extends Controller
 				</tr>';			
 		endforeach;
 
-		return $data;
+		return $rtn;
 
 
 	}
