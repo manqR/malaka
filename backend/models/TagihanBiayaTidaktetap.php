@@ -13,6 +13,7 @@ use Yii;
  * @property string $idsiswa
  * @property string $keterangan
  * @property double $nominal
+ * @property string $tahun_ajaran
  * @property int $flag
  * @property string $tgl_assign
  * @property string $tgl_payment
@@ -21,7 +22,7 @@ use Yii;
 class TagihanBiayaTidaktetap extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -29,22 +30,22 @@ class TagihanBiayaTidaktetap extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['idbiaya', 'flag'], 'integer'],
-            [['no_tagihan', 'idsiswa', 'keterangan', 'nominal', 'flag', 'tgl_assign', 'user'], 'required'],
+            [['no_tagihan', 'idsiswa', 'keterangan', 'nominal', 'tahun_ajaran', 'flag', 'tgl_assign', 'user'], 'required'],
             [['nominal'], 'number'],
             [['tgl_assign', 'tgl_payment'], 'safe'],
-            [['no_tagihan', 'idsiswa'], 'string', 'max' => 10],
-            [['keterangan', 'user'], 'string', 'max' => 50],
+            [['no_tagihan', 'keterangan', 'tahun_ajaran', 'user'], 'string', 'max' => 50],
+            [['idsiswa'], 'string', 'max' => 10],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -55,6 +56,7 @@ class TagihanBiayaTidaktetap extends \yii\db\ActiveRecord
             'idsiswa' => 'Idsiswa',
             'keterangan' => 'Keterangan',
             'nominal' => 'Nominal',
+            'tahun_ajaran' => 'Tahun Ajaran',
             'flag' => 'Flag',
             'tgl_assign' => 'Tgl Assign',
             'tgl_payment' => 'Tgl Payment',

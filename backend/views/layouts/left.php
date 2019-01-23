@@ -89,6 +89,48 @@
             </li>
             <!-- /dashboard -->
          
+
+            
+             <!-- setup -->
+             <li>
+                <a href="javascript:;">
+                <span class="menu-caret">
+                <i class="material-icons">arrow_drop_down</i>
+                </span>
+                <i class="material-icons text-danger">settings</i>
+                <span>Pengaturan</span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="tagihan">
+                        <span>Atur Biaya Tagihan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="kelas">
+                        <span>Kelas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="jurusan">
+                        <span>Jurusan</span>
+                        </a>
+                    </li>      
+					<li>
+                        <a href="ajaran">
+                        <span>Tahun Ajaran</span>
+                        </a>
+                    </li>                   
+					<li>
+                        <a href="biaya_tidak_tetap">
+                        <span>Biaya Tidak Tetap</span>
+                        </a>
+                    </li>                   
+                </ul>
+            </li>
+            <!-- /setup -->
+
+
 			<!-- student -->
             <li>
                 <a href="javascript:;">
@@ -118,44 +160,7 @@
             </li>
             <!-- /student -->			
 			
-            <!-- setup -->
-            <li>
-                <a href="javascript:;">
-                <span class="menu-caret">
-                <i class="material-icons">arrow_drop_down</i>
-                </span>
-                <i class="material-icons text-danger">settings</i>
-                <span>Pengaturan</span>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a href="tagihan">
-                        <span>Tagihan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="kelas">
-                        <span>Kelas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="jurusan">
-                        <span>Jurusan</span>
-                        </a>
-                    </li>      
-					<li>
-                        <a href="ajaran">
-                        <span>Tahun Ajaran</span>
-                        </a>
-                    </li>                   
-					<li>
-                        <a href="biaya_tidak_tetap">
-                        <span>Biaya Tidak Tetap</span>
-                        </a>
-                    </li>                   
-                </ul>
-            </li>
-            <!-- /setup -->
+           
 
            <!-- Laporan pemasukan / pengeluaran -->
            <li>

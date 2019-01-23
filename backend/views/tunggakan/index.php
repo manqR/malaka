@@ -46,10 +46,11 @@ $this->registerJs("
     function submitForm(){
         var kategori = $('#kategori').val();
         var tahun_ajaran = $('#tahun_ajaran').val();
+        var kategori_tagihan = $('#kategori_tagihan').val();
         $.ajax ({
             type: 'POST',
             url: 'tunggakan/postdata',
-            data: {'kategori': kategori,'tahun_ajaran': tahun_ajaran},
+            data: {'kategori': kategori,'tahun_ajaran': tahun_ajaran, 'kategori_tagihan':kategori_tagihan},
             cache: false,
             success: function(html) {	
                 loading();										
@@ -109,8 +110,18 @@ $this->registerCssFile($root."/styles/loaders.css");
                     <?php
                         endforeach;
                     ?>           	
-                </select>                
-            </div>       
+                </select>  
+
+                                
+            </div>
+            <div class="form-group">
+                <label>Kategori</label>
+                <select class="form-control" name="kategori_tagihan" id = "kategori_tagihan" style="font-size:12px">
+                    <option value="" disabled selected>- Kategori -</option>     
+                    <option value="1">Biaya Tetap</option>
+                    <option value="0">Biaya Tidak Tetap</option>
+                </select> 
+            </div>      
             <div class="form-group">
                 <input type="submit" class="btn btn-success btn-md" value="Search" onclick="submitForm()"/>
             </div>   

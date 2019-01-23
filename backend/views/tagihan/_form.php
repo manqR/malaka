@@ -57,7 +57,7 @@ $this->registerCssFile('vendors/select2/select2.css');
 	<div class="card">
 		<div class="card-block">
 		
-			<?= $form->field($model, 'idtagihan',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('Billing Number') ?>				
+			<?= $form->field($model, 'idtagihan',['options' => ['tag' => 'false']])->textInput(['maxlength' => 10,'class'=>'form-control m-b-1','id'=>'maxlength'],['options' => ['tag' => false]])->label('No Tagihan') ?>				
 			
 			<?php
 				// $connection = \Yii::$app->db;
@@ -125,9 +125,9 @@ $this->registerCssFile('vendors/select2/select2.css');
 				View::POS_HEAD);						
 			?>	
 
-			<?= $form->field($model, 'administrasi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Administration') ?>
-			<?= $form->field($model, 'pengembangan')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Development') ?>
-			<?= $form->field($model, 'praktik')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Practice') ?>
+			<?= $form->field($model, 'administrasi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Administrasi') ?>
+			<?= $form->field($model, 'pengembangan')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Uang Bangunan') ?>
+			<?= $form->field($model, 'praktik')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Praktek') ?>
 			
 		</div>		
 	</div>
@@ -135,21 +135,21 @@ $this->registerCssFile('vendors/select2/select2.css');
 <div class="col-lg-12">
 	<div class="card">
 		<div class="card-block">
-			<?= $form->field($model, 'semester_a')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Semester_A') ?>
+			<?= $form->field($model, 'semester_a')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Semester Ganjil') ?>
 
-			<?= $form->field($model, 'semester_b')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Semester_B') ?>
+			<?= $form->field($model, 'semester_b')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Semester Gena[') ?>
 
-			<?= $form->field($model, 'lab_inggris')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('English Lab') ?>
+			<?= $form->field($model, 'lab_inggris')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Lab Bahasa Inggris') ?>
 
 			<?= $form->field($model, 'lks')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('LKS') ?>
 
-			<?= $form->field($model, 'perpustakaan')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Library') ?>
+			<?= $form->field($model, 'perpustakaan')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Perpustakaan') ?>
 
 			<?= $form->field($model, 'osis')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('OSIS') ?>
 
 			<?= $form->field($model, 'mpls')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('MPLS')?>
 
-			<?= $form->field($model, 'asuransi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Assurance') ?>
+			<?= $form->field($model, 'asuransi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Asuransi') ?>
 			
 			<div class="form-group">
 				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -56,10 +56,16 @@ class Tagihan extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public function getKelas()
+    {
+        return $this->hasOne(Kelas::className(), ['idkelas' => 'idkelas']);
+    }
     public function attributeLabels()
     {
         return [
             'idtagihan' => 'Idtagihan',
+            'nama_kelas' => 'Nama Kelas',
             'idkelas' => 'Idkelas',
             'idajaran' => 'Idajaran',
             'idjurusan' => 'Idjurusan',
@@ -80,4 +86,5 @@ class Tagihan extends \yii\db\ActiveRecord
             'date_update' => 'Date Update',
         ];
     }
+    
 }

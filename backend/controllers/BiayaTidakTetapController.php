@@ -81,10 +81,11 @@ class BiayaTidakTetapController extends Controller
         if ($model->load(Yii::$app->request->post())){
             
             $model->user_created = Yii::$app->user->identity->username;
+            $model->tahun_ajaran = $model->tahun_ajaran;
             $model->date_created = date('Y-m-d H:i:s');
 
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->save(false);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

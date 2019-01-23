@@ -19,7 +19,7 @@ class BiayaTidakTetapSearch extends BiayaTidakTetap
     {
         return [
             [['id'], 'integer'],
-            [['keterangan', 'user_created', 'date_created'], 'safe'],
+            [['keterangan', 'user_created', 'date_created','tahun_ajaran'], 'safe'],
             [['nominal'], 'number'],
         ];
     }
@@ -63,10 +63,12 @@ class BiayaTidakTetapSearch extends BiayaTidakTetap
             'id' => $this->id,
             'nominal' => $this->nominal,
             'date_created' => $this->date_created,
+            'tahun_ajaran' => $this->tahun_ajaran,
         ]);
 
         $query->andFilterWhere(['like', 'keterangan', $this->keterangan])
-            ->andFilterWhere(['like', 'user_created', $this->user_created]);
+            ->andFilterWhere(['like', 'user_created', $this->user_created])
+            ->andFilterWhere(['like', 'tahun_ajaran', $this->tahun_ajaran]);
 
         return $dataProvider;
     }

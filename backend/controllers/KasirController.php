@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use backend\models\Siswa;
 use backend\models\TagihanBiayaTidaktetap;
 use backend\models\TagihanSiswa;
+use backend\models\Kuitansi;
 use yii\web\Response;
 
 /**
@@ -62,15 +63,18 @@ class KasirController extends Controller
 
     public function actionCart($id){
         $connection = \Yii::$app->db;
-		$query = $connection->createCommand("SELECT * FROM v_tagihan_siswa a LEFT JOIN kelas b ON a.idkelas = b.idkelas  LEFT JOIN tahun_ajaran c ON b.idajaran = c.idajaran LEFT JOIN kelas_group d ON b.idkelas = d.idkelas
-        WHERE idsiswa = '".$id."'  AND (
-                                                    (d.idgroup NOT IN (SELECT x.idgroup FROM tagihan_siswa x WHERE x.idsiswa= '".$id."' AND a.key_ = x.nama_tagihan) )
-                                                        AND
-                                                    (a.key_ NOT IN (SELECT y.no_tagihan FROM tagihan_biaya_tidaktetap y WHERE y.idsiswa = '".$id."' AND y.flag = 1))
-                                                )
-        ORDER BY c.idajaran ASC
-        
-        ");
+		$query = $connection->createCommand("SELECT * FROM v_tagihan_siswa a LEFT JOIN kelas b ON a.idkelas = b.idkelas LEFT JOIN tahun_ajaran c ON b.idajaran = c.idajaran LEFT JOIN kelas_group d ON b.idkelas = d.idkelas
+                                            WHERE idsiswa = '".$id."' AND (
+                                            (d.idgroup NOT IN (SELECT x.idgroup FROM tagihan_siswa x WHERE x.idsiswa= idsiswa = '".$id."' AND a.key_ COLLATE utf8mb4_general_ci  = x.nama_tagihan) )
+
+                                            AND
+                                            (a.key_ COLLATE utf8mb4_general_ci NOT IN (SELECT y.no_tagihan FROM tagihan_biaya_tidaktetap y WHERE y.idsiswa = '".$id."' AND y.flag = 1))
+                                            )
+                                            AND
+                                            (
+												a.key_ COLLATE utf8mb4_general_ci NOT IN (SELECT z.key_ FROM cart z WHERE z.idsiswa = a.idsiswa AND z.tahun_ajaran = a.tahun_ajaran AND z.idkelas = a.idkelas)
+											)
+                                            ORDER BY c.idajaran ASC ");
 		$data = $query->queryAll();
         
         $output = array();
@@ -97,6 +101,36 @@ class KasirController extends Controller
     }
 
 
+    public function actionListdelete(){
+        
+        $arrData = $_POST['data'];
+        $arrData = explode(';',$arrData);
+
+        $model = Cart::find()
+                ->where(['idsiswa'=>$arrData[1]])
+                ->AndWhere(['key_'=>$arrData[0]])
+                ->AndWhere(['tahun_ajaran'=>$arrData[2]])
+                ->One();
+        $model->flag = 3;
+        if($model->save()){           
+
+            $data = ['err'=>'sukses'];			
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return $data;
+        }else{
+            $data = ['err'=>'err'];			
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return $data;
+        }
+        
+       
+
+
+        
+        
+
+    }
+
     public function actionPost(){
         $model = new Cart();
         
@@ -120,6 +154,7 @@ class KasirController extends Controller
         $model->idkelas = $arrData[1];
         $model->keterangan = $arrData[0];
         $model->nominal = isset($find->nominal) ? $find->nominal : $find['nominal'];
+        $model->tahun_ajaran = $find['tahun_ajaran'];
         $model->flag = 1;
         $model->user_create = Yii::$app->user->identity->username;
         $model->date_create = date('Y-m-d');
@@ -394,17 +429,19 @@ class KasirController extends Controller
             // var_dump($view);
         $data = '';
         if($view){
-            foreach($view as $views):
+            foreach($view as $views):                
                 $data .="<tr>
                          <td>".$views->idsiswa."</td>
                          <td>".$views->keterangan."</td>
                          <td>".number_format($views->nominal,0,".",".")."</td>
+                         <td>".$views->tahun_ajaran."</td>
                          <td>1</td>
+                         <td><i class=\"material-icons kurang\" aria-hidden=\"true\"  data-id=".$views->keterangan.';'.$views->idsiswa.';'.$views->tahun_ajaran.">delete</i></td>
                      </tr>";                                               
             endforeach;
         }else{
             $data = " <tr>
-                    <td colspan=\"4\" class=\"text-xs-center\">No data available in table</td>
+                    <td colspan=\"6\" class=\"text-xs-center\">No data available in table</td>
                 </tr>";
         }
         return $data;
@@ -440,6 +477,25 @@ class KasirController extends Controller
         $query = $connection->createCommand("SELECT a.* ,c.idgroup FROM cart a LEFT JOIN kelas b ON a.idkelas = b.idkelas LEFT JOIN kelas_group c ON b.idkelas = c.idkelas WHERE a.idsiswa = '".$idsiswa."'");
         $model = $query->queryAll();
 
+        $idkuitansi = 'KWI-'.date('ym').rand(1000,9999);
+        $lookupCart = Cart::find()
+                ->where(['idsiswa'=>$idsiswa])
+                ->andWhere(['flag'=>1])
+                ->All();
+        foreach($lookupCart as $lookupCarts):
+            $kuitansi = new Kuitansi();
+
+            $kuitansi->idkuitansi = $idkuitansi;
+            $kuitansi->idsiswa = $lookupCarts->idsiswa;
+            $kuitansi->idcart = $lookupCarts->idcart;
+            $kuitansi->key_ = $lookupCarts->key_;
+            $kuitansi->nominal = $lookupCarts->nominal;
+            $kuitansi->idkelas = $lookupCarts->idkelas;
+            $kuitansi->tahun_ajaran = $lookupCarts->tahun_ajaran;
+            $kuitansi->tanggal_pembayaran = date('Y-m-d H:i:s');
+            $kuitansi->save();
+        endforeach;
+
        foreach($model as $models):
             // var_dump($models);
             if($models['idkelas'] == 'X'){
@@ -469,16 +525,23 @@ class KasirController extends Controller
                 $update = Cart::findOne($models['idcart']);
                 $update->flag = 2;
                 $update->save();
-            }
-
+            }     
+            
+            
        endforeach;
 
-       $data = ['err'=>'sukses'];			
+        
+       $data = ['err'=>'sukses','idkwitansi'=>$idkuitansi];			
        Yii::$app->response->format = Response::FORMAT_JSON;
        return $data;
 
     }
 
+    public function actionCheckoutCart($id){
+        include './inc/pdf.php';
+        CheckoutCart($id);
+    }
+    
     public function actionView($id)
     {
         return $this->render('view', [
@@ -524,6 +587,9 @@ class KasirController extends Controller
         ]);
     }
 
+
+
+   
     /**
      * Deletes an existing Cart model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

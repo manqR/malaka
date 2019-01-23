@@ -71,8 +71,9 @@ class TunggakanController extends \yii\web\Controller
                
                                
             }else{
+                $kategori_tagihan = $_POST['kategori_tagihan'] == 1 ? 1 : 0;
                 $connection = \Yii::$app->db;
-                $sql = $connection->createCommand("SELECT * FROM v_tunggakan_siswa WHERE ajaran = '".$_POST['tahun_ajaran']."' OR ajaran = '-'");
+                $sql = $connection->createCommand("SELECT * FROM v_tunggakan_siswa WHERE ajaran = '".$_POST['tahun_ajaran']."' AND kategori = '".$kategori_tagihan."'");
                 $model = $sql->queryAll();
 
                 foreach($model as $models):

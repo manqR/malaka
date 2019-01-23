@@ -15,12 +15,13 @@ class TagihanSearch extends Tagihan
     /**
      * @inheritdoc
      */
+    public $nama_kelas;
     public function rules()
     {
         return [
             [['idtagihan', 'idkelas', 'idjurusan', 'user_create', 'date_create', 'user_update', 'date_update'], 'safe'],
             [['idajaran'], 'integer'],
-            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
+            [['administrasi', 'nama_kelas','pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'number'],
         ];
     }
 
@@ -43,6 +44,7 @@ class TagihanSearch extends Tagihan
     public function search($params)
     {
         $query = Tagihan::find();
+        $query->joinWith(['kelas']);
 
         // add conditions that should always apply here
 
@@ -50,17 +52,20 @@ class TagihanSearch extends Tagihan
             'query' => $query,
         ]);
 
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+        $dataProvider->sort->attributes['nama_kelas']=[ 
+			'asc'=>['kelas.nama_kelas' => SORT_ASC],
+			'desc'=>['kelas.nama_kelas'=> SORT_DESC],
+		];
+        
+        
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'idajaran' => $this->idajaran,
+            'nama_kelas' => $this->idkelas,
             'administrasi' => $this->administrasi,
             'pengembangan' => $this->pengembangan,
             'praktik' => $this->praktik,
@@ -77,10 +82,10 @@ class TagihanSearch extends Tagihan
         ]);
 
         $query->andFilterWhere(['like', 'idtagihan', $this->idtagihan])
-            ->andFilterWhere(['like', 'idkelas', $this->idkelas])
             ->andFilterWhere(['like', 'idjurusan', $this->idjurusan])
             ->andFilterWhere(['like', 'user_create', $this->user_create])
-            ->andFilterWhere(['like', 'user_update', $this->user_update]);
+            ->andFilterWhere(['like', 'user_update', $this->user_update])
+            ->andFilterWhere(['like', 'kelas.nama_kelas', $this->nama_kelas]);
 
         return $dataProvider;
     }

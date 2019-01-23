@@ -684,7 +684,7 @@ class TagihanSiswaController extends Controller
 				
 		$data = json_encode($output);
 		$data = [
-			'data'=>$output
+		'data'=>$output
 		];
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return $data;

@@ -2,6 +2,7 @@
 
 
 use backend\models\TagihanBiayaTidaktetap;
+use backend\models\Kuitansi;
 
     function Test(){
         $mpdf = new \Mpdf\Mpdf(['autoPageBreak' => true]);
@@ -9,7 +10,6 @@ use backend\models\TagihanBiayaTidaktetap;
         include 'headerReport.php';
         $html = HeaderReport('images/logo.png');
        
-
         $mpdf->autoPageBreak = true;
 
         $mpdf->AddPage();
@@ -466,6 +466,114 @@ use backend\models\TagihanBiayaTidaktetap;
                                     <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> Sebagai Pembayaran </td>                                                                                    
                                     <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <table style="display:inline-block;"><tr><td>Uang Pangkal</td><td>Rp :</td><td>100.000</td></tr></table>
                                                                                                                                                                                                                             <table style="display:inline-block;"><tr><td>Uang Pangkal</td><td>Rp :</td><td>100.000</td></tr></table>
+                                                                                                                                                                                                                        </td>
+                                </tr>  
+                                
+                                <tr style="tex-align:center;font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td></td>                                                                                   
+                                    <td></td>                                                                                   
+                                    <td> </td>                                                                                   
+                                    <td style="text-align:center;">Jakarta, '.date('d M  Y').'<br/>SEKRETARIAT<br/><br/><br/><br/>(........................)</td>                                                                                   
+                                </tr>
+                                <tr style="tex-align:center;font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td><br/><br/><u>Tembusan :</u><br/>1. Asli untuk yang Bersangkutan<br/>2. Lembar kedua untuk Bendahara<br/>3. Lembar Ketiga untuk Arsip</td>                                                                                   
+                                    <td></td>                                                                                   
+                                    <td></td>                                                                                   
+                                    <td></td>                                                                                   
+                                    
+                                </tr>
+                               
+                            </table>
+              ');
+
+            // $mpdf->WriteHTML('Hello World');
+
+            $mpdf->Output();
+        exit;
+   }
+   function CheckoutCart($id){
+   
+        
+        $head = '<style>
+                img{
+                    float: left;
+                    width: 89px;                                
+                    position: absolute;
+                }
+                .text{
+                    left: 155px;
+                    top: 45px;
+                    right:25px;
+                    position: absolute;
+                    text-align: center;
+                }
+                hr{
+                    top: 511px;
+                    position: absolute;
+                }                                
+                </style>';
+
+
+        $data = Kuitansi::find()
+            ->where(['idkuitansi'=>$id])
+            ->One();
+
+        $mpdf = new \Mpdf\Mpdf(['autoPageBreak' => true]);	
+        include 'terbilang.php';
+
+        $connection = \Yii::$app->db;
+        $sql = $connection->createCommand("SELECT * FROM kuitansi WHERE idkuitansi = '".$id."' ");
+        $model = $sql->queryOne();
+
+        $query = $connection->createCommand("SELECT * FROM kuitansi WHERE idkuitansi = '".$id."' ");
+        $fetch = $query->queryAll();
+
+        $sum= 0;
+        $detail = '';
+        foreach($fetch as $fetchs):
+
+            // var_dump($fetchs);
+            // die;
+            $detail .= '<table style="display:inline-block;"><tr><td>'.$fetchs['key_'].'</td><td>Rp </td><td>'.number_format($fetchs['nominal'],0,".",".").'</td></tr></table>';                            
+            $sum += $fetchs['nominal'];
+        endforeach;
+        $mpdf->writeHTML($head.' 
+                                <img src="images/logo.png" >
+                                <div class="text">
+                                    <h2>SMK MALAKA</h2>
+                                    <p>Jl. Mawar Merah No.23, RT.2/RW.1, Pd. Kopi, Duren Sawit, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13460</p> 
+                                </div>  
+                                <br/><br/><br/>
+                                <br/>
+                                <hr/> 
+                                <br/>          
+                                <br/>          
+                                <div style="text-align:right">No. Kuitansi : '.$model['idkuitansi'].'</div>
+                                <div style="top:50;text-align:center">
+                                    <u><b>KWITANSI</b></u>                                   
+                                    <p> Tahun : '.$model['tahun_ajaran'].'</p>
+                                </div>
+                
+                                <table class="invoice" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 100%; margin: 20px auto;">                                   
+                                <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">Sudah terima dari </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <i>'.Yii::$app->user->identity->username.'</i></td>
+                                </tr>                        
+                                <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> NIS </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: '.$model['idsiswa'].'</td>
+                                </tr>                                                                               
+                                <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> Tanggal Pembayaran </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: '.date('d M Y', strtotime($model['tanggal_pembayaran'])).'</td>
+                                </tr>                                                                               
+                                <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> Uang Sebesar </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <b>Rp '.number_format($sum,0,".",".").'</b> ( <i>'.ucwords(penyebut($sum)).' Rupiah </i> )</td>
+                                </tr> 
+                                <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> Sebagai Pembayaran </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: '.$detail.'
                                                                                                                                                                                                                         </td>
                                 </tr>  
                                 

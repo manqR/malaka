@@ -10,13 +10,14 @@ use Yii;
  * @property int $id
  * @property string $keterangan
  * @property double $nominal
+ * @property string $tahun_ajaran
  * @property string $user_created
  * @property string $date_created
  */
 class BiayaTidakTetap extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -24,19 +25,19 @@ class BiayaTidakTetap extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['nominal'], 'number'],
             [['date_created'], 'safe'],
-            [['keterangan', 'user_created'], 'string', 'max' => 50],
+            [['keterangan', 'tahun_ajaran', 'user_created'], 'string', 'max' => 50],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -44,6 +45,7 @@ class BiayaTidakTetap extends \yii\db\ActiveRecord
             'id' => 'ID',
             'keterangan' => 'Keterangan',
             'nominal' => 'Nominal',
+            'tahun_ajaran' => 'Tahun Ajaran',
             'user_created' => 'User Created',
             'date_created' => 'Date Created',
         ];

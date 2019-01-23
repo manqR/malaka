@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'header' => 'Kode Tagihan',
 				'attribute' => 'idtagihan'
-			],        			    
-			[
-				'header' => 'Kode Kelas',
-				'attribute' => 'idkelas'
-			],                    
+            ],        
+            [
+				'attribute'=>'nama_kelas',
+				'value'=>'kelas.nama_kelas',
+			],	                 
             //'praktik',
             //'semester_a',
             //'semester_b',
