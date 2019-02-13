@@ -199,6 +199,15 @@
             </li>
             <!-- /spp -->
 
+             <!-- Spp -->
+             <li>
+                <a href="kuitansi">
+                    <i class="material-icons">list</i>
+                    <span>Historis Kuitansi</span>
+                </a>
+            </li>
+            <!-- /spp -->
+
              <!-- Import -->
              <li>
                 <a href="upload">

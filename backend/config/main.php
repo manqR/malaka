@@ -49,7 +49,13 @@ return [
 				'kasir'=>'kasir/index',
 				'checkout_print-<id>'=>'kasir/checkout-cart',
 				//---------------------------------- </KASIR> -----------------------------//
+
+
+				//---------------------------------- </KUITANSI> -----------------------------//
+				'kuitansi'=>'kuitansi/index',
+
 				
+
 				//---------------------------------- CREATE -----------------------------//
 				'jurusan-create'=>'jurusan/create',
 				'kelas-create'=>'kelas/create',

@@ -22,6 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],            
             'tahun_ajaran',
+            [
+                'label'=>'Status',
+                'attribute'=>'Status',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    return $model->status == 1 ? '<span class="tag tag-success">Active</label>' : '<span class="tag tag-danger">Disable</label>';
+                },
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
