@@ -31,15 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
 				'attribute'=>'nama_siswa',
-				'value'=>'siswa.nama_lengkap',
+				'value'=>'siswa0.nama_lengkap',
 			],	      
             [
 				'attribute'=>'nama_kelas',
-				'value'=>'kelas.nama_kelas',
+				'value'=>'kelas0.nama_kelas',
 			],	              
             'tahun_ajaran',
             'tanggal_pembayaran',
-            'nominal',
             //'idkelas',
             // 'tahun_ajaran',
             //'tanggal_pembayaran',

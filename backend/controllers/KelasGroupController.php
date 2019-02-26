@@ -72,7 +72,7 @@ class KelasGroupController extends Controller
 		$findTahun = TahunAjaran::find()				
 				->where(['status'=>1])
 				->groupBy(['tahun_ajaran'])
-				->All();
+				->One();
 		
 		$Ajaran = KelasGroup::find()	
 				->joinWith(['kelas'])			

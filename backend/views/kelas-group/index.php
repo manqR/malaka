@@ -5,6 +5,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\models\Kelas;
 use backend\models\DetailGroup;
+use backend\models\KelasGroup;
+use backend\models\TahunAjaran;
 use yii\web\View;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -50,7 +52,8 @@ $this->registerCssFile($root."/vendors/select2/select2.css");
 $this->registerCssFile($root."/vendors/sweetalert/dist/sweetalert.css");
 $this->registerCssFile($root."/vendors/datatables/media/css/dataTables.bootstrap4.css");
 
-$this->registerJs("function myFunction() {
+$this->registerJs("
+		function myFunction() {
 						var id = document.getElementById(\"mySelect\").value;
 						var dataString = 'id=' + id.replace('/','');
 						$.ajax({
@@ -166,7 +169,9 @@ $this->registerJs("
 				<select data-placeholder="Your Favorite Football Team" class="select2 m-b-1" onchange="myFunction()" id="mySelect" style="width: 100%;">
 					<option value="default" selected="selected">-- Tahun Ajaran --</option>
 					<?php
-						foreach($findTahun as $finds):							
+
+						$thn = TahunAjaran::findAll(['status'=>1]);
+						foreach($thn as $finds):							
 							 echo "<option value=\"$finds->idajaran\">$finds->tahun_ajaran</option>";
 						endforeach;
 					?>
@@ -178,8 +183,47 @@ $this->registerJs("
 		</p>
 	</div>
 	
-	<div class="row pricing" id="list" style="display:hidden">		
-		
+	<div class="row pricing" id="list">		
+	<?php
+		$modelx = KelasGroup::find()
+					->joinWith('kelas')
+					->where(['idajaran'=>$findTahun])
+					->all();
+			
+			
+			$data = '';
+			foreach($modelx as $modelxs):
+			 
+			 $connection = \Yii::$app->db;
+			 $sql = $connection->createCommand("SELECT COUNT(*) JUMLAH FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN kelas c ON b.idkelas = c.idkelas WHERE c.idajaran = ".$findTahun->idajaran." AND a.idgroup = ".$modelxs->idgroup."");
+			 $count = $sql->queryAll();
+			 				
+			 $sql = $connection->createCommand("SELECT c.nama_lengkap  FROM detail_group a JOIN kelas_group b ON a.idgroup = b.idgroup JOIN siswa c ON a.idsiswa = c.idsiswa  JOIN kelas d ON d.idkelas = b.idkelas WHERE d.idajaran = ".$modelxs->kelas->idajaran." AND a.idgroup = ".$modelxs->idgroup." ORDER BY a.tgl_add DESC LIMIT 5");
+			 $siswa = $sql->queryAll();
+
+			 $ls_siswa='';
+			 
+			 foreach($siswa as $siswas):
+			 	$ls_siswa .= '<li>'.$siswas['nama_lengkap'].'</li>';
+			 endforeach;
+				
+			 $data .= '<div class="col-md-6 col-lg-3">
+						<div class="pricing-plan">
+							<h5>'.$modelxs->kelas->kode.' - '.$modelxs->kelas->idjurusan.'</h5>
+							<i class="material-icons addSiswa" aria-hidden="true" data-toggle="modal" data-id='.$modelxs->idgroup.';'.$modelxs->kelas->idajaran.' data-target=".add-siswa">add_circle_outline</i>
+							<p class="plan-title text-primary">'.$modelxs->wali_kelas.'</p>
+							<div class="plan-price text-primary">
+							<span>'.$count[0]['JUMLAH'].'</span>
+							</div>
+							<ul class="plan-features">
+								'.$ls_siswa.'								
+							</ul>
+							<button class="btn btn-primary btn-lg open-AddBookDialog" data-toggle="modal" data-id='.$modelxs->idgroup.' data-target=".siswa">Lihat Data Siswa</button>
+						</div>
+					</div>';
+		endforeach;
+		echo $data;
+	?>
 	</div>
 	
 	<div class="row pricing" id="lists">		

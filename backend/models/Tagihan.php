@@ -22,6 +22,12 @@ use Yii;
  * @property double $osis
  * @property double $mpls
  * @property double $asuransi
+ * @property double $baju_olah_raga
+ * @property double $mos
+ * @property double $kunjungan_industri
+ * @property double $pkl
+ * @property double $pendalaman_materi
+ * @property double $dana_alokasi
  * @property string $user_create
  * @property string $date_create
  * @property string $user_update
@@ -30,7 +36,7 @@ use Yii;
 class Tagihan extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -38,14 +44,14 @@ class Tagihan extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['idtagihan', 'idkelas', 'idajaran', 'idjurusan'], 'required'],
             [['idajaran'], 'integer'],
-            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi'], 'safe'],
+            [['administrasi', 'pengembangan', 'praktik', 'semester_a', 'semester_b', 'lab_inggris', 'lks', 'perpustakaan', 'osis', 'mpls', 'asuransi', 'baju_olah_raga', 'mos', 'kunjungan_industri', 'pkl', 'pendalaman_materi', 'dana_alokasi'],'safe'],
             [['date_create', 'date_update'], 'safe'],
             [['idtagihan', 'idkelas', 'idjurusan'], 'string', 'max' => 10],
             [['user_create', 'user_update'], 'string', 'max' => 50],
@@ -54,18 +60,12 @@ class Tagihan extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-
-    public function getKelas()
-    {
-        return $this->hasOne(Kelas::className(), ['idkelas' => 'idkelas']);
-    }
     public function attributeLabels()
     {
         return [
             'idtagihan' => 'Idtagihan',
-            'nama_kelas' => 'Nama Kelas',
             'idkelas' => 'Idkelas',
             'idajaran' => 'Idajaran',
             'idjurusan' => 'Idjurusan',
@@ -80,11 +80,21 @@ class Tagihan extends \yii\db\ActiveRecord
             'osis' => 'Osis',
             'mpls' => 'Mpls',
             'asuransi' => 'Asuransi',
+            'baju_olah_raga' => 'Baju Olah Raga',
+            'mos' => 'Mos',
+            'kunjungan_industri' => 'Kunjungan Industri',
+            'pkl' => 'Pkl',
+            'pendalaman_materi' => 'Pendalaman Materi',
+            'dana_alokasi' => 'Dana Alokasi',
             'user_create' => 'User Create',
             'date_create' => 'Date Create',
             'user_update' => 'User Update',
             'date_update' => 'Date Update',
         ];
     }
-    
+
+    public function getKelas0()
+    {
+        return $this->hasOne(Kelas::className(), ['idkelas' => 'idkelas']);
+    }
 }

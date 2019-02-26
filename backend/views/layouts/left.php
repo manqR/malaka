@@ -8,6 +8,7 @@
 	use yii\bootstrap\NavBar;
 	use yii\widgets\Breadcrumbs;
 	use common\widgets\Alert;
+	use backend\models\RolePrivilage;
 	
 
 	$this->registerJs('
@@ -62,9 +63,7 @@
             </div>
         </a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="javascript:;">Profile</a>                       
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="javascript:;">Help</a>			
+            
 			<?=				  
 				  Html::beginForm(['/site/logout'], 'post')
 				. Html::submitButton(
@@ -89,9 +88,16 @@
             </li>
             <!-- /dashboard -->
          
+                <?php
+                    $menu = RolePrivilage::findAll(['idrole'=>Yii::$app->user->identity->role]);
 
+                    
+                ?>
             
              <!-- setup -->
+             <?php 
+                if($menu[0]->nama_menu == 'Pengaturan' && $menu[0]->flag == 1){
+             ?>
              <li>
                 <a href="javascript:;">
                 <span class="menu-caret">
@@ -101,6 +107,7 @@
                 <span>Pengaturan</span>
                 </a>
                 <ul class="sub-menu">
+                   
                     <li>
                         <a href="tagihan">
                         <span>Atur Biaya Tagihan</span>
@@ -126,11 +133,21 @@
                         <span>Biaya Tidak Tetap</span>
                         </a>
                     </li>                   
+					<li>
+                        <a href="user">
+                        <span>User</span>
+                        </a>
+                    </li>                   
                 </ul>
             </li>
             <!-- /setup -->
-
-
+            <?php
+                }else{echo "";}
+            ?>
+                
+            <?php 
+                if($menu[1]->nama_menu == 'Siswa' && $menu[1]->flag == 1){
+             ?>
 			<!-- student -->
             <li>
                 <a href="javascript:;">
@@ -159,9 +176,12 @@
                 </ul>
             </li>
             <!-- /student -->			
-			
+                <?php }else echo"";?>
            
 
+            <?php 
+                if($menu[2]->nama_menu == 'Pencatatan Keuangan' && $menu[2]->flag == 1){
+             ?>
            <!-- Laporan pemasukan / pengeluaran -->
            <li>
                 <a href="javascript:;">
@@ -180,7 +200,11 @@
                 </ul>
             </li>
             <!-- /Laporan pemasukan / pengeluaran -->
+                <?php }else{echo"";}?>
 
+            <?php 
+                if($menu[3]->nama_menu == 'Kasir' && $menu[4]->flag == 1){
+             ?>
              <!-- Kasir -->
              <li>
                 <a href="kasir">
@@ -189,7 +213,10 @@
                 </a>
             </li>
             <!-- /kasir -->
-
+            <?php }else echo""; ?>
+            <?php 
+                if($menu[4]->nama_menu == 'Spp' && $menu[4]->flag == 1){
+             ?>
              <!-- Spp -->
              <li>
                 <a href="spp">
@@ -198,8 +225,12 @@
                 </a>
             </li>
             <!-- /spp -->
-
+                <?php }else echo ""; ?>
              <!-- Spp -->
+
+             <?php 
+                if($menu[5]->nama_menu == 'Histori Kuitansi' && $menu[5]->flag == 1){
+             ?>
              <li>
                 <a href="kuitansi">
                     <i class="material-icons">list</i>
@@ -207,8 +238,12 @@
                 </a>
             </li>
             <!-- /spp -->
-
+                <?php }else echo""; ?>
              <!-- Import -->
+
+             <?php 
+                if($menu[6]->nama_menu == 'Upload' && $menu[6]->flag == 1){
+             ?>
              <li>
                 <a href="upload">
                     <i class="material-icons text-success">cloud_upload</i>
@@ -216,8 +251,12 @@
                 </a>
             </li>
             <!-- /Import -->
+                <?php }else echo ""; ?>
 
 
+            <?php 
+                if($menu[7]->nama_menu == 'Laporan' && $menu[7]->flag == 1){
+             ?>
             <!-- report -->
             <li>
                 <a href="javascript:;">
@@ -241,7 +280,7 @@
                 </ul>
             </li>
             <!-- /report -->
-
+            <?php }else echo ""; ?>
             
             
 			

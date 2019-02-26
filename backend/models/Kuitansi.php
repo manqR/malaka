@@ -60,10 +60,10 @@ class Kuitansi extends \yii\db\ActiveRecord
             'urutan' => 'Urutan',
         ];
     }
-    public function getKelas(){
+    public function getKelas0(){
         return $this->hasOne(Kelas::className(), ['idkelas' => 'idkelas']);
     }
-    public function getSiswa(){
+    public function getSiswa0(){
         return $this->hasOne(Siswa::className(), ['idsiswa' => 'idsiswa']);
     }
 }

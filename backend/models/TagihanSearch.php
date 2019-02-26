@@ -44,7 +44,7 @@ class TagihanSearch extends Tagihan
     public function search($params)
     {
         $query = Tagihan::find();
-        $query->joinWith(['kelas']);
+        $query->joinWith(['kelas0']);
 
         // add conditions that should always apply here
 

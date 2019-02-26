@@ -66,6 +66,7 @@ return [
 				'ajaran-create'=>'tahun-ajaran/create',
 				'biaya_tidak_tetap-create'=>'biaya-tidak-tetap/create',
 				'pencatatan-create'=>'pencatatan-keuangan/create',
+				'user-create'=>'user/create',
 				
 				//---------------------------------- VIEW -----------------------------//				
 				'kelas-view-<kode>-<idajaran>-<idjurusan>' => 'kelas/view',
@@ -75,6 +76,7 @@ return [
 				'ajaran-view-<id>'=>'tahun-ajaran/view',
 				'biaya_tidak_tetap-view-<id>'=>'biaya-tidak-tetap/view',
 				'pencatatan-view-<id>'=>'pencatatan-keuangan/view',
+				'user-view-<id>'=>'user/view',
 				
 				//---------------------------------- UPDATE -----------------------------//				
 				'kelas-update-<kode>-<idajaran>-<idjurusan>' => 'kelas/update',
@@ -84,6 +86,7 @@ return [
 				'ajaran-update-<id>' => 'tahun-ajaran/update',
 				'biaya_tidak_tetap-update-<id>' => 'biaya-tidak-tetap/update',
 				'pencatatan-update-<id>' => 'pencatatan-keuangan/update',
+				'user-update-<id>' => 'user/update',
 				
 				//---------------------------------- DELETE -----------------------------//				
 				'kelas-delete-<kode>-<idajaran>-<idjurusan>' => 'kelas/delete',
@@ -93,6 +96,7 @@ return [
 				'ajaran-delete-<id>' => 'tahun-ajaran/delete',
 				'biaya_tidak_tetap-delete-<id>' => 'biaya-tidak-tetap/delete',
 				'pencatatan-delete-<id>' => 'pencatatan-keuangan/delete',
+				'user-delete-<id>' => 'user/delete',
 				
 				//---------------------------------- API -----------------------------//
 				// 'class-apigroup-<id>' => 'kelas-group/apigroup',
@@ -102,6 +106,7 @@ return [
 				'login'=>'site/login',
 
 
+				'user'=>'user/index',
 
 				// ------------------------------------- REPORT ------------------------//
 				'keuangan'=>'keuangan/index',

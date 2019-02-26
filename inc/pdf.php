@@ -97,6 +97,10 @@ use backend\models\Kuitansi;
 
                                 <table class="invoice" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 100%; margin: 20px auto;">                                   
                                     <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                        <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">Periode </td>                                                                                    
+                                        <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <b>'.date('d M Y',strtotime($date[0])).' - '.date('d M Y',strtotime($date[1])).'</b></td>
+                                    </tr>
+                                    <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                         <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">Nominal </td>                                                                                    
                                         <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <b>Rp '.number_format($model['nominal'],0,".",".").'</b></td>
                                     </tr>
@@ -522,7 +526,7 @@ use backend\models\Kuitansi;
         include 'terbilang.php';
 
         $connection = \Yii::$app->db;
-        $sql = $connection->createCommand("SELECT * FROM kuitansi WHERE idkuitansi = '".$id."' ");
+        $sql = $connection->createCommand("SELECT * FROM kuitansi a JOIN siswa b ON a.idsiswa = b.idsiswa WHERE a.idkuitansi = '".$id."' ");
         $model = $sql->queryOne();
 
         $query = $connection->createCommand("SELECT * FROM kuitansi WHERE idkuitansi = '".$id."' ");
@@ -560,8 +564,8 @@ use backend\models\Kuitansi;
                                     <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: <i>'.Yii::$app->user->identity->username.'</i></td>
                                 </tr>                        
                                 <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> NIS </td>                                                                                    
-                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: '.$model['idsiswa'].'</td>
+                                    <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> NIS / Nama </td>                                                                                    
+                                    <td colspan="3" style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">: '.$model['idsiswa'].'/ '.ucwords($model['nama_lengkap']).'</td>
                                 </tr>                                                                               
                                 <tr style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top"> Tanggal Pembayaran </td>                                                                                    

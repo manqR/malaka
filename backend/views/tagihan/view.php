@@ -154,7 +154,7 @@ function formatRupiah($val){
 							<td>
 								<span>
 								</span>
-								Semester_A
+								Semester Ganjil
 							</td>
 							
 							<td class="align-middle">
@@ -165,7 +165,7 @@ function formatRupiah($val){
 							<td>
 								<span>
 								</span>
-								Semester_B
+								Semester Genap
 							</td>
 							
 							<td class="align-middle">
@@ -176,7 +176,7 @@ function formatRupiah($val){
 							<td>
 								<span>
 								</span>
-								English Lab
+								Lab Bahasa Inggris
 							</td>
 							
 							<td class="align-middle">
@@ -198,7 +198,7 @@ function formatRupiah($val){
 							<td>
 								<span>
 								</span>
-								Library
+								Perpustakaan
 							</td>
 							
 							<td class="align-middle">
@@ -231,11 +231,77 @@ function formatRupiah($val){
 							<td>
 								<span>
 								</span>
-								Assurance
+								Asuransi
 							</td>
 							
 							<td class="align-middle">
 								<span class="label label-success"><?= formatRupiah($model->asuransi); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								Baju Olah Raga
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->baju_olah_raga); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								MOS
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->mos); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								Kunjungan Indurstri
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->kunjungan_industri); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								PKL
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->pkl); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								Pendalaman Materi
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->pendalaman_materi); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>
+								</span>
+								Dana Alokasi
+							</td>
+							
+							<td class="align-middle">
+								<span class="label label-success"><?= formatRupiah($model->dana_alokasi); ?></span>
 							</td>
 						</tr>
 					</tbody>

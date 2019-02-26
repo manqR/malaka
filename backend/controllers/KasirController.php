@@ -65,15 +65,16 @@ class KasirController extends Controller
         $connection = \Yii::$app->db;
 		$query = $connection->createCommand("SELECT * FROM v_tagihan_siswa a LEFT JOIN kelas b ON a.idkelas = b.idkelas LEFT JOIN tahun_ajaran c ON b.idajaran = c.idajaran LEFT JOIN kelas_group d ON b.idkelas = d.idkelas
                                             WHERE idsiswa = '".$id."' AND (
-                                            (d.idgroup NOT IN (SELECT x.idgroup FROM tagihan_siswa x WHERE x.idsiswa= idsiswa = '".$id."' AND a.key_ COLLATE utf8mb4_general_ci  = x.nama_tagihan) )
+                                            (d.idgroup NOT IN (SELECT x.idgroup FROM tagihan_siswa x WHERE x.idsiswa= idsiswa = '".$id."' AND a.key_   = x.nama_tagihan) )
 
                                             AND
-                                            (a.key_ COLLATE utf8mb4_general_ci NOT IN (SELECT y.no_tagihan FROM tagihan_biaya_tidaktetap y WHERE y.idsiswa = '".$id."' AND y.flag = 1))
+                                            (a.key_  NOT IN (SELECT y.no_tagihan FROM tagihan_biaya_tidaktetap y WHERE y.idsiswa = '".$id."' AND y.flag = 1))
                                             )
                                             AND
                                             (
-												a.key_ COLLATE utf8mb4_general_ci NOT IN (SELECT z.key_ FROM cart z WHERE z.idsiswa = a.idsiswa AND z.tahun_ajaran = a.tahun_ajaran AND z.idkelas = a.idkelas)
+												a.key_ NOT IN (SELECT z.key_ FROM cart z WHERE z.idsiswa = a.idsiswa AND z.tahun_ajaran = a.tahun_ajaran AND z.idkelas = a.idkelas)
 											)
+                                            AND a.nominal <> 0
                                             ORDER BY c.idajaran ASC ");
 		$data = $query->queryAll();
         

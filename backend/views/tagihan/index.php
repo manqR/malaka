@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],        
             [
 				'attribute'=>'nama_kelas',
-				'value'=>'kelas.nama_kelas',
+				'value'=>'kelas0.nama_kelas',
 			],	                 
             //'praktik',
             //'semester_a',

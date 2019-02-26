@@ -161,7 +161,7 @@ $this->registerJs("
                 console.log(nominal);
                 swal.showInputError('Nilai Tidak boleh kosong');
                 return false;
-            }else if (inputValue < nominal) {
+            }else if (parseInt(inputValue,10) < parseInt(nominal,10)) {
                 console.log(inputValue);
                 console.log(nominal);
                 swal.showInputError('Nominal yang dimasukan tidak cukup');
@@ -171,7 +171,8 @@ $this->registerJs("
                     data: siswa
                 },
                 function(data, status){	
-                    if(data.err == 'sukses'){										                    
+                    if(data.err == 'sukses'){			
+                        							                    
                         var kembalian = inputValue - nominal;
                         swal('Nilai Kembailan: Rp ' + rupiah(kembalian) , 'Pembayaran Berhasil', 'success');
                         listTagihan();

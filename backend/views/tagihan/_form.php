@@ -150,6 +150,12 @@ $this->registerCssFile('vendors/select2/select2.css');
 			<?= $form->field($model, 'mpls')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('MPLS')?>
 
 			<?= $form->field($model, 'asuransi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])->label('Asuransi') ?>
+			<?= $form->field($model, 'baju_olah_raga')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ]) ?>
+			<?= $form->field($model, 'mos')->textInput(['onkeyup' => 'js:formatAsRupiah(this);']) ?>
+			<?= $form->field($model, 'kunjungan_industri')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])?>
+			<?= $form->field($model, 'pkl')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ])?>
+			<?= $form->field($model, 'pendalaman_materi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ]) ?>
+			<?= $form->field($model, 'dana_alokasi')->textInput(['onkeyup' => 'js:formatAsRupiah(this);' ]) ?>
 			
 			<div class="form-group">
 				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

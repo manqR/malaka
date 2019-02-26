@@ -175,6 +175,12 @@ class TagihanController extends Controller
 			$model->osis = SaveRupiah($model->osis);
 			$model->mpls = SaveRupiah($model->mpls);
 			$model->asuransi = SaveRupiah($model->asuransi);
+			$model->baju_olah_raga = SaveRupiah($model->baju_olah_raga);
+			$model->mos = SaveRupiah($model->mos);
+			$model->kunjungan_industri = SaveRupiah($model->kunjungan_industri);
+			$model->pkl = SaveRupiah($model->pkl);
+			$model->pendalaman_materi = SaveRupiah($model->pendalaman_materi);
+			$model->dana_alokasi = SaveRupiah($model->dana_alokasi);		
 			$model->date_create = date('Y-m-d H:i:s');
 			$model->user_create = Yii::$app->user->identity->username;
 			$model->idajaran = $find->idajaran;
@@ -204,7 +210,8 @@ class TagihanController extends Controller
 		$spp = Spp::find()
 			   ->where(['idtagihan'=>$idtagihan])
 			   ->One();
-		
+		// var_dump($idtagihan);
+		// die;
         if ($model->load(Yii::$app->request->post()) && 			 
 			$spp->load(Yii::$app->request->post())){
 			function SaveRupiah($val){
@@ -281,9 +288,14 @@ class TagihanController extends Controller
 			$model->osis = SaveRupiah($model->osis);
 			$model->mpls = SaveRupiah($model->mpls);
 			$model->asuransi = SaveRupiah($model->asuransi);
+			$model->baju_olah_raga = SaveRupiah($model->baju_olah_raga);
+			$model->mos = SaveRupiah($model->mos);
+			$model->kunjungan_industri = SaveRupiah($model->kunjungan_industri);
+			$model->pkl = SaveRupiah($model->pkl);
+			$model->pendalaman_materi = SaveRupiah($model->pendalaman_materi);
+			$model->dana_alokasi = SaveRupiah($model->dana_alokasi);		
 			$model->date_update = date('Y-m-d H:i:s');
 			$model->user_update = Yii::$app->user->identity->username;
-			$model->idajaran = $_POST['idajaran'];
 			$model->save();
 			
             return $this->redirect(['view', 'idtagihan' => $model->idtagihan, 'idjurusan' => $model->idjurusan, 'idkelas' => $model->idkelas]);

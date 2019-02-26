@@ -45,8 +45,9 @@ class KuitansiSearch extends Kuitansi
     public function search($params)
     {
         $query = Kuitansi::find();
-        $query->joinWith(['kelas']);
-        $query->joinWith(['siswa']);
+        $query->joinWith(['kelas0']);
+        $query->joinWith(['siswa0']);
+        $query->groupBy(['idkuitansi','tahun_ajaran','nominal']);
 
         // add conditions that should always apply here
 
